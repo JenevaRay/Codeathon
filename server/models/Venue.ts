@@ -68,11 +68,17 @@ const venueSchema = new Schema ({
         trim: true,
         required: true
     },
-    timeZone: {
+    venueTimeZone: {
         // format to be determined, examples like "UTC" or "MDT" are strings..
         type: String,
         trim: true,
         required: true
+    },
+    hostId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        index: true,
+        ref: 'User'
     }
 })
 

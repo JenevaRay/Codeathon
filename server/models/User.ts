@@ -64,6 +64,7 @@ const userSchema = new Schema ({
     },
     registrations: [
         {
+            // kept in a separated table due to query atomicity
             type: Schema.Types.ObjectId,
             ref: 'Registration'
         }

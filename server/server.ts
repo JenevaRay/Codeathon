@@ -1,3 +1,6 @@
+import dotenv from 'dotenv'
+dotenv.config()
+
 import Express from 'express'
 import { ApolloServer } from 'apollo-server-express'
 import path from 'path'

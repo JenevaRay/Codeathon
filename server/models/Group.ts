@@ -1,13 +1,11 @@
 import mongoose, { Schema } from 'mongoose'
-import bcrypt from 'bcrypt'
 
 import { schemaVer } from '.'
 
 // either use this as an independent table, or use pared down versions of it as a subdocument table for both Users and Events...
 // Feature: can add a paidTimeUTC - so that we know who paid when, useful for invoice lookups
-// Feature: may need to add a paidAmount number/float.
 
-const registrationSchema = new Schema({
+const groupSchema = new Schema({
     // implied: _id of type mongoose.ObjectId
     schemaVersion: {
         // this is to be used internally in case things change, let's hope they don't.
@@ -15,36 +13,35 @@ const registrationSchema = new Schema({
         required: true
     },
     // backreference is useful for building lists of users at an event
-    userId: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    registrations: [
+        {
+            // kept in a separated table due to query atomicity
+            type: Schema.Types.ObjectId,
+            ref: 'Registration'
+        }
+    ],
     eventId: {
         type: Schema.Types.ObjectId,
         ref: 'Event',
         required: true
     },
-    role: {
-        // for Host, Attendee, and Volunteer
+    name: {
         type: String,
-        trim: true,
-        required: true,
-    },
-    // because revenue matters
-    paid: {
-        type: Boolean,
         required: true
     },
+    project: {
+        type: String,
+        required: false
+    }
 })
 
-registrationSchema.pre('save', async function(next) {
+groupSchema.pre('save', async function(next) {
     if (this.isNew) {
         this.schemaVersion = schemaVer
     }
     next()
 })
 
-const Registration = mongoose.model('Registration', registrationSchema)
+const Group = mongoose.model('Group', groupSchema)
 
-export { Registration }
+export { Group }
