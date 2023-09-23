@@ -1,5 +1,5 @@
 {
-  "name": "project3-temp",
+  "name": "codeathon-main",
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
@@ -34,7 +34,6 @@
   },
   "homepage": "https://github.com/JenevaRay/project3-temp#readme",
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "concurrently": "^8.2.1",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0"
