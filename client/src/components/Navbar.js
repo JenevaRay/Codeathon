@@ -8,9 +8,9 @@ const Navbar = ({ logged_in }) => {
       <div className="flex lg:flex-1">
         <a
           href="/"
-          className="text-md -m-1.5 p-1.5 font-bold text-zinc-900">
-          <span className="sr-only">Codeathon</span>
-          &lt;codeathon/&gt;
+          className="-m-1.5 p-1.5 text-lg font-extrabold leading-tight text-zinc-900">
+          <span className="sr-only">codeathon</span>
+          {'</>'} codeathon
         </a>
       </div>
       <div className="flex gap-x-12">
