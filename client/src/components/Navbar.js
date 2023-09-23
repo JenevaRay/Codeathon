@@ -1,3 +1,5 @@
+import Button from '../components/ui/Button';
+
 const Navbar = ({ logged_in }) => {
   return (
     <nav
@@ -25,19 +27,12 @@ const Navbar = ({ logged_in }) => {
       </div>
       <div className="flex lg:flex-1 lg:justify-end">
         {logged_in ? (
-          <a
-            onClick="#"
-            href="/"
-            className="cursor-pointer text-sm font-semibold leading-6 text-gray-900">
-            Log out
-            <span aria-hidden="true">&rarr;</span>
+          <a href="/logout">
+            <Button>Logout</Button>
           </a>
         ) : (
-          <a
-            href="/login"
-            className="text-sm font-semibold leading-6 text-gray-900">
-            Log in
-            <span aria-hidden="true">&rarr;</span>
+          <a href="/login">
+            <Button>Login</Button>
           </a>
         )}
       </div>

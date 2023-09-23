@@ -1,18 +1,19 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Home from './pages/Home';
+
 import Layout from './components/Layout';
+import Home from './pages/Home';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
+      <Layout>
+        <Routes>
           <Route
             path="/"
             element={<Home />}
           />
-        </Route>
-      </Routes>
+        </Routes>
+      </Layout>
     </BrowserRouter>
   );
 };
