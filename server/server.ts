@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
-const startApolloServer = async (typeDefs: DocumentNode, resolvers: Document) => {
+const startApolloServer = async (typeDefs: DocumentNode, resolvers: any) => {
     await server.start()
     server.applyMiddleware({ app })
 
