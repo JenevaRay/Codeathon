@@ -6,9 +6,9 @@ import { ApolloServer } from 'apollo-server-express'
 import path from 'path'
 // import { AuthMiddleware } from './utils/auth'
 
-import { typeDefs, resolvers } from './schemas'
+import { typeDefs, resolvers } from './schemas/index'
 import { db } from './config/connection'
-import { DocumentNode } from 'graphql'
+// import { DocumentNode } from 'graphql'
 
 const PORT = process.env.port || 3001
 const app = Express()
@@ -27,11 +27,11 @@ if (process.env.NODE_ENV === 'production') {
     app.use(Express.static(path.join(__dirname, '../client/build')))
 }
 
-app.get('/', (req, res) => {
+app.get('/', (_, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
-const startApolloServer = async (typeDefs: DocumentNode, resolvers: any) => {
+const startApolloServer = async () => {
     await server.start()
     server.applyMiddleware({ app })
 
@@ -43,4 +43,4 @@ const startApolloServer = async (typeDefs: DocumentNode, resolvers: any) => {
     })
 }
 
-startApolloServer(typeDefs, resolvers)
+startApolloServer()

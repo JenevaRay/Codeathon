@@ -1,7 +1,7 @@
-import { AuthenticationError } from "apollo-server-express";
+// import { AuthenticationError } from "apollo-server-express";
 import { User, Registration, Venue, Event, Group, schemaVer } from '../models'
 // import { signToken } from '../utils/auth'
-import stripe from 'stripe'
+// import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
 
 console.log(schemaVer)
