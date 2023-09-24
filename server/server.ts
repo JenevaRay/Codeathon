@@ -8,6 +8,7 @@ import path from 'path'
 
 import { typeDefs, resolvers } from './schemas'
 import { db } from './config/connection'
+import { DocumentNode } from 'graphql'
 
 const PORT = process.env.port || 3001
 const app = Express()
@@ -30,7 +31,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'))
 })
 
-const startApolloServer = async (typeDefs, resolvers) => {
+const startApolloServer = async (typeDefs: DocumentNode, resolvers: Document) => {
     await server.start()
     server.applyMiddleware({ app })
 

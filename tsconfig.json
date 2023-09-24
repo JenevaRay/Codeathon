@@ -1,12 +1,22 @@
 {
     "compilerOptions": {
         "strictNullChecks": false,
-        "module":"CommonJS",
+        "module": "esnext",
         "sourceMap": false,
         "types": ["node"],
         "esModuleInterop": true,
-        "target": "ES6"
+        "target": "ES6",
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "isolatedModules": true,
+        "noEmit": true,
+        "noFallthroughCasesInSwitch": true
     },
+    "lib": [
+        "esnext"
+    ],
     "include": [
         "**/*"
     ],
