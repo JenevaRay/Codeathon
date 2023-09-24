@@ -1,8 +1,9 @@
 import { gql } from 'apollo-server-express'
+import { DocumentNode } from 'graphql'
 
 // TODO: Event is missing all DATE types (startTime, endTime, registrationCutoffDate, registrationPaymentRequiredDate).  Documentation succests a 'scalar Date' for custom defs, I'm inclined to just pass the Date as-is (string) and parse it user-side, due to built in timezone info.
 
-const typeDefs = gql`
+const typeDefs: DocumentNode = gql`
 type User {
     schemaVersion: String
     _id: ID

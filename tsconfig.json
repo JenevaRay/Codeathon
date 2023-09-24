@@ -1,12 +1,28 @@
 {
     "compilerOptions": {
         "strictNullChecks": false,
-        "module":"CommonJS",
+        "module": "esnext",
         "sourceMap": false,
         "types": ["node"],
         "esModuleInterop": true,
-        "target": "ES6"
+        "target": "esnext",
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "noEmit": true,
+        "noFallthroughCasesInSwitch": true,
+        "useUnknownInCatchVariables": false,
+        "noImplicitAny": true,
+        "isolatedModules": false,
+        "inlineSourceMap": true
     },
+    "ts-node": {
+        "esm": true
+    },
+    "lib": [
+        "esnext"
+    ],
     "include": [
         "**/*"
     ],
