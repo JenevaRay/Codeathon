@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
-import { schemaVersion, schemaDate } from './index';
+import { 
+    // Phone, 
+    schemaVersion, schemaDate } from './index';
 
 // import { Registration } from './Registration'
 
@@ -56,8 +58,10 @@ const userSchema = new Schema({
   },
   phoneNumbers: [{
     type: Schema.Types.ObjectId,
-    ref: 'Phone'
+    ref: 'Phone',
+    required: true
   }],
+//   phoneNumbers: [Phone.schema],
   otherContactMethod: {
     type: String,
     trim: true,

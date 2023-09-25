@@ -5,19 +5,39 @@ import { DocumentNode } from 'graphql'
 
 const typeDefs: DocumentNode = gql`
 type User {
-    schemaVersion: String
     _id: ID
-    firstName: String
-    lastName: String
+    nameFirst: String
+    nameLast: String
+    addresses: [Address]
     email: String
-    phone: String
+    emailType: String
+    phoneNumbers: [Phone]
     otherContactMethod: String
     preferredContactMethod: String
     registrations: [Registration]
 }
 
+type Address {
+    _id: ID
+    streetAddress: String
+    extendedAddress: String
+    country: String
+    state: String
+    county: String
+    city: String
+    postalCode: String
+    type: String
+    isUserPrimary: Boolean
+}
+
+type Phone {
+    _id: ID
+    number: String
+    type: String
+    isUserPrimary: Boolean
+}
+
 type Registration {
-    schemaVersion: String
     _id: ID
     userId: User
     eventId: Event
@@ -26,35 +46,34 @@ type Registration {
 }
 
 type Event {
-    schemaVersion: String
     name: String
-    startTime: String
-    endTime: String
+    dateStart: String
+    dateEnd: String
     registrations: [Registration]
-    registrationCutoffDate: String
+    dateCutoff: String
+    feeRegistration: Int
+    feeVenue: Int
+    venues: [Venue]
     registrationPaymentRequiredDate: String
-    userId: User
+    organizerUserId: User
+    groups: [Group]
 }
 
 type Group {
-    schemaVersion: String
+    _id: ID
     registrations: [Registration]
     eventId: Event
     name: String
-    project: String
+    projectName: String
+    projectDescription: String
 }
 
 type Venue {
-    schemaVersion: String
+    _id: ID
     name: String
-    venueStreetAddress: String
-    venueExtendedAddress: String
-    venueCountry: String
-    venueProvince: String
-    venueMunicipality: String
-    venueCity: String
-    venuePostalCode: String
+    addressId: Address
     venueTimeZone: String
+    phoneId: Phone
     hostId: User
 }
 

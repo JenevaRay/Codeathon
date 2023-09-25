@@ -1,4 +1,6 @@
 // TODO: import dayjs from 'dayjs'; for working with dates
+// import mongoose from 'mongoose'
+// const ObjectID = mongoose.Types.ObjectId
 
 import { db } from './connection';
 
@@ -25,7 +27,8 @@ const events = [
     organizerUserId: '000000111111',
     feeRegistration: 1299,
     feeVenue: 1000,
-    venueId: '555666555666'
+    venues: ['555666555666'],
+    groups: []
   },
   {
     _id: '888877776666',
@@ -34,13 +37,14 @@ const events = [
     name: "EventExpired",
     dateStart: lastMonth,
     dateEnd: lastMonth,
-    registrations: [],
+    registrations: ['012345012345', '987654987654'],
     registrationCutoffDate: lastMonth,
     registrationPaymentRequiredDate: lastMonth,
     organizerUserId: '000000111111',
     feeRegistration: 1299,
     feeVenue: 1000,
-    venueId: '555666555666'
+    venues: ['555666555666'],
+    groups: ['554466554466']
   },
   {
     _id: '777766665555',
@@ -55,7 +59,8 @@ const events = [
     organizerUserId: '000000111111',
     feeRegistration: 1399,
     feeVenue: 1000,
-    venueId: '555666555666'
+    venues: ['555666555666'],
+    groups: ['554466554466']
   }
 ]
 
@@ -64,35 +69,37 @@ const users = [
         _id: '000000111111',
         schemaVersion: schemaVersion,
         schemaDate: schemaDate.toDate(),
-        firstName: "Dave",
-        lastName: "Smith",
+        nameFirst: "Dave",
+        nameLast: "Smith",
         email: "davesmith@acme.net",
         emailType: 'work',
-        phone: "+1 (234) 567-8901",
+        phoneNumbers: ['111112222233'],
+        registrations: ['012345012345'],
         otherContactMethod: null,
         preferredContactMethod: "email",
         password: "=^^=NoSuchPassword:3",
-        registrations: [],
+        addresses: ['224466224466']
     },
     {
         _id: '222222333333',
         schemaVersion: schemaVersion,
         schemaDate: schemaDate.toDate(),
+        registrations: ['987654987654'],
         firstName: "First",
         lastName: "Last",
         email: "lastfirst@lifo.org",
         emailType: 'personal',
-        phone: "+1 (234) 567-0001",
+        phoneNumbers: ['222223333344'],
         otherContactMethod: null,
         preferredContactMethod: "email",
         password: "itsonthefridge",
-        registrations: [],
+        addresses: ['224466224466']
     }
 ]
 
 const groups = [
     {
-        // _id: 'TBD'
+        _id: '554466554466',
         schemaVersion: schemaVersion,
         schemaDate: schemaDate.toDate(),
         registrations: ['012345012345', '987654987654'],
@@ -128,6 +135,13 @@ const phones = [
         _id: '111112222233',
         number: "+1 234-567-8901",
         isUserPrimary: false
+    }, {
+        schemaVersion: schemaVersion,
+        schemaDate: schemaDate.toDate(),
+        type: 'cell',
+        _id: '222223333344',
+        number: "+1 (234) 567-0001",
+        isUserPrimary: true
     }
 ]
 
@@ -166,6 +180,13 @@ const registrations = [
 ]
 
 db.once('open', async () => {
+  await User.deleteMany()
+  for (const user of users) {
+    // this method preserves the password encryption.
+    await User.create(user)
+  }
+  console.log('Users seeded.')
+
   await Event.deleteMany()
   await Event.insertMany(events)
   console.log('Events seeded.')
@@ -178,12 +199,6 @@ db.once('open', async () => {
   await Phone.insertMany(phones)
   console.log('Phones seeded')
 
-  await User.deleteMany()
-  for (const user of users) {
-    // this method preserves the password encryption.
-    await User.create(user)
-  }
-  console.log('Users seeded.')
 
   await Group.deleteMany()
   await Group.insertMany(groups)

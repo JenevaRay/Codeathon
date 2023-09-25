@@ -76,8 +76,9 @@ const eventSchema = new Schema({
     type: Date,
     required: true,
   },
+//   organizerUserId: User.schema,
   organizerUserId: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Types.ObjectId,
     ref: 'User',
     required: true
   },
@@ -87,8 +88,6 @@ const eventSchema = new Schema({
     ref: 'Group'
   }]
 })
-
-
 
 eventSchema.pre('save', async function (next) {
   if (this.isNew) {
