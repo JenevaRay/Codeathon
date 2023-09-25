@@ -77,8 +77,8 @@ const Checkout = () => {
           </div>
         </div>
       </div>
-      <div className="grid pb-24 sm:px-10 lg:grid-cols-2 lg:px-20 lg:pb-0 xl:px-32">
-        <div className="px-4 pt-12">
+      <div className="grid pb-12 sm:px-10 lg:grid-cols-2 lg:px-20 lg:pb-0 xl:px-32">
+        <div className="px-4 pt-20">
           <p className="text-xl font-medium">Order Summary</p>
           <p className="text-gray-400">
             Check your items and select your preferred shipping method
@@ -164,7 +164,7 @@ const Checkout = () => {
             </div>
           </form>
         </div>
-        <div className="mt-10 bg-gray-50 px-4 pt-12 lg:mt-0">
+        <div className="mt-10 bg-gray-50 px-4 pt-20 lg:mt-0">
           <p className="text-xl font-medium">Payment Details</p>
           <p className="text-gray-400">
             Complete your order by providing your payment details

@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
     <>
       {location.pathname === '/checkout' ? null : <Navbar />}
       <main className="w-full">{children}</main>
-      <Footer />
+      {location.pathname === '/checkout' ? null : <Footer />}
     </>
   );
 };
