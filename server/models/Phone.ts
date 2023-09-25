@@ -9,7 +9,7 @@ import { schemaVersion, schemaDate } from './index';
 // venue address notes (i.e. do not park at Bob's Diner)
 // venue latitude/longitude, for regional searches, can be easily entered via map click...
 
-const venueSchema = new Schema({
+const phoneSchema = new Schema({
   // implied: _id of type mongoose.ObjectId
   schemaVersion: {
     // used internally in case things change
@@ -21,40 +21,24 @@ const venueSchema = new Schema({
     type: Date,
     required: true
   },
-  // professional locations would have a name, impromptu locations might not
-  name: {
-    type: String,
-    trim: true,
-    index: true,
-    unique: true,
-    // allow for nullable unique values
-    sparse: true
-  },
-  addressId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address',
-    required: true
-  },
-  venueTimeZone: {
-    // format to be determined, examples like "UTC" or "MDT" are strings..
-    type: String,
+  number: {
+    type: String, // because just numbers won't do.  extension?  intl phone?
     trim: true,
     required: true
   },
-  phoneId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'Phone'
+  type: {
+    // mobile, cell, voip, pager, home, etc
+    type: String,
+    required: true
   },
-  hostId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    index: true,
-    ref: 'User'
-  }
+  isUserPrimary: {
+    // isPrimary makes no sense for the one-to-one relationship for Venues
+    type: Boolean,
+    required: true
+  },
 })
 
-venueSchema.pre('save', async function (next) {
+phoneSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
@@ -62,6 +46,6 @@ venueSchema.pre('save', async function (next) {
   next()
 })
 
-const Venue = mongoose.model('Venue', venueSchema)
+const Phone = mongoose.model('Phone', phoneSchema)
 
-export { Venue }
+export { Phone }

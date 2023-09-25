@@ -31,11 +31,16 @@ const registrationSchema = new Schema({
     ref: 'Event',
     required: true
   },
-  role: {
+  registrationDate: {
+    type: Date,
+    required: true,
+  },
+  registrationType: {
     // for Host, Attendee, and Volunteer
     type: String,
     trim: true,
     required: true,
+    alias: 'role' // 0.0.4 role -> 0.0.5 registrationType 
   },
   // because revenue matters
   paid: {
