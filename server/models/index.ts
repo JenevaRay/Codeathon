@@ -1,12 +1,15 @@
+import dayjs from 'dayjs';
+
+// Import all models
 import { User } from './User'
 import { Venue } from './Venue'
 import { Registration } from './Registration'
 import { Event } from './Event'
 import { Group } from './Group'
 
-// probably need to implement order and checkout tables for sales of tickets.
+// Define a schema version and a schema date for future compatibility
+const schemaVersion = '0.0.3';
+const schemaDate = dayjs('2023-09-24');
 
-// a schema version, because we don't know if a client will try to reconnect a year later...
-const schemaVer = '0.0.1-09/22/23'
-
-export { User, Venue, Registration, Event, Group, schemaVer }
+// Export all models plus the schema version and schema date
+export { User, Venue, Registration, Event, Group, schemaVersion, schemaDate };
