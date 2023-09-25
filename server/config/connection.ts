@@ -1,7 +1,10 @@
-import mongoose from 'mongoose';
+import dotenv from 'dotenv'
+dotenv.config()
 
-mongoose.connect( process.env.MONGODB_URI || 'mongodb://127.0.0.1/codeathon' );
+import mongoose from 'mongoose'
 
-const db = mongoose.connection;
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1/codeathon')
 
-export { db };
+const db = mongoose.connection 
+
+export { db }

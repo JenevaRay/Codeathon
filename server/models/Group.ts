@@ -27,16 +27,20 @@ const groupSchema = new Schema({
       ref: 'Registration'
     }
   ],
-  eventId: {
+  events: [{
     type: Schema.Types.ObjectId,
     ref: 'Event',
-    required: true
-  },
+    required: true,
+  }],
   name: {
     type: String,
     required: true
   },
-  project: {
+  projectName: {
+    type: String,
+    required: false
+  },
+  projectDescription: {
     type: String,
     required: false
   }

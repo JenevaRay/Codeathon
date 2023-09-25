@@ -3,7 +3,9 @@ import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
-import { schemaVersion, schemaDate } from './index';
+import { 
+    // Phone, 
+    schemaVersion, schemaDate } from './index';
 
 // import { Registration } from './Registration'
 
@@ -23,16 +25,19 @@ const userSchema = new Schema({
     type: Date,
     required: true
   },
-  firstName: {
+  nameFirst: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    alias: 'firstName'
   },
-  lastName: {
+  nameLast: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    alias: 'lastName'
   },
+  // being kept one field for future user registration/authentication, if we can properly utilize multiple fields for this, then we can reimplement.  Naturally, there is no primary of a single email.
   email: {
     type: String,
     trim: true,
@@ -41,22 +46,25 @@ const userSchema = new Schema({
     // this allows for nullable unique identifiers
     sparse: true
   },
-  phone: {
-    // see npm: mongoose-intl-phone-number **future compatibility** 
+  addresses: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Address',
+    required: true
+  }],
+  emailType: {
     type: String,
     trim: true,
-    index: true,
-    // required: true,
-    unique: true,
-    // this allows for nullable unique identifiers
-    sparse: true
+    required: true
   },
+  phoneNumbers: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Phone',
+    required: true
+  }],
+//   phoneNumbers: [Phone.schema],
   otherContactMethod: {
     type: String,
     trim: true,
-    index: true,
-    unique: true,
-    sparse: true
   },
   preferredContactMethod: {
     type: String,
