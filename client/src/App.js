@@ -1,8 +1,8 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import Layout from './components/Layout';
-import Home from './pages/Home';
-import Checkout from './pages/Checkout';
+import { Home, Events, Checkout } from './pages/index.js';
+// will fix the imports shortly (add to pages/index.js)
 
 const App = () => {
   return (
@@ -12,6 +12,10 @@ const App = () => {
           <Route
             path="/"
             element={<Home />}
+          />
+          <Route
+            path='/events'
+            element={<Events />}
           />
           <Route
             path="/checkout"
