@@ -1,6 +1,4 @@
-// TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
 import mongoose, { Schema } from 'mongoose';
-
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
@@ -13,23 +11,23 @@ const registrationSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   // backreference is useful for building lists of users at an event
   userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
   eventId: {
     type: Schema.Types.ObjectId,
     ref: 'Event',
-    required: true
+    required: true,
   },
   registrationDate: {
     type: Date,
@@ -40,23 +38,23 @@ const registrationSchema = new Schema({
     type: String,
     trim: true,
     required: true,
-    alias: 'role' // 0.0.4 role -> 0.0.5 registrationType 
+    alias: 'role', // 0.0.4 role -> 0.0.5 registrationType
   },
   // because revenue matters
   paid: {
     type: Boolean,
-    required: true
+    required: true,
   },
-})
+});
 
 registrationSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Registration = mongoose.model('Registration', registrationSchema)
+const Registration = mongoose.model('Registration', registrationSchema);
 
-export { Registration }
+export { Registration };

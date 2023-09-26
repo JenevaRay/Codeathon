@@ -14,7 +14,7 @@ const StoreProvider = ({ value = [], ...props }) => {
   });
   return (
     <Provider
-      // value={[state, dispatch]}
+      value={[state, dispatch]}
       {...props}
     />
   );

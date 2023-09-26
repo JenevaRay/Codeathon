@@ -1,11 +1,12 @@
+import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { EventList } from '../components';
+import { RegistrationList } from '../components';
+import { httpLink } from '../utils';
 
 // import { Login, Signup, NoMatch, Detail, Success, OrderHistory } from './'
 
 import { StoreProvider } from '../utils/GlobalState';
-import { httpLink } from '../utils';
 
 // note: this was an App.js that used as a template; some things, like ApolloProvider, belong in the global context.
 
@@ -33,7 +34,7 @@ const Events = () => {
       value={[]}>
       <div>
         <StoreProvider>
-          <EventList />
+          <RegistrationList />
         </StoreProvider>
       </div>
     </ApolloProvider>

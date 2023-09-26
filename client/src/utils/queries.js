@@ -8,7 +8,6 @@ const QUERY_EVENTS = gql`
       dateStart
       dateEnd
       dateCutoff
-      dateCutoff
       feeRegistration
       feeVenue
       groups {

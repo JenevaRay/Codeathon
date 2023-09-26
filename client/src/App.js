@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import { Layout } from './components';
-import { Home, Events, Login, Checkout } from './pages';
+import { Home, Events, Login, Registration, Checkout } from './pages';
 // will fix the imports shortly (add to pages/index.js)
 
 const App = () => {
@@ -24,6 +24,10 @@ const App = () => {
           <Route
             path="/checkout"
             element={<Checkout />}
+          />
+          <Route
+            path="registration"
+            element={<Registration />}
           />
         </Routes>
       </Layout>
