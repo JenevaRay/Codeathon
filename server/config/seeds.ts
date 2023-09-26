@@ -1,4 +1,4 @@
-// TODO: import dayjs from 'dayjs'; for working with dates
+import dayjs from 'dayjs';
 // import mongoose from 'mongoose'
 // const ObjectID = mongoose.Types.ObjectId
 
@@ -16,12 +16,12 @@ import {
   Phone,
 } from '../models/index';
 
-// TODO: Switch to dayjs objects to seed dynamic dates based upon the current date
-const now: Date = new Date('September 24, 2023');
-const lastMonth: Date = new Date('August 24, 2023');
-const weekAgo: Date = new Date('September 17, 2023');
-const nextWeek: Date = new Date('October 1, 2023');
-const nextMonth: Date = new Date('October 24, 2023');
+// Seed dynamic dates and times based upon the current date and time using Day.js
+const now = dayjs();
+const lastMonth = now.subtract(1, 'month');
+const weekAgo = now.subtract(1, 'week');
+const nextWeek = now.add(1, 'week');
+const nextMonth = now.add(1, 'month');
 
 const events = [
   {
@@ -29,11 +29,11 @@ const events = [
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventNowNoRegistrations',
-    dateStart: weekAgo,
-    dateEnd: nextWeek,
+    dateStart: weekAgo.toDate(),
+    dateEnd: nextWeek.toDate(),
     registrations: [],
-    registrationCutoffDate: now,
-    registrationPaymentRequiredDate: now,
+    registrationCutoffDate: now.toDate(),
+    registrationPaymentRequiredDate: now.toDate(),
     organizerUserId: '000000111111',
     feeRegistration: 1299,
     feeVenue: 1000,
@@ -45,11 +45,11 @@ const events = [
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventExpired',
-    dateStart: lastMonth,
-    dateEnd: lastMonth,
+    dateStart: lastMonth.toDate(),
+    dateEnd: lastMonth.toDate(),
     registrations: ['012345012345', '987654987654'],
-    registrationCutoffDate: lastMonth,
-    registrationPaymentRequiredDate: lastMonth,
+    registrationCutoffDate: lastMonth.toDate(),
+    registrationPaymentRequiredDate: lastMonth.toDate(),
     organizerUserId: '000000111111',
     feeRegistration: 1299,
     feeVenue: 1000,
@@ -61,11 +61,11 @@ const events = [
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventFutureAcceptingRegistrations',
-    dateStart: nextMonth,
-    dateEnd: nextMonth,
+    dateStart: nextMonth.toDate(),
+    dateEnd: nextMonth.toDate(),
     registrations: [],
-    registrationCutoffDate: nextWeek,
-    registrationPaymentRequiredDate: nextMonth,
+    registrationCutoffDate: nextWeek.toDate(),
+    registrationPaymentRequiredDate: nextMonth.toDate(),
     organizerUserId: '000000111111',
     feeRegistration: 1399,
     feeVenue: 1000,
@@ -176,7 +176,7 @@ const registrations = [
     schemaDate: schemaDate,
     userId: '000000111111',
     eventId: '888877776666',
-    registrationDate: lastMonth,
+    registrationDate: lastMonth.toDate(),
     registrationType: 'host',
     // hosts don't pay, or more technically pay $0
     paid: true,
@@ -187,7 +187,7 @@ const registrations = [
     schemaDate,
     userId: '222222333333',
     eventId: '888877776666',
-    registrationDate: lastMonth,
+    registrationDate: lastMonth.toDate(),
     registrationType: 'attendee',
     paid: true,
   },
