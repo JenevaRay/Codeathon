@@ -1,6 +1,6 @@
 // TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
 import mongoose, { Schema } from 'mongoose';
-
+import dayjs from 'dayjs';
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
@@ -14,12 +14,16 @@ const phoneSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
+    // Set default version to 1.0
+    default: '1.0',
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
+    // Set default to current date
+    default: dayjs().toDate(),
   },
   number: {
     type: String, // because just numbers won't do.  extension?  intl phone?

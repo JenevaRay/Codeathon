@@ -20,6 +20,7 @@ const registrationSchema = new Schema({
     // used internally in case things change
     type: Date,
     required: true,
+    // Set default date to the current date
     default: dayjs().toDate(),
   },
   // backreference is useful for building lists of users at an event
