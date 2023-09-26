@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 // TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
+import dayjs from 'dayjs';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
@@ -18,12 +19,15 @@ const userSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
+    default: '1.0',
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
+    // Default is set to the current date
+    default: dayjs().toDate(),
   },
   nameFirst: {
     type: String,
