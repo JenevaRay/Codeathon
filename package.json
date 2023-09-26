@@ -1,10 +1,10 @@
 {
   "name": "codeathon-main",
   "version": "1.0.0",
-  "description": "",
-  "main": "server/server.js",
+  "description": "Bringing Coders Together",
+  "main": "server/server.ts",
   "scripts": {
-    "start": "ts-node server/server.s",
+    "start": "ts-node server/server.ts",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
@@ -12,11 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JenevaRay/project3-temp.git"
+    "url": "git+https://github.com/JenevaRay/Codeathon.git"
   },
   "contributors": [
     {
-      "name": "Adam Hansen"
+      "name": "Adam Hansen",
+      "email": "adamhansen@me.com"
     },
     {
       "name": "Christian Martinez"
@@ -30,21 +31,14 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JenevaRay/project3-temp/issues"
+    "url": "https://github.com/JenevaRay/Codeathon/issues"
   },
-  "homepage": "https://github.com/JenevaRay/project3-temp#readme",
+  "homepage": "https://github.com/JenevaRay/Codeathon#readme",
   "devDependencies": {
     "concurrently": "^8.2.1",
     "eslint": "^8.49.0",
-<<<<<<< HEAD
-    "eslint-config-prettier": "^9.0.0"
-  },
-  "dependencies": {
-    "@types/jsonwebtoken": "^9.0.3"
-=======
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4"
->>>>>>> origin
   }
 }

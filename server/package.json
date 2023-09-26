@@ -10,7 +10,8 @@
   },
   "contributors": [
     {
-      "name": "Adam Hansen"
+      "name": "Adam Hansen",
+      "email": "adamhansen@me.com"
     },
     {
       "name": "Christian Martinez"
@@ -25,6 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.7.0",
     "nodemon": "^3.0.1",
     "ts-node": "^10.9.1"
