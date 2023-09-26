@@ -1,12 +1,26 @@
-const Button = ({ children, padding, bgColor, color, weight }) => {
+const Button = ({
+  children,
+  padding,
+  bgColor,
+  hoverColor,
+  color,
+  weight,
+  width,
+  margin,
+  borderRadius,
+}) => {
   return (
     <button
-      className={`rounded-full border-0 ${
+      className={`border-0 ${
         bgColor
           ? bgColor
           : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'
-      } ${padding ? padding : 'px-5 py-2'} ${weight ? weight : 'font-bold'} ${
-        color ? color : 'text-zinc-100'
+      } ${hoverColor ? hoverColor : ''} ${padding ? padding : 'px-5 py-2'} ${
+        weight ? weight : 'font-bold'
+      } ${color ? color : 'text-zinc-100'} ${width ? width : ''} ${
+        margin ? margin : ''
+      } ${
+        borderRadius ? borderRadius : 'rounded-full'
       } shadow-lg transition duration-300 ease-in-out hover:scale-[0.97]`}>
       {children}
     </button>

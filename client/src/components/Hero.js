@@ -65,7 +65,13 @@ const Hero = () => {
               hackathons. Try it for free today!
             </p>
             <a href="/dashboard">
-              <Button>Sign Up</Button>
+              <Button
+                margin="mt-8"
+                padding="px-6 py-3"
+                bgColor="bg-zinc-900"
+                hoverColor="hover:bg-zinc-900/90">
+                Sign Up
+              </Button>
             </a>
           </div>
         </div>
