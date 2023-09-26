@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 // TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
+import dayjs from 'dayjs';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file

@@ -1,6 +1,6 @@
 // TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
 import mongoose, { Schema } from 'mongoose';
-
+import dayjs from 'dayjs';
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
