@@ -176,7 +176,7 @@ const registrations = [
     schemaDate: schemaDate,
     userId: '000000111111',
     eventId: '888877776666',
-    registrationDate: lastMonth,
+    registrationDate: lastMonth.toDate(),
     registrationType: 'host',
     // hosts don't pay, or more technically pay $0
     paid: true,
@@ -187,7 +187,7 @@ const registrations = [
     schemaDate,
     userId: '222222333333',
     eventId: '888877776666',
-    registrationDate: lastMonth,
+    registrationDate: lastMonth.toDate(),
     registrationType: 'attendee',
     paid: true,
   },
