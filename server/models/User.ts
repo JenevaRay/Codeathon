@@ -92,9 +92,12 @@ const userSchema = new Schema({
 // Function to generate a JWT token for a user
 userSchema.methods.generateAuthToken = function() {
   const token = jwt.sign(
-    { _id: this._id }, // Include user-specific data as payload
-    'your-secret-key', // Replace with your secret key
-    { expiresIn: '2h' } // Set expiration time
+    // Include user-specific data as payload
+    { _id: this._id }, 
+    // Replace with secret key
+    'your-secret-key', 
+    // Set expiration time @ 2hrs
+    { expiresIn: '2h' } 
   );
   return token;
 };
@@ -102,7 +105,8 @@ userSchema.methods.generateAuthToken = function() {
 // Create a static function to verify a JWT token for a user
 userSchema.statics.verifyAuthToken = function(token) {
   try {
-    const decoded = jwt.verify(token, 'your-secret-key'); // Verify the token with your secret key
+    // Verify the token with secret key
+    const decoded = jwt.verify(token, 'your-secret-key'); 
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
