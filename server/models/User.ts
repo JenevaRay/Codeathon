@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-// TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
 import dayjs from 'dayjs';
+import jwt from 'jsonwebtoken';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
@@ -8,7 +8,6 @@ import {
     // Phone, 
     schemaVersion, schemaDate } from './index';
 
-// import { Registration } from './Registration'
 
 // possible features (definitely not MVP):
 // internal messaging if no contact info?
@@ -89,6 +88,26 @@ const userSchema = new Schema({
     }
   ]
 })
+
+// Function to generate a JWT token for a user
+userSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign(
+    { _id: this._id }, // Include user-specific data as payload
+    'your-secret-key', // Replace with your secret key
+    { expiresIn: '2h' } // Set expiration time
+  );
+  return token;
+};
+
+// Create a static function to verify a JWT token for a user
+userSchema.statics.verifyAuthToken = function(token) {
+  try {
+    const decoded = jwt.verify(token, 'your-secret-key'); // Verify the token with your secret key
+    return decoded;
+  } catch (error) {
+    throw new Error('Invalid token');
+  }
+};
 
 userSchema.pre('save', async function (next) {
   if (this.isNew || this.isModified('password')) {

@@ -37,5 +37,8 @@
     "concurrently": "^8.2.1",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0"
+  },
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.3"
   }
 }
