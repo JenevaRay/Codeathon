@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+// import React, { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
 import { useStoreContext, QUERY_REGISTRATIONS } from '../utils/';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
 import { useQuery } from '@apollo/client';
-
-/*
- */
 
 function RegistrationList() {
   const { loading, error, data } = useQuery(QUERY_REGISTRATIONS);
@@ -32,4 +29,4 @@ function RegistrationList() {
   return <div>{registrations}</div>;
 }
 
-export { RegistrationList };
+export default RegistrationList;

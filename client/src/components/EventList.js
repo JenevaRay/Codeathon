@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
+import { useQuery } from '@apollo/client';
 
 import { useStoreContext, QUERY_EVENTS } from '../utils/';
-import dayjs from 'dayjs';
+// import dayjs from 'dayjs';
 
 import { useQuery } from '@apollo/client'
 
@@ -70,7 +71,7 @@ function EventList() {
 
   const { currentEvent } = state;
 
-  console.log(data.events[0]);
+  //   console.log(data.events[0]);
   const events = data.events.map((event) => (
     <div>
       <p>event name {event.name}</p>

@@ -11,6 +11,7 @@ import {
 // import { signToken } from '../utils/auth'
 // import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
+import ObjectId from 'mongoose'
 
 const resolvers = {
   Query: {
@@ -71,6 +72,20 @@ const resolvers = {
       ]);
     },
   },
+  Mutation: {
+    addUser: async (parent, args) => {
+      const user = await User.create(args);
+      const token = signToken(user);
+
+      return { token, user }
+    },
+    addRegistration: async (parent, { eventId: Schema.Types.ObjectId }, context) => {
+      if (context.user) {
+        const registration = new Registration({ eventId });
+        await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
+      }
+    }
+  }
 };
 
 export { resolvers };

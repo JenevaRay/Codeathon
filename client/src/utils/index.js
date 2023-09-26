@@ -1,4 +1,5 @@
 import { StoreProvider, useStoreContext } from './GlobalState';
+import httpLink from './config';
 import {
   QUERY_EVENTS,
   QUERY_REGISTRATIONS,
@@ -17,4 +18,5 @@ export {
   QUERY_GROUPS,
   QUERY_VENUES,
   QUERY_USERS,
+  httpLink,
 };
