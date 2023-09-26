@@ -1,10 +1,10 @@
-import { gql } from 'apollo-server-express'
-import { DocumentNode } from 'graphql'
+import { gql } from 'apollo-server-express';
+import { DocumentNode } from 'graphql';
 
 // TODO: Event is missing all DATE types (startTime, endTime, registrationCutoffDate, registrationPaymentRequiredDate).  Documentation succests a 'scalar Date' for custom defs, I'm inclined to just pass the Date as-is (string) and parse it user-side, due to built in timezone info.
 
 const typeDefs: DocumentNode = gql`
-type User {
+  type User {
     _id: ID
     nameFirst: String
     nameLast: String
@@ -15,9 +15,9 @@ type User {
     otherContactMethod: String
     preferredContactMethod: String
     registrations: [Registration]
-}
+  }
 
-type Address {
+  type Address {
     _id: ID
     streetAddress: String
     extendedAddress: String
@@ -28,24 +28,24 @@ type Address {
     postalCode: String
     type: String
     isUserPrimary: Boolean
-}
+  }
 
-type Phone {
+  type Phone {
     _id: ID
     number: String
     type: String
     isUserPrimary: Boolean
-}
+  }
 
-type Registration {
+  type Registration {
     _id: ID
     userId: User
     eventId: Event
     role: String
     paid: Boolean
-}
+  }
 
-type Event {
+  type Event {
     name: String
     dateStart: String
     dateEnd: String
@@ -57,33 +57,33 @@ type Event {
     registrationPaymentRequiredDate: String
     organizerUserId: User
     groups: [Group]
-}
+  }
 
-type Group {
+  type Group {
     _id: ID
     registrations: [Registration]
     eventId: Event
     name: String
     projectName: String
     projectDescription: String
-}
+  }
 
-type Venue {
+  type Venue {
     _id: ID
     name: String
     addressId: Address
     venueTimeZone: String
     phoneId: Phone
     hostId: User
-}
+  }
 
-type Query {
+  type Query {
     users: [User]
     registrations: [Registration]
     events: [Event]
     groups: [Group]
     venues: [Venue]
-}
-`
+  }
+`;
 
-export { typeDefs }
+export { typeDefs };

@@ -4,9 +4,11 @@ import jwt from 'jsonwebtoken';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
-import { 
-    // Phone, 
-    schemaVersion, schemaDate } from './index';
+import {
+  // Phone,
+  schemaVersion,
+  schemaDate,
+} from './index';
 
 
 // possible features (definitely not MVP):
@@ -19,26 +21,23 @@ const userSchema = new Schema({
     // used internally in case things change
     type: String,
     required: true,
-    default: '1.0',
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
     required: true,
-    // Default is set to the current date
-    default: dayjs().toDate(),
   },
   nameFirst: {
     type: String,
     required: true,
     trim: true,
-    alias: 'firstName'
+    alias: 'firstName',
   },
   nameLast: {
     type: String,
     required: true,
     trim: true,
-    alias: 'lastName'
+    alias: 'lastName',
   },
   // being kept one field for future user registration/authentication, if we can properly utilize multiple fields for this, then we can reimplement.  Naturally, there is no primary of a single email.
   email: {
@@ -47,24 +46,28 @@ const userSchema = new Schema({
     index: true,
     unique: true,
     // this allows for nullable unique identifiers
-    sparse: true
+    sparse: true,
   },
-  addresses: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Address',
-    required: true
-  }],
+  addresses: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Address',
+      required: true,
+    },
+  ],
   emailType: {
     type: String,
     trim: true,
-    required: true
+    required: true,
   },
-  phoneNumbers: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Phone',
-    required: true
-  }],
-//   phoneNumbers: [Phone.schema],
+  phoneNumbers: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Phone',
+      required: true,
+    },
+  ],
+  //   phoneNumbers: [Phone.schema],
   otherContactMethod: {
     type: String,
     trim: true,
@@ -78,16 +81,16 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: true,
-    minlength: 12
+    minlength: 12,
   },
   registrations: [
     {
       // kept in a separated table due to query atomicity
       type: Schema.Types.ObjectId,
-      ref: 'Registration'
-    }
-  ]
-})
+      ref: 'Registration',
+    },
+  ],
+});
 
 // Function to generate a JWT token for a user
 userSchema.methods.generateAuthToken = function() {
@@ -115,20 +118,20 @@ userSchema.statics.verifyAuthToken = function(token) {
 
 userSchema.pre('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
-    const saltRounds = 20
-    this.password = await bcrypt.hash(this.password, saltRounds)
+    const saltRounds = 20;
+    this.password = await bcrypt.hash(this.password, saltRounds);
   }
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
 userSchema.methods.isCorrectPassword = async function (password: string) {
-  return await bcrypt.compare(password, this.password)
-}
+  return await bcrypt.compare(password, this.password);
+};
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema);
 
-export { User }
+export { User };

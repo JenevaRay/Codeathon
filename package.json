@@ -36,9 +36,15 @@
   "devDependencies": {
     "concurrently": "^8.2.1",
     "eslint": "^8.49.0",
+<<<<<<< HEAD
     "eslint-config-prettier": "^9.0.0"
   },
   "dependencies": {
     "@types/jsonwebtoken": "^9.0.3"
+=======
+    "eslint-config-prettier": "^9.0.0",
+    "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "^0.5.4"
+>>>>>>> origin
   }
 }
