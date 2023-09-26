@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-import { gql, useQuery } from '@apollo/client';
 
 import { useStoreContext, QUERY_EVENTS } from '../utils/'
 import dayjs from 'dayjs'
+
+import { useQuery } from '@apollo/client'
 
 /*
   query Events {
@@ -59,7 +60,6 @@ import dayjs from 'dayjs'
       }
     }
   }
-`;
 */
 
 function EventList() {
@@ -83,7 +83,6 @@ function EventList() {
         </div>
     ))
     return (<div>{events}</div>)
-
-};
+}
 
 export default EventList;
