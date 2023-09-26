@@ -1,5 +1,6 @@
-import Home from './Home'
-import Events from './Events'
-import Checkout from './Checkout'
+import Checkout from './Checkout';
+import Events from './Events';
+import Home from './Home';
+import Login from './Login';
 
-export { Home, Events, Checkout }
+export { Checkout, Home, Events, Login };
