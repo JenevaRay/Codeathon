@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
-import Layout from './components/Layout';
-import { Home, Events, Checkout } from './pages/index.js';
+import { Layout } from './components';
+import { Home, Events, Checkout } from './pages';
 // will fix the imports shortly (add to pages/index.js)
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
             element={<Home />}
           />
           <Route
-            path='/events'
+            path="/events"
             element={<Events />}
           />
           <Route
