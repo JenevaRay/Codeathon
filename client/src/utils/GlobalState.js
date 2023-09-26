@@ -13,7 +13,7 @@ const StoreProvider = ({ value = [], ...props }) => {
         currentEvent: ''
     })
     return <Provider 
-        // value={[state, dispatch]} 
+        value={[state, dispatch]} 
         {...props} />
 }
 

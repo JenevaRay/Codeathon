@@ -12,7 +12,7 @@ import { StoreProvider } from '../utils/GlobalState'
 // import { Reservations, Events, Cart } from '../components/'
 
 const httpLink = createHttpLink({
-  uri: '/graphql'
+  uri: 'http://192.168.56.102:3001/graphql'
 })
 
 const authLink = setContext((_, { headers } ) => {
@@ -32,7 +32,7 @@ const client = new ApolloClient({
 
 const Events = () => {
   return (
-    <ApolloProvider client={client} >
+    <ApolloProvider client={client} value={[]} >
         <div>
             <StoreProvider>
               <EventList />
