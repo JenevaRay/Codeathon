@@ -12,48 +12,50 @@ const groupSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   // backreference is useful for building lists of users at an event
   registrations: [
     {
       // kept in a separated table due to query atomicity
       type: Schema.Types.ObjectId,
-      ref: 'Registration'
-    }
+      ref: 'Registration',
+    },
   ],
-  events: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Event',
-    required: true,
-  }],
+  events: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Event',
+      required: true,
+    },
+  ],
   name: {
     type: String,
-    required: true
+    required: true,
   },
   projectName: {
     type: String,
-    required: false
+    required: false,
   },
   projectDescription: {
     type: String,
-    required: false
-  }
-})
+    required: false,
+  },
+});
 
 groupSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Group = mongoose.model('Group', groupSchema)
+const Group = mongoose.model('Group', groupSchema);
 
-export { Group }
+export { Group };

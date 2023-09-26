@@ -14,38 +14,38 @@ const phoneSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   number: {
     type: String, // because just numbers won't do.  extension?  intl phone?
     trim: true,
-    required: true
+    required: true,
   },
   type: {
     // mobile, cell, voip, pager, home, etc
     type: String,
-    required: true
+    required: true,
   },
   isUserPrimary: {
     // isPrimary makes no sense for the one-to-one relationship for Venues
     type: Boolean,
-    required: true
+    required: true,
   },
-})
+});
 
 phoneSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Phone = mongoose.model('Phone', phoneSchema)
+const Phone = mongoose.model('Phone', phoneSchema);
 
-export { Phone }
+export { Phone };

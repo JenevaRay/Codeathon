@@ -14,12 +14,12 @@ const venueSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   // professional locations would have a name, impromptu locations might not
   name: {
@@ -28,40 +28,40 @@ const venueSchema = new Schema({
     index: true,
     unique: true,
     // allow for nullable unique values
-    sparse: true
+    sparse: true,
   },
   addressId: {
     type: Schema.Types.ObjectId,
     ref: 'Address',
-    required: true
+    required: true,
   },
   venueTimeZone: {
     // format to be determined, examples like "UTC" or "MDT" are strings..
     type: String,
     trim: true,
-    required: true
+    required: true,
   },
   phoneId: {
     type: Schema.Types.ObjectId,
     required: true,
-    ref: 'Phone'
+    ref: 'Phone',
   },
   hostId: {
     type: Schema.Types.ObjectId,
     required: true,
     index: true,
-    ref: 'User'
-  }
-})
+    ref: 'User',
+  },
+});
 
 venueSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Venue = mongoose.model('Venue', venueSchema)
+const Venue = mongoose.model('Venue', venueSchema);
 
-export { Venue }
+export { Venue };

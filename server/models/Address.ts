@@ -14,31 +14,31 @@ const addressSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   streetAddress: {
     type: String,
     trim: true,
     required: true,
-    alias: 'line1' // line1 is too vague
+    alias: 'line1', // line1 is too vague
   },
   extendedAddress: {
     type: String,
     trim: true,
     required: false,
-    alias: 'line2' // line2 is too vague
+    alias: 'line2', // line2 is too vague
   },
   country: {
     // format TBD, we could use country codes (i.e. GB for Great Britain, US for United States, etc?)
     type: String,
     index: true,
     trim: true,
-    required: true
+    required: true,
   },
   state: {
     // subdivision of country, i.e. state, territory, etc
@@ -46,45 +46,45 @@ const addressSchema = new Schema({
     index: true,
     trim: true,
     required: true,
-    alias: 'venueProvince'
+    alias: 'venueProvince',
   },
   county: {
     type: String,
     trim: true,
-    sparse: true
+    sparse: true,
   },
   city: {
     // i.e. Salt Lake City
     type: String,
     trim: true,
     required: true,
-    alias: 'venueCity'
+    alias: 'venueCity',
   },
   postalCode: {
     // other countries use other types of postal code.
     type: String,
     trim: true,
-    required: true
+    required: true,
   },
   type: {
     type: String,
-    required: true
+    required: true,
   },
   // name clarified: users is the only one-to-many relationship to this, isPrimary means nothing to venue one-to-one relationships.
   isUserPrimary: {
     type: Boolean,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 addressSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Address = mongoose.model('Address', addressSchema)
+const Address = mongoose.model('Address', addressSchema);
 
-export { Address }
+export { Address };
