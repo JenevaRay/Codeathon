@@ -7,8 +7,6 @@ import { useQuery } from '@apollo/client';
 import { useStoreContext, QUERY_EVENTS } from '../utils/';
 // import dayjs from 'dayjs';
 
-import { useQuery } from '@apollo/client'
-
 /*
   query Events {
     events {
