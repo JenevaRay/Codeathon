@@ -2,18 +2,18 @@ import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-import { useStoreContext } from '../utils/';
-
 import { gql, useQuery } from '@apollo/client';
 
-const QUERY_EVENTS = gql`
+import { useStoreContext, QUERY_EVENTS } from '../utils/'
+import dayjs from 'dayjs'
+
+/*
   query Events {
     events {
       name
       registrationPaymentRequiredDate
       dateStart
       dateEnd
-      dateCutoff
       dateCutoff
       feeRegistration
       feeVenue
@@ -60,29 +60,30 @@ const QUERY_EVENTS = gql`
     }
   }
 `;
+*/
 
-const EventList = () => {
-  const { loading, error, data } = useQuery(QUERY_EVENTS);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+function EventList() {
+    const { loading, error, data } = useQuery(QUERY_EVENTS)
+    const [state, dispatch] = useStoreContext()
+    if (loading) return 'Loading...'
+    if (error) return `Error! ${error.message}`
 
-  return <div>Text</div>;
-  // const [state, dispatch] = useStoreContext()
+    const { currentEvent } = state
+    
+    console.log(data.events[0])
+    const events = data.events.map((event)=>(
+        <div>
+            <p>event name {event.name}</p>
+            <p>event posted by {event.organizerUserId.nameFirst} {event.organizerUserId.nameLast}</p>
+            <p>event starts {event.dateStart} and finished {event.dateEnd}</p>
+            <p>registrations must be done before {event.dateCutoff}</p>
+            <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
+            <p>groups are included in the query</p>
+            <p></p>
+        </div>
+    ))
+    return (<div>{events}</div>)
 
-  // const { currentEvent } = state
-
-  // const { loading, data } = useQuery(QUERY_EVENTS)
-
-  // useEffect(()=>{
-  //     console.log(loading)
-  //     console.log(data)
-  //     if(data) {
-
-  //         console.log(data)
-  //     } else if (!loading) {
-
-  //     }
-  // }, [data, loading, dispatch])
 };
 
 export default EventList;
