@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import dayjs from 'dayjs';
 import jwt from 'jsonwebtoken';
 import mongoose, { Schema } from 'mongoose';
 

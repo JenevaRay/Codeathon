@@ -1,5 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import dayjs from 'dayjs'; 
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
