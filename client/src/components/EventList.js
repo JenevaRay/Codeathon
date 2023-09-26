@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-import { useStoreContext } from '../utils/'
+import { useStoreContext } from '../utils/';
 
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client';
 
 const QUERY_EVENTS = gql`
   query Events {
@@ -58,30 +58,31 @@ const QUERY_EVENTS = gql`
         venueTimeZone
       }
     }
-  }`
+  }
+`;
 
-function EventList() {
-    const { loading, error, data } = useQuery(QUERY_EVENTS)
-    if (loading) return 'Loading...'
-    if (error) return `Error! ${error.message}`
+const EventList = () => {
+  const { loading, error, data } = useQuery(QUERY_EVENTS);
+  if (loading) return 'Loading...';
+  if (error) return `Error! ${error.message}`;
 
-    return (<div>Text</div>)
-    // const [state, dispatch] = useStoreContext()
+  return <div>Text</div>;
+  // const [state, dispatch] = useStoreContext()
 
-    // const { currentEvent } = state
+  // const { currentEvent } = state
 
-    // const { loading, data } = useQuery(QUERY_EVENTS)
+  // const { loading, data } = useQuery(QUERY_EVENTS)
 
-    // useEffect(()=>{
-    //     console.log(loading)
-    //     console.log(data)
-    //     if(data) {
-            
-    //         console.log(data)
-    //     } else if (!loading) {
+  // useEffect(()=>{
+  //     console.log(loading)
+  //     console.log(data)
+  //     if(data) {
 
-    //     } 
-    // }, [data, loading, dispatch])
-}
+  //         console.log(data)
+  //     } else if (!loading) {
 
-export { EventList }
+  //     }
+  // }, [data, loading, dispatch])
+};
+
+export default EventList;
