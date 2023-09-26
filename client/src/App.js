@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import { Home, Events, Registration, Checkout } from './pages/';
 
 const App = () => {
   return (
@@ -11,6 +11,18 @@ const App = () => {
           <Route
             path="/"
             element={<Home />}
+          />
+          <Route
+            path="/events"
+            element={<Events />}
+          />
+          <Route
+            path="/checkout"
+            element={<Checkout />}
+          />
+          <Route
+            path="registration"
+            element={<Registration />}
           />
         </Routes>
       </Layout>

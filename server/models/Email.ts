@@ -4,48 +4,42 @@ import dayjs from 'dayjs';
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
-// possible features (definitely not MVP):
-// corporate correspondence address?  legally a good idea...
-// venue address notes (i.e. do not park at Bob's Diner)
-// venue latitude/longitude, for regional searches, can be easily entered via map click...
-
-const phoneSchema = new Schema({
+const emailSchema = new Schema({
   // implied: _id of type mongoose.ObjectId
   schemaVersion: {
     // used internally in case things change
     type: String,
     required: true,
+    // Set default version to 1.0
+    default: '1.0',
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
     required: true,
+    // Set default to current date
+    default: dayjs().toDate(),
   },
-  number: {
-    type: String, // because just numbers won't do.  extension?  intl phone?
+  emailAddress: {
+    type: String, 
     trim: true,
-    required: true,
-  },
-  type: {
-    // mobile, cell, voip, pager, home, etc
-    type: String,
-    required: true,
+    required: true
   },
   isUserPrimary: {
     // isPrimary makes no sense for the one-to-one relationship for Venues
     type: Boolean,
-    required: true,
+    required: true
   },
-});
+})
 
-phoneSchema.pre('save', async function (next) {
+emailSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next();
-});
+  next()
+})
 
-const Phone = mongoose.model('Phone', phoneSchema);
+const Email = mongoose.model('Email', emailSchema)
 
-export { Phone };
+export { Email }
