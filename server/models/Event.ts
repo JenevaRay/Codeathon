@@ -1,6 +1,4 @@
-// TODO: import dayjs from 'dayjs'; and use it to further implement schema versioning
 import mongoose, { Schema } from 'mongoose';
-
 // Import the overall schema version and schema date from the index.ts file
 import { schemaVersion, schemaDate } from './index';
 
@@ -12,12 +10,12 @@ const eventSchema = new Schema({
   schemaVersion: {
     // used internally in case things change
     type: String,
-    required: true
+    required: true,
   },
   schemaDate: {
     // used internally in case things change
     type: Date,
-    required: true
+    required: true,
   },
   // backreference is useful for building lists of users at an event
   name: {
@@ -25,79 +23,90 @@ const eventSchema = new Schema({
     index: true,
     required: false,
     unique: true,
-    sparse: true
+    sparse: true,
   },
   dateStart: {
     // local to the venue's timezone
     type: Date,
     required: true,
-    alias: 'startTime' // version 0.0.4 startTime -> 0.0.5 dateStart
+    alias: 'startTime', // version 0.0.4 startTime -> 0.0.5 dateStart
   },
   dateEnd: {
     // local to the venue's timezone
     type: Date,
     required: true,
-    alias: 'startTime' // version 0.0.4 startTime -> 0.0.5 dateEnd
+    alias: 'startTime', // version 0.0.4 startTime -> 0.0.5 dateEnd
   },
   registrations: [
     {
       // kept in a separated table due to query atomicity
       type: Schema.Types.ObjectId,
-      ref: 'Registration'
-    }
+      ref: 'Registration',
+    },
   ],
   dateCutoff: {
     type: Date,
     required: true,
-    alias: 'registrationCutoffDate' // version 0.0.4 registrationCutoffDate -> 0.0.5 dateCutoff
+    alias: 'registrationCutoffDate', // version 0.0.4 registrationCutoffDate -> 0.0.5 dateCutoff
   },
   // NEW version 0.0.5 feeRegistration
   feeRegistration: {
     // MUST be integers (pennies) for USD, due to multiplication rounding errors.  Not all currencies are USD.  MVP says USD for now.
     type: Number,
     required: true,
-    get: (v: number) => {return Math.round(v)},
-    set: (v: number) => {return Math.round(v)},
+    get: (v: number) => {
+      return Math.round(v);
+    },
+    set: (v: number) => {
+      return Math.round(v);
+    },
   },
   // NEW version 0.0.5 feeVenue
   feeVenue: {
     // MUST be integers (pennies) for USD, due to multiplcation rounding errors.  Not all currencies are USD.  MVP says USD for now.
     type: Number,
     required: true,
-    get: (v: number) => {return Math.round(v)},
-    set: (v: number) => {return Math.round(v)},
+    get: (v: number) => {
+      return Math.round(v);
+    },
+    set: (v: number) => {
+      return Math.round(v);
+    },
   },
-  venues: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Venue',
-    required: true,
-  }],
+  venues: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Venue',
+      required: true,
+    },
+  ],
   registrationPaymentRequiredDate: {
     type: Date,
     required: true,
   },
-//   organizerUserId: User.schema,
+  //   organizerUserId: User.schema,
   organizerUserId: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    required: true
+    required: true,
   },
-  // NEW version 0.0.5 
-  groups: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Group'
-  }]
-})
+  // NEW version 0.0.5
+  groups: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Group',
+    },
+  ],
+});
 
 eventSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
-
   }
-  next()
-})
+  next();
+});
 
-const Event = mongoose.model('Event', eventSchema)
+const Event = mongoose.model('Event', eventSchema);
 
-export { Event }
+export { Event };

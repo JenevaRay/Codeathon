@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client';
 
 const QUERY_EVENTS = gql`
   query Events {
@@ -7,7 +7,6 @@ const QUERY_EVENTS = gql`
       registrationPaymentRequiredDate
       dateStart
       dateEnd
-      dateCutoff
       dateCutoff
       feeRegistration
       feeVenue
@@ -52,7 +51,8 @@ const QUERY_EVENTS = gql`
         venueTimeZone
       }
     }
-  }`
+  }
+`;
 
 const QUERY_USERS = gql`
   query Users {
@@ -76,10 +76,11 @@ const QUERY_USERS = gql`
         postalCode
       }
     }
-  }`
+  }
+`;
 
 const QUERY_REGISTRATIONS = gql`
-query Registrations {
+  query Registrations {
     registrations {
       eventId {
         dateStart
@@ -88,10 +89,11 @@ query Registrations {
       paid
       role
     }
-  }`
+  }
+`;
 
 const QUERY_VENUES = gql`
-query Venues {
+  query Venues {
     venues {
       name
       addressId {
@@ -104,10 +106,11 @@ query Venues {
         postalCode
       }
     }
-  }`
+  }
+`;
 
 const QUERY_GROUPS = gql`
-query Groups {
+  query Groups {
     groups {
       name
       projectDescription
@@ -140,7 +143,13 @@ query Groups {
         }
       }
     }
-  }`
+  }
+`;
 
-
-  export { QUERY_EVENTS, QUERY_USERS, QUERY_REGISTRATIONS, QUERY_VENUES, QUERY_GROUPS }
+export {
+  QUERY_EVENTS,
+  QUERY_USERS,
+  QUERY_REGISTRATIONS,
+  QUERY_VENUES,
+  QUERY_GROUPS,
+};
