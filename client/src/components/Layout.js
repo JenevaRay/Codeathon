@@ -4,13 +4,17 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 
 const Layout = ({ children }) => {
-  let location = useLocation();
+  let { pathname } = useLocation();
 
   return (
     <>
-      {location.pathname === '/checkout' ? null : <Navbar />}
+      {pathname === '/checkout' ? null : pathname === '/login' ? null : (
+        <Navbar />
+      )}
       <main className="w-full">{children}</main>
-      {location.pathname === '/checkout' ? null : <Footer />}
+      {pathname === '/checkout' ? null : pathname === '/login' ? null : (
+        <Footer />
+      )}
     </>
   );
 };

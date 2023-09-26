@@ -1,7 +1,8 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
-import Layout from './components/Layout';
-import { Home, Events, Registration, Checkout } from './pages/';
+import { Layout } from './components';
+import { Home, Events, Login, Registration, Checkout } from './pages';
+// will fix the imports shortly (add to pages/index.js)
 
 const App = () => {
   return (
@@ -11,6 +12,10 @@ const App = () => {
           <Route
             path="/"
             element={<Home />}
+          />
+          <Route
+            path="/login"
+            element={<Login />}
           />
           <Route
             path="/events"
