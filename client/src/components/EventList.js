@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
+
 import { useStoreContext, QUERY_EVENTS } from '../utils/'
 import dayjs from 'dayjs'
 
@@ -59,7 +60,6 @@ import { useQuery } from '@apollo/client'
       }
     }
   }
-
 */
 
 function EventList() {
@@ -83,7 +83,6 @@ function EventList() {
         </div>
     ))
     return (<div>{events}</div>)
-
 }
 
-export { EventList }
+export default EventList;

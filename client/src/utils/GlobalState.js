@@ -1,8 +1,8 @@
-import React, { createContext, useContext } from 'react'
-import { useEventReducer } from './'
+import { createContext, useContext } from 'react';
+import { useEventReducer } from './';
 
-const StoreContext = createContext()
-const { Provider } = StoreContext
+const StoreContext = createContext();
+const { Provider } = StoreContext;
 
 const StoreProvider = ({ value = [], ...props }) => {
     const [state, dispatch] = useEventReducer({
@@ -18,7 +18,7 @@ const StoreProvider = ({ value = [], ...props }) => {
 }
 
 const useStoreContext = () => {
-    return useContext(StoreContext)
-}
+  return useContext(StoreContext);
+};
 
-export { StoreProvider, useStoreContext }
+export { StoreProvider, useStoreContext };

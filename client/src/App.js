@@ -1,8 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import Layout from './components/Layout';
-import { Home, Events, Checkout } from './pages/index.js';
-// will fix the imports shortly (add to pages/index.js)
+import { Home, Events, Registration, Checkout } from './pages/';
 
 const App = () => {
   return (
@@ -14,12 +13,16 @@ const App = () => {
             element={<Home />}
           />
           <Route
-            path='/events'
+            path="/events"
             element={<Events />}
           />
           <Route
             path="/checkout"
             element={<Checkout />}
+          />
+          <Route
+            path="registration"
+            element={<Registration />}
           />
         </Routes>
       </Layout>
