@@ -2,7 +2,7 @@
 import * as jwt from 'jsonwebtoken';
 
 // Need to create secret key
-const secret = 'mysecretssshhhhhhh';
+const secret = process.env.SECRET_KEY || 'default-secret-key';
 const expiration = '2h';
 
 

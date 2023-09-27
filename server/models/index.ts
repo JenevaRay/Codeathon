@@ -1,5 +1,3 @@
-import dayjs from 'dayjs';
-
 // Import all models
 import { User } from './User';
 import { Venue } from './Venue';
@@ -8,6 +6,7 @@ import { Event } from './Event';
 import { Group } from './Group';
 import { Address } from './Address';
 import { Phone } from './Phone';
+import dayjs from 'dayjs';
 
 // Define a schema version and a schema date for future compatibility
 const schemaVersion = '0.0.5'; // 0.0.5 due to suggestions by AH
