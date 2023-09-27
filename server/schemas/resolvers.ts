@@ -114,6 +114,8 @@ const resolvers = {
       const simplifiedUser = {
         // we are typecasting _id here.
         _id: String(user._id),
+        nameFirst: user.nameFirst,
+        nameLast: user.nameLast,
         email: user.email,
       };
 

@@ -73,6 +73,7 @@ function EventList() {
   const events = data.events.map((event) => (
     <li key={event._id}>
       <p>event name {event.name}</p>
+      <p>event _id {event._id}</p>
       <p>
         event posted by {event.organizerUserId.nameFirst}{' '}
         {event.organizerUserId.nameLast}

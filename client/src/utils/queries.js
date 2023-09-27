@@ -3,6 +3,7 @@ import { gql } from '@apollo/client';
 const QUERY_EVENTS = gql`
   query Events {
     events {
+      _id
       name
       registrationPaymentRequiredDate
       dateStart
