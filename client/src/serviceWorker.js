@@ -34,21 +34,39 @@ self.addEventListener('fetch', (event) => {
         return response || fetch(event.request);
       }),
     );
-  } else {
-    // Handle other requests (e.g., for assets) with a network-first strategy
-    event.respondWith(
-      fetch(event.request).catch(() => {
-        return caches.match(event.request);
-      }),
-    );
-  }
-});
-
-export function register(config) {
-  if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    const publicUrl = new URL(process.env.PUBLIC_URL, window.location.href);
-    if (publicUrl.origin !== window.location.origin) {
-      return;
+  });
+  
+  // Fetch event (for runtime caching)
+  // eslint-disable-next-line no-restricted-globals
+  self.addEventListener('fetch', event => {
+    const requestUrl = new URL(event.request.url);
+  
+    // Check if the request is for essential assets (precached)
+    if (essentialPrecacheUrls.includes(requestUrl.pathname)) {
+      // Serve from the cache
+      event.respondWith(
+        caches.match(event.request).then(response => {
+          return response || fetch(event.request);
+        })
+      );
+    } else {
+      // SW set to fetch first then uses local cache
+      event.respondWith(
+        fetch(event.request).then(response => {
+          // Clone the response to cache a copy
+          const responseClone = response.clone();
+  
+          // Open the cache and put the network response in it
+          caches.open('dynamic-cache').then(cache => {
+            cache.put(event.request, responseClone);
+          });
+  
+          return response;
+        }).catch(() => {
+          // If the network request fails, try to serve from the cache
+          return caches.match(event.request);
+        })
+      );
     }
 
     window.addEventListener('load', () => {
