@@ -9,6 +9,7 @@ const expiration = '2h';
 // we don't actually have usernames in our user table. 
 const signToken = function ({
   email,
+
   nameFirst,
   nameLast,
   _id,
@@ -20,6 +21,7 @@ const signToken = function ({
 }) {
   const payload = {
     email,
+
     nameFirst,
     nameLast,
     _id,
