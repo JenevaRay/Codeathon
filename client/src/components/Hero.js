@@ -21,7 +21,7 @@ const Hero = () => {
   });
 
   return (
-    <div className="h-full cursor-default px-6 pb-56 lg:pt-48">
+    <div className="h-[90vh] cursor-default px-6 pb-56 lg:pt-48">
       <div className="container mx-auto flex flex-col flex-wrap items-center px-3 md:flex-row">
         <div className="flex w-full flex-row items-center justify-center p-6 lg:hidden">
           <motion.img
@@ -65,7 +65,13 @@ const Hero = () => {
               hackathons. Try it for free today!
             </p>
             <a href="/dashboard">
-              <Button>Sign Up</Button>
+              <Button
+                margin="mt-8"
+                padding="px-6 py-3"
+                bgColor="bg-zinc-900"
+                hoverColor="hover:bg-zinc-900/90">
+                Sign Up
+              </Button>
             </a>
           </div>
         </div>
