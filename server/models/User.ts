@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 import mongoose, { Schema } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
