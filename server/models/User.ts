@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
-import mongoose, { Schema } from 'mongoose';
+import { Model, Schema, model } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
 import {
@@ -8,6 +8,27 @@ import {
   schemaVersion,
   schemaDate,
 } from './index';
+
+interface IUser {
+  schemaVersion: string;
+  schemaDate: Date;
+  nameFirst: string;
+  nameLast: string;
+  email: string;
+  addresses: Schema.Types.ObjectId[];
+  emailType: string;
+  phoneNumbers: Schema.Types.ObjectId[];
+  otherContactMethod: string;
+  preferredContactMethod: string;
+  password: string;
+  registrations: Schema.Types.ObjectId[];
+}
+
+interface IUserMethods {
+  isCorrectPassword(password: string): boolean;
+}
+
+type UserModel = Model<IUser, {}, IUserMethods>;
 
 // possible features (definitely not MVP):
 // internal messaging if no contact info?
@@ -126,10 +147,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.isCorrectPassword = async function (password: string) {
+userSchema.methods.isCorrectPassword = async function (
+  password: string,
+): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = model<IUser, UserModel>('User', userSchema);
 
 export { User };

@@ -77,12 +77,21 @@ const typeDefs: DocumentNode = gql`
     hostId: User
   }
 
+  type Auth {
+    token: ID
+    user: User
+  }
+
   type Query {
     users: [User]
     registrations: [Registration]
     events: [Event]
     groups: [Group]
     venues: [Venue]
+  }
+
+  type Mutation {
+    login(email: String!, password: String!): Auth
   }
 `;
 

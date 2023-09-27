@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  // const [login, { error }] = useMutation(LOGIN)
+  const [login, { error }] = useMutation(LOGIN);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -24,14 +24,14 @@ const Login = () => {
     setSubmitError(''); // This would be for a unsuccessful response from the backend etc
     console.log('Logging in...');
     try {
-      // const mutationResponse = await login({
-      //   variables: { email: email, password: password }
-      // })
-      // const token = mutationResponse.data.login.token
-      // Auth.login(token)
+      const mutationResponse = await login({
+        variables: { email: email, password: password },
+      });
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
     } catch (err) {
       console.log(err);
-      // console.log(error)
+      console.log(error);
     }
   };
 
