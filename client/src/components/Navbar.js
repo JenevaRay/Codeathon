@@ -1,4 +1,5 @@
 import Button from '../components/ui/Button';
+// import { Link } from 'react-router-dom'
 
 const Navbar = ({ logged_in }) => {
   return (
@@ -24,6 +25,29 @@ const Navbar = ({ logged_in }) => {
           className="text-sm font-semibold leading-6 text-gray-900">
           Dashboard
         </a>
+        <a
+          href="/login"
+          className="text-sm font-semibold leading-6 text-gray-900">
+          Login
+        </a>
+        <a
+          href="/events"
+          className="text-sm font-semibold leading-6 text-gray-900">
+          Events
+        </a>
+        <a
+          href="/registration"
+          className="text-sm font-semibold leading-6 text-gray-900">
+          Registration
+        </a>
+        <a
+          href="/checkout"
+          className="text-sm font-semibold leading-6 text-gray-900">
+          Checkout
+        </a>
+        {/*             element={<Home />}
+          />
+ */}
       </div>
       <div className="flex lg:flex-1 lg:justify-end">
         {logged_in ? (

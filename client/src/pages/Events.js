@@ -11,32 +11,13 @@ import { httpLink } from '../utils';
 
 // import { Reservations, Events, Cart } from '../components/'
 
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : '',
-    },
-  };
-});
-
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
-
 const Events = () => {
   return (
-    <ApolloProvider
-      client={client}
-      value={[]}>
-      <div>
-        <StoreProvider>
-          <EventList />
-        </StoreProvider>
-      </div>
-    </ApolloProvider>
+    <div>
+      <StoreProvider>
+        <EventList />
+      </StoreProvider>
+    </div>
   );
 };
 
