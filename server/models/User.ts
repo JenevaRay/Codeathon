@@ -9,7 +9,6 @@ import {
   schemaDate,
 } from './index';
 
-
 // possible features (definitely not MVP):
 // internal messaging if no contact info?
 // comments, like allergies, emergency contact info, admin reviews?
@@ -92,23 +91,23 @@ const userSchema = new Schema({
 });
 
 // Function to generate a JWT token for a user
-userSchema.methods.generateAuthToken = function() {
+userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     // Include user-specific data as payload
-    { _id: this._id }, 
+    { _id: this._id },
     // Replace with secret key
-    'your-secret-key', 
+    'your-secret-key',
     // Set expiration time @ 2hrs
-    { expiresIn: '2h' } 
+    { expiresIn: '2h' },
   );
   return token;
 };
 
 // Create a static function to verify a JWT token for a user
-userSchema.statics.verifyAuthToken = function(token) {
+userSchema.statics.verifyAuthToken = function (token) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, 'your-secret-key'); 
+    const decoded = jwt.verify(token, 'your-secret-key');
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');

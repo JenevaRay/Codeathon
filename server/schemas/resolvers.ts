@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server-express';
+// import { AuthenticationError } from 'apollo-server-express';
 import {
   User,
   Registration,
@@ -8,7 +8,7 @@ import {
   Phone,
   Address,
 } from '../models';
-import { signToken } from '../utils/auth.ts'
+// import { signToken } from '../utils/auth.ts'
 // import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
 // import ObjectId from 'mongoose'
@@ -72,46 +72,46 @@ const resolvers = {
       ]);
     },
   },
-  Mutation: {
-    addUser: async (_, args) => {
-      const user = await User.create(args);
-      const token = signToken(user);
+  // Mutation: {
+  // addUser: async (_, args) => {
+  //   const user = await User.create(args);
+  //   const token = signToken(user);
 
-      return { token, user }
-    },
-    addRegistration: async (_, args, context) => {
-      const eventId = args.eventId
-      if (context.user) {
-        const registration = new Registration({ eventId });
-        await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
-      }
-    },
-    updateUser: async (parent, args, context) => {
-      if (context.user) {
-        return await User.findByIdAndUpdate(context.user._id, args, {new: true})
-      }
-    },
-    // updateRegistration: async (parent, { _id, quantity}) => {
-      
-    // },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
+  //   return { token, user }
+  // },
+  // addRegistration: async (_, args, context) => {
+  //   const eventId = args.eventId
+  //   if (context.user) {
+  //     const registration = new Registration({ eventId });
+  //     await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
+  //   }
+  // },
+  // updateUser: async (parent, args, context) => {
+  //   if (context.user) {
+  //     return await User.findByIdAndUpdate(context.user._id, args, {new: true})
+  //   }
+  // },
+  // updateRegistration: async (parent, { _id, quantity}) => {
 
-      if (!user) {
-        throw new AuthenticationError('Incorrect credentials');
-      }
+  // },
+  // login: async (parent, { email, password }) => {
+  //   const user = await User.findOne({ email });
 
-      const correctPw = await user.isCorrectPassword(password)
+  //   if (!user) {
+  //     throw new AuthenticationError('Incorrect credentials');
+  //   }
 
-      if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials')
-      }
+  //   const correctPw = await user.isCorrectPassword(password)
 
-      const token = signToken(user);
+  //   if (!correctPw) {
+  //     throw new AuthenticationError('Incorrect credentials')
+  //   }
 
-      return { token, user }
-    }
-  }
+  //   const token = signToken(user);
+
+  //   return { token, user }
+  // }
+  // }
 };
 
 export { resolvers };

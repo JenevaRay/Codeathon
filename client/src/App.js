@@ -2,35 +2,58 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import { Layout } from './components';
 import { Home, Events, Login, Registration, Checkout } from './pages';
-// will fix the imports shortly (add to pages/index.js)
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { StoreProvider, httpLink } from './utils';
+import { setContext } from '@apollo/client/link/context';
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route
-            path="/"
-            element={<Home />}
-          />
-          <Route
-            path="/login"
-            element={<Login />}
-          />
-          <Route
-            path="/events"
-            element={<Events />}
-          />
-          <Route
-            path="/checkout"
-            element={<Checkout />}
-          />
-          <Route
-            path="registration"
-            element={<Registration />}
-          />
-        </Routes>
-      </Layout>
+      <ApolloProvider
+        client={client}
+        value={{ events: [] }}>
+        <StoreProvider>
+          <Layout>
+            <Routes>
+              <Route
+                path="/"
+                element={<Home />}
+              />
+              <Route
+                path="/login"
+                element={<Login />}
+              />
+              <Route
+                path="/events"
+                element={<Events />}
+              />
+              <Route
+                path="/checkout"
+                element={<Checkout />}
+              />
+              <Route
+                path="/registration"
+                element={<Registration />}
+              />
+            </Routes>
+          </Layout>
+        </StoreProvider>
+      </ApolloProvider>
     </BrowserRouter>
   );
 };

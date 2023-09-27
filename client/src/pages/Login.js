@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { Link } from 'react-router-dom';
+import { LOGIN, Auth } from '../utils/';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  // const [login, { error }] = useMutation(LOGIN)
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -19,6 +23,16 @@ const Login = () => {
     setLoading(true);
     setSubmitError(''); // This would be for a unsuccessful response from the backend etc
     console.log('Logging in...');
+    try {
+      // const mutationResponse = await login({
+      //   variables: { email: email, password: password }
+      // })
+      // const token = mutationResponse.data.login.token
+      // Auth.login(token)
+    } catch (err) {
+      console.log(err);
+      // console.log(error)
+    }
   };
 
   return (
@@ -27,7 +41,8 @@ const Login = () => {
         <img
           src="https://img.freepik.com/premium-vector/seamless-pattern-abstract-background-with-futuristic-style-use-business-cover-banner_7505-1820.jpg"
           alt="background"
-          fill
+          // the following line throws an error, fill wants a string.
+          fill="true"
         />
       </div>
       <div className="relative z-50 mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
