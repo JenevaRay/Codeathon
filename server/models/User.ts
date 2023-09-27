@@ -9,7 +9,6 @@ import {
   schemaDate,
 } from './index';
 
-
 // possible features (definitely not MVP):
 // internal messaging if no contact info?
 // comments, like allergies, emergency contact info, admin reviews?
@@ -81,6 +80,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: 12,
+
   },
   registrations: [
     {

@@ -38,9 +38,20 @@ const essentialPrecacheUrls = [
         })
       );
     } else {
-      // Handle other requests (e.g., for assets) with a network-first strategy
+      // SW set to fetch first then uses local cache
       event.respondWith(
-        fetch(event.request).catch(() => {
+        fetch(event.request).then(response => {
+          // Clone the response to cache a copy
+          const responseClone = response.clone();
+  
+          // Open the cache and put the network response in it
+          caches.open('dynamic-cache').then(cache => {
+            cache.put(event.request, responseClone);
+          });
+  
+          return response;
+        }).catch(() => {
+          // If the network request fails, try to serve from the cache
           return caches.match(event.request);
         })
       );
