@@ -81,13 +81,26 @@ const resolvers = {
 
     //   return { token, user }
     // },
-    // addRegistration: async (_, args, context) => {
-    //   const eventId = args.eventId
-    //   if (context.user) {
-    //     const registration = new Registration({ eventId });
-    //     await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
-    //   }
-    // },
+    addRegistration: async (_: any, args: any, context: any) => {
+      const eventId = args.eventId
+      const userId = args.userId
+      let type = args.type
+      let paid = false
+      if (type === "host") {
+        // because they are not being charged for facilities/effort, their charge is $0.00
+        paid = true
+      } else if (type === undefined) {
+        type = "attendee"
+      }
+      if (context.user) {
+        // const regist{ eventId, userId, type, paid })
+        const registration = new Registration({ eventId, userId, type, paid });
+        return registration
+        // await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
+      } else {
+        return
+      }
+    },
     // updateUser: async (parent, args, context) => {
     //   if (context.user) {
     //     return await User.findByIdAndUpdate(context.user._id, args, {new: true})
@@ -109,11 +122,9 @@ const resolvers = {
       if (!correctPw) {
         throw new AuthenticationError('Incorrect credentials');
       }
-      console.log(user);
 
       const simplifiedUser = {
-        // we are typecasting _id here.
-        _id: String(user._id),
+        _id: String(user._id), // we are typecasting _id here.
         nameFirst: user.nameFirst,
         nameLast: user.nameLast,
         email: user.email,

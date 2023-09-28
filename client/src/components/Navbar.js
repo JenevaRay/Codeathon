@@ -13,6 +13,7 @@ const Navbar = ({ logged_in }) => {
   } else {
     navItems.push("Home")
     navItems.push("Events")
+    navItems.push("Login")
   }
   const elements = navItems.map((item)=>{
     const className = "text-sm font-semibold leading-6 text-gray-900"

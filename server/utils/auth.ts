@@ -27,7 +27,6 @@ const signToken = function ({
     _id,
   };
   const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-  // console.log(token);
   return token;
 };
 
