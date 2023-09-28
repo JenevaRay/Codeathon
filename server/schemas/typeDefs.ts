@@ -101,7 +101,7 @@ const typeDefs: DocumentNode = gql`
     addUser(
       email: String!, nameFirst: String!, nameLast: String!, emailType: String!, otherContactMethod: String!, preferredContactMethod: String!
     ): User
-    myEvents(userId: String): Event
+    myEvents(organizerUserId: String!): [Event]
   }
 `;
 

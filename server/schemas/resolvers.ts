@@ -13,6 +13,7 @@ import {
   schemaDate,
 } from '../models';
 
+
 // import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
 // import ObjectId from 'mongoose'
@@ -138,8 +139,10 @@ const resolvers = {
     // updateRegistration: async (parent, { _id, quantity}) => {
 
     // },
-    myEvents: async (userId: string) => {
-        const result = await Event.find({organizerUserId: userId})
+    myEvents: async (_: any, args: any) => {
+      // console.log(args)
+      const { organizerUserId } = args
+        const result = await Event.find({organizerUserId})
           .populate([
             {
               path: 'organizerUserId',
@@ -162,7 +165,6 @@ const resolvers = {
             ],
           })
           .populate({ path: 'groups', model: Group });
-      console.log(result)
       return result
     },
     login: async (_: any, props: any) => {
