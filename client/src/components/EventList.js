@@ -74,17 +74,18 @@ function EventList() {
   const nowTime = Date.now()
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
-  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
-  const { data, loading, error } = mutation_info
-
+//   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+//   const { data, loading, error } = mutation_info
+  console.log(ADD_REGISTRATION)
   const registerForEvent = async (eventId) => {
     const profile = Auth.getProfile()
     const userId = profile.data._id
     try {
-        const mutationResponse = await register({
-            variables: {eventId, userId}
-        })
-        console.log(mutationResponse)
+
+        // const mutationResponse = await register({
+        //     variables: {eventId, userId}
+        // })
+        // console.log(mutationResponse)
     } catch (e) {
         console.log(e)
     }
@@ -137,8 +138,6 @@ function EventList() {
   
   return (
     <div>
-        {/* <h2>My ID: {profile.data._id}</h2> */}
-        <hr />
       <ul>{events}</ul>
     </div>
   );

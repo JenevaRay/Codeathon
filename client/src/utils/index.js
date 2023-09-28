@@ -9,8 +9,7 @@ import {
 } from './queries';
 import { useRegistrationReducer } from './reducers';
 import AuthService from './auth';
-import { LOGIN } from './mutations';
-import { ADD_REGISTRATION } from './actions';
+import { LOGIN, ADD_REGISTRATION } from './mutations';
 
 const Auth = AuthService;
 
