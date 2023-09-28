@@ -9,6 +9,7 @@ const Navbar = ({ logged_in }) => {
     navItems.push('Events');
     navItems.push('Registration');
     navItems.push('Checkout');
+    navItems.push('Logout')
   } else {
     navItems.push('Events');
   }

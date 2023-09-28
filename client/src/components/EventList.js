@@ -32,7 +32,11 @@ const buttonStyle = {
 };
 
 function EventList() {
-  const profile = Auth.getProfile();
+  let profile
+  if (Auth.loggedIn()) {
+    profile = Auth.getProfile()
+  }
+//   const profile = Auth.getProfile();
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
@@ -104,7 +108,9 @@ function EventList() {
               onClick={(e) => {
                 registerForEvent(e.target.value);
               }}
-              style={buttonStyle}>
+              style={buttonStyle}
+              disabled={!(Auth.loggedIn())}
+              >
               REGISTER {cost}
             </button>
           ) : (
