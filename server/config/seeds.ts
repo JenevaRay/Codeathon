@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
-// import mongoose from 'mongoose'
-// const ObjectID = mongoose.Types.ObjectId
+import mongoose from 'mongoose';
 
 import { db } from './connection';
 
@@ -22,6 +21,43 @@ const lastMonth = now.subtract(1, 'month');
 const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
+
+const usersIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const users = [
+  { // Seed a user with only the bare minimum fields
+    _id: usersIds[0],
+    schemaVersion: schemaVersion,
+    schemaDate: schemaDate.toDate(),
+    emailAddress: 'davesmith@acme.net',
+    password: '=^^=NoSuchPassword:3',
+    nameLast: 'Smith',
+    nameFirst: 'Dave',
+    registrations: ['012345012345'],
+  },
+  { // Seed a user with all available fields
+    _id: usersIds[1],
+    schemaVersion: schemaVersion,
+    schemaDate: schemaDate.toDate(),
+    emailAddress: 'lastfirst@lifo.org',
+    password: 'itsonthefridge',
+    nameLast: 'Last',
+    nameFirst: 'First',
+    nameMiddle: 'Middle',
+    addressStreet: '123 Sesame Street',
+    addressExtended: 'Apt 1',
+    addressCity: 'Manhattan',
+    addressState: 'New York',
+    addressPostalCode: '12345',
+    addressCountry: 'United States',
+    phoneNumber: '+1 (234) 567-8910',
+    phoneType: 'mobile',
+    registrations: ['987654987654'],
+  },
+];
 
 const events = [
   {
@@ -71,39 +107,6 @@ const events = [
     feeVenue: 1000,
     venues: ['555666555666'],
     groups: ['554466554466'],
-  },
-];
-
-const users = [
-  {
-    _id: '000000111111',
-    schemaVersion: schemaVersion,
-    schemaDate: schemaDate.toDate(),
-    nameFirst: 'Dave',
-    nameLast: 'Smith',
-    email: 'davesmith@acme.net',
-    emailType: 'work',
-    phoneNumbers: ['111112222233'],
-    registrations: ['012345012345'],
-    otherContactMethod: null,
-    preferredContactMethod: 'email',
-    password: '=^^=NoSuchPassword:3',
-    addresses: ['224466224466'],
-  },
-  {
-    _id: '222222333333',
-    schemaVersion: schemaVersion,
-    schemaDate: schemaDate.toDate(),
-    registrations: ['987654987654'],
-    firstName: 'First',
-    lastName: 'Last',
-    email: 'lastfirst@lifo.org',
-    emailType: 'personal',
-    phoneNumbers: ['222223333344'],
-    otherContactMethod: null,
-    preferredContactMethod: 'email',
-    password: 'itsonthefridge',
-    addresses: ['224466224466'],
   },
 ];
 
