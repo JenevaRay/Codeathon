@@ -115,11 +115,4 @@ const typeDefs: DocumentNode = gql`
   }
 `;
 
-// type User {
-  // NOT IMPLEMENTED FOR addUser...
-//   addresses: [Address]
-//   phoneNumbers: [Phone]
-//   registrations: [Registration]
-// }
-
 export { typeDefs };

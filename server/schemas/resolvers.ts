@@ -7,8 +7,8 @@ import {
   Venue,
   Event,
   Group,
-  Phone,
-  Address,
+  // Phone,
+  // Address,
   schemaVersion,
   schemaDate,
 } from '../models';
@@ -34,23 +34,19 @@ const resolvers = {
         .populate([
           {
             path: 'organizerUserId',
-            populate: [
-              {
-                path: 'phoneNumbers',
-                model: Phone,
-              },
-            ],
+            model: User
+            // populate: [
+            //   {
+            //     path: 'phoneNumbers',
+            //     model: Phone,
+            //   },
+            // ],
           },
         ])
         .populate({ path: 'registrations', model: Registration })
         .populate({
           path: 'venues',
           model: Venue,
-          populate: [
-            { path: 'addressId', model: Address },
-            { path: 'phoneId', model: Phone },
-            { path: 'hostId', model: User },
-          ],
         })
         .populate({ path: 'groups', model: Group });
     },
@@ -64,7 +60,7 @@ const resolvers = {
             {
               path: 'userId',
               model: User,
-              populate: { path: 'phoneNumbers', model: Phone },
+              // populate: { path: 'phoneNumbers', model: Phone },
             },
           ],
         },
@@ -140,12 +136,12 @@ const resolvers = {
           .populate([
             {
               path: 'organizerUserId',
-              populate: [
-                {
-                  path: 'phoneNumbers',
-                  model: Phone,
-                },
-              ],
+              // populate: [
+              //   {
+              //     path: 'phoneNumbers',
+              //     model: Phone,
+              //   },
+              // ],
             },
           ])
           .populate({ path: 'registrations', model: Registration })
@@ -153,8 +149,8 @@ const resolvers = {
             path: 'venues',
             model: Venue,
             populate: [
-              { path: 'addressId', model: Address },
-              { path: 'phoneId', model: Phone },
+              // { path: 'addressId', model: Address },
+              // { path: 'phoneId', model: Phone },
               { path: 'hostId', model: User },
             ],
           })
