@@ -3,6 +3,8 @@ import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom';
 import { LOGIN, Auth } from '../utils/';
 
+import Button from '../components/ui/Button';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -36,20 +38,21 @@ const Login = () => {
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-zinc-50">
-      <div className="absolute inset-0 aspect-square opacity-5">
-        <img
-          src="https://img.freepik.com/premium-vector/seamless-pattern-abstract-background-with-futuristic-style-use-business-cover-banner_7505-1820.jpg"
-          alt="background"
-          // the following line throws an error, fill wants a string.
-          fill="true"
-        />
-      </div>
+    <div className="relative h-full w-full overflow-hidden">
+//     <div className="relative h-full w-full overflow-hidden bg-zinc-50">
+//       <div className="absolute inset-0 aspect-square opacity-5">
+//         <img
+//           src="https://img.freepik.com/premium-vector/seamless-pattern-abstract-background-with-futuristic-style-use-business-cover-banner_7505-1820.jpg"
+//           alt="background"
+//           // the following line throws an error, fill wants a string.
+//           fill="true"
+//         />
+//       </div>
       <div className="relative z-50 mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
         <div className="flex flex-col items-center justify-center">
           <a
             href="/"
-            className="my-12 text-lg font-extrabold leading-tight text-zinc-900">
+            className="my-12 text-2xl font-extrabold leading-tight text-zinc-900">
             <span className="sr-only">codeathon</span>
             {'</>'} codeathon
           </a>
@@ -133,12 +136,13 @@ const Login = () => {
                   Forgot Password?
                 </a>
               </div>
-              <button
+              <Button
                 type="submit"
-                className="bg-purple hover:bg-purpleDark w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white hover:shadow-lg focus:outline-none"
+                width="w-full"
+                borderRadius="rounded-md"
                 disabled={loading}>
-                Sign in
-              </button>
+                Log in
+              </Button>
               <p className="text-sm font-light text-gray-700 dark:text-gray-400">
                 Don't have an account yet?&nbsp;
                 <a

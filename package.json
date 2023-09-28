@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/JenevaRay/Codeathon#readme",
   "devDependencies": {
+    "@types/node": "^20.7.1",
     "@types/jsonwebtoken": "^9.0.3",
     "@types/node": "^20.7.1",
     "concurrently": "^8.2.1",

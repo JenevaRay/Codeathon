@@ -8,10 +8,14 @@ const Button = ({
   width,
   margin,
   borderRadius,
+  type,
+  disabled,
 }) => {
   return (
     <button
-      className={`border-0 ${
+      type={`${type}`}
+      disabled={`${disabled}`}
+      className={`cursor-pointer border-0 ${
         bgColor
           ? bgColor
           : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'
