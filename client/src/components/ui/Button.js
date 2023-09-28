@@ -10,11 +10,13 @@ const Button = ({
   borderRadius,
   type,
   disabled,
+  value,
 }) => {
   return (
     <button
       type={`${type}`}
       disabled={disabled}
+      value={value}
       className={`cursor-pointer border-0 ${
         bgColor
           ? bgColor
