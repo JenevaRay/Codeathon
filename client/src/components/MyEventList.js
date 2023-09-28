@@ -33,37 +33,52 @@ const buttonStyle = {
 };
 
 function MyEventList() {
-  let profile
-  if (Auth.loggedIn()) {
-    profile = Auth.getProfile()
-  }
   // const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [MyEvents, mutation_info] = useMutation(MY_EVENTS)
   const { data, loading, error } = mutation_info;
-  useEffect(async()=>{
+  useEffect(()=>{
     async function fetchData() {
-      
-    }
-    const events = getMyEvents()
-    console.log(events)
-  }, [])
-  const getMyEvents = async ()=>{
-    if (profile && profile.data) {
+      let profile
+      if (Auth.loggedIn()) {
+        profile = Auth.getProfile()
+      }
+      if (profile && profile.data) {
         const data = profile.data
         if (data._id) {
-            const userId = data._id
-            try {
-                const mutationResponse = await MyEvents({
-                    variables: {organizerUserId: userId}
-                })
-                return (mutationResponse.data.myEvents)
-            } catch (e) {
-              console.log(e)
-            }
+          const userId = data._id
+          try {
+            const mutationResponse = await MyEvents({
+              variables: { organizerUserId: userId }
+            })
+            return mutationResponse.data.myEvents
+          } catch(e) {
+            console.log(e)
+          }
         }
+      }
+      const events = fetchData()
+      console.log(events)
     }
-  }
+    // const events = getMyEvents()
+    // console.log(events)
+  }, [])
+  // const getMyEvents = async ()=>{
+  //   if (profile && profile.data) {
+  //       const data = profile.data
+  //       if (data._id) {
+  //           const userId = data._id
+  //           try {
+  //               const mutationResponse = await MyEvents({
+  //                   variables: {organizerUserId: userId}
+  //               })
+  //               return (mutationResponse.data.myEvents)
+  //           } catch (e) {
+  //             console.log(e)
+  //           }
+  //       }
+  //   }
+  // }
 
   // if (query_info.loading) return 'Loading...';
   // if (query_info.error) return `Error! ${query_info.error.message}`;
