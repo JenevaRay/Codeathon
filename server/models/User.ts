@@ -130,7 +130,9 @@ userSchema.methods.generateAuthToken = function (this: IUser) {
 userSchema.statics.verifyAuthToken = function (token: string) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, process.env.SECRET_KEY! ) as { _id: string };
+    const decoded = jwt.verify(token, process.env.SECRET_KEY!) as {
+      _id: string;
+    };
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');

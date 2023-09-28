@@ -6,7 +6,17 @@ const secret = process.env.SECRET_KEY || 'default-secret-key';
 const expiration = '2h';
 
 // we don't actually have usernames in our user table.
-const signToken = function ({ email, nameFirst, nameLast, _id,}: { email: string; nameFirst: string; nameLast: string; _id: string;}) {
+const signToken = function ({
+  email,
+  nameFirst,
+  nameLast,
+  _id,
+}: {
+  email: string;
+  nameFirst: string;
+  nameLast: string;
+  _id: string;
+}) {
   const payload = {
     email,
     nameFirst,

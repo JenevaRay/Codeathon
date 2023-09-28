@@ -2,13 +2,13 @@ import { useReducer } from 'react';
 import { ADD_REGISTRATION } from './actions';
 
 export const reducer = (state, action) => {
-  console.log(action.type)
+  console.log(action.type);
   switch (action.type) {
     case ADD_REGISTRATION:
       return {
         ...state,
-        registrations: [...state.registrations, action.registered]
-      }
+        registrations: [...state.registrations, action.registered],
+      };
     default:
       return state;
   }

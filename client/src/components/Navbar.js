@@ -94,7 +94,9 @@ const Navbar = ({ logged_in }) => {
           //   <Button>Logout</Button>
           // </a>
           // <a href="/login">
-            <Button><a href="/login">Login</a></Button>
+          <Button>
+            <a href="/login">Login</a>
+          </Button>
           // </a>
         )}
       </div>
