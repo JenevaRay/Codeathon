@@ -32,22 +32,28 @@ const buttonStyle = {
 };
 
 function EventList() {
+  const profile = Auth.getProfile();
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
-//   const { data, loading, error } = mutation_info;
+  const { data, loading, error } = mutation_info;
   
   const registerForEvent = async (eventId) => {
-    const profile = Auth.getProfile();
-    console.log(profile)
-    const userId = profile.data._id;
-    try {
-      const mutationResponse = await register({
-        variables: { eventId, userId },
-      });
-      console.log(mutationResponse);
-    } catch (e) {
-      console.log(e);
+    // calling this throws an ApolloError, is this cacheing at work?
+    if (profile.data) {
+        console.log(profile)
+        const data = profile.data
+        if (data._id) {
+            const userId = data._id;
+            try {
+                const mutationResponse = await register({
+                    variables: { eventId, userId },
+                });
+                // console.log(mutationResponse);
+            } catch (e) {
+                console.log(e);
+            }      
+        }
     }
   };
 

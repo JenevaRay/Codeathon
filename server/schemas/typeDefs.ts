@@ -98,7 +98,18 @@ const typeDefs: DocumentNode = gql`
       userId: String!
       type: String
     ): Registration
+    addUser(
+      email: String!, nameFirst: String!, nameLast: String!, emailType: String!, otherContactMethod: String!, preferredContactMethod: String!
+    ): User
   }
 `;
+
+// type User {
+  // NOT IMPLEMENTED FOR addUser...
+//   addresses: [Address]
+//   phoneNumbers: [Phone]
+//   registrations: [Registration]
+// }
+
 
 export { typeDefs };

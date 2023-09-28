@@ -141,7 +141,7 @@ userSchema.statics.verifyAuthToken = function (token: string) {
 
 userSchema.pre('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
-    const saltRounds = 20;
+    const saltRounds = 9;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
   if (this.isNew) {

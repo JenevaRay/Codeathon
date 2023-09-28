@@ -77,12 +77,16 @@ const resolvers = {
     },
   },
   Mutation: {
-    // addUser: async (_, args) => {
-    //   const user = await User.create(args);
-    //   const token = signToken(user);
-
-    //   return { token, user }
-    // },
+    addUser: async (_: any, args: any) => {
+      try {
+        const user = await User.create(args);
+        const token = signToken(user);
+        return { token, user }
+      } catch (e) {
+        console.log(e)
+        return e
+      }
+    },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;
       const userId = args.userId;
@@ -110,10 +114,20 @@ const resolvers = {
           userId,
           paid,
         });
-        await User.findByIdAndUpdate(context.user._id, {
+        // const event = await Event.findById(eventId)
+        const event = await Event.findByIdAndUpdate(eventId, {
           $push: { registrations: registration._id },
-        });
-        return registration;
+        }, {new: true});
+        console.log(event)
+        const user = await User.findByIdAndUpdate(userId, {
+          $push: { registrations: registration._id}
+        })
+        console.log(user)
+        if (event && user && registration) {
+          return registration;
+        } else {
+          return "ERROR"
+        }
       }
     },
     // updateUser: async (parent, args, context) => {
