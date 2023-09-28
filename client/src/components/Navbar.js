@@ -1,7 +1,25 @@
 import Button from '../components/ui/Button';
+import { Auth } from '../utils';
 // import { Link } from 'react-router-dom'
 
 const Navbar = ({ logged_in }) => {
+  let navItems = []
+  if (Auth.loggedIn()) {
+    navItems.push("Home")
+    navItems.push("Dashboard")
+    navItems.push("Events")
+    navItems.push("Registration")
+    navItems.push("Checkout")
+  } else {
+    navItems.push("Home")
+    navItems.push("Events")
+  }
+  const elements = navItems.map((item)=>{
+    const className = "text-sm font-semibold leading-6 text-gray-900"
+    if (item === "Logout") {
+      return (<a key={item} href="/" onClick={() => Auth.logout()} className={className}>{item}</a>)
+    } else return (<a key={item} href={"/" + item.toLowerCase()} className={className}>{item}</a>)
+  })
   return (
     <nav
       className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
@@ -15,7 +33,8 @@ const Navbar = ({ logged_in }) => {
         </a>
       </div>
       <div className="flex gap-x-12">
-        <a
+        {elements}
+        {/* <a
           href="/"
           className="text-sm font-semibold leading-6 text-zinc-900">
           Home
@@ -29,31 +48,32 @@ const Navbar = ({ logged_in }) => {
           href="/login"
           className="text-sm font-semibold leading-6 text-gray-900">
           Login
-        </a>
-        <a
+        </a> */}
+        {/* <a
           href="/events"
           className="text-sm font-semibold leading-6 text-gray-900">
           Events
-        </a>
-        <a
+        </a> */}
+        {/* <a
           href="/registration"
           className="text-sm font-semibold leading-6 text-gray-900">
           Registration
-        </a>
-        <a
+        </a> */}
+        {/* <a
           href="/checkout"
           className="text-sm font-semibold leading-6 text-gray-900">
           Checkout
-        </a>
+        </a> */}
         {/*             element={<Home />}
           />
  */}
       </div>
       <div className="flex lg:flex-1 lg:justify-end">
-        {logged_in ? (
-          <a href="/logout">
-            <Button>Logout</Button>
-          </a>
+        {Auth.loggedIn() ? (
+          <a href="/" onClick={() => Auth.logout()}><Button>Logout</Button></a>
+          // <a href="/logout">
+          //   <Button>Logout</Button>
+          // </a>
         ) : (
           <a href="/login">
             <Button>Login</Button>

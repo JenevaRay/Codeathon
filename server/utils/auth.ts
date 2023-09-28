@@ -9,20 +9,25 @@ const expiration = '2h';
 // we don't actually have usernames in our user table. 
 const signToken = function ({
   email,
-  // username,
+
+  nameFirst,
+  nameLast,
   _id,
 }: {
   email: string;
-  // username: string;
+  nameFirst: string;
+  nameLast: string;
   _id: string;
 }) {
   const payload = {
     email,
-    // username,
+
+    nameFirst,
+    nameLast,
     _id,
   };
   const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-  console.log(token);
+  // console.log(token);
   return token;
 };
 

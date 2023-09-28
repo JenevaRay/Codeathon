@@ -3,7 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import { Layout } from './components';
 import { Home, Events, Login, Registration, Checkout } from './pages';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { StoreProvider, httpLink } from './utils';
+import { Auth, StoreProvider, httpLink } from './utils';
 import { setContext } from '@apollo/client/link/context';
 
 const authLink = setContext((_, { headers }) => {
@@ -22,6 +22,7 @@ const client = new ApolloClient({
 });
 
 const App = () => {
+  
   return (
     <BrowserRouter>
       <ApolloProvider
@@ -33,6 +34,10 @@ const App = () => {
               <Route
                 path="/"
                 element={<Home />}
+              />
+              <Route
+                path="/dashboard"
+                // element={<Dashboard />}
               />
               <Route
                 path="/login"

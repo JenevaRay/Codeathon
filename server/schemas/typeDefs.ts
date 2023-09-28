@@ -46,6 +46,7 @@ const typeDefs: DocumentNode = gql`
   }
 
   type Event {
+    _id: ID
     name: String
     dateStart: String
     dateEnd: String
