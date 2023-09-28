@@ -6,14 +6,19 @@ import { DocumentNode } from 'graphql';
 const typeDefs: DocumentNode = gql`
   type User {
     _id: ID
-    nameFirst: String
+    emailAddress: String
+    password: String
     nameLast: String
-    addresses: [Address]
-    email: String
-    emailType: String
-    phoneNumbers: [Phone]
-    otherContactMethod: String
-    preferredContactMethod: String
+    nameFirst: String
+    nameMiddle: String
+    addressStreet: String
+    addressExtended: String
+    addressCity: String
+    addressState: String
+    addressPostalCode: String
+    addressCountry: String
+    phoneNumber: String
+    phoneType: String
     registrations: [Registration]
   }
 
@@ -92,14 +97,14 @@ const typeDefs: DocumentNode = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): Auth
+    login(emailAddress: String!, password: String!): Auth
     addRegistration(
       eventId: String!
       userId: String!
       type: String
     ): Registration
     addUser(
-      email: String!, nameFirst: String!, nameLast: String!, emailType: String!, otherContactMethod: String!, preferredContactMethod: String!
+      emailAddress: String!, nameLast: String!, nameFirst: String!
     ): User
   }
 `;
