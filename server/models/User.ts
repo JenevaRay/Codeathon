@@ -118,7 +118,7 @@ userSchema.methods.generateAuthToken = function () {
     // Include user-specific data as payload
     { _id: this._id },
     // Replace with secret key
-    'your-secret-key',
+    'u\Z%rK=`{j\HaJ=>HP#HRV.VC~qrIsWY^$ijD%(dU$Gc\f:F?>et?ZJXSVz/SrO;a|d`u_:lQtgdzr/-t~.GjdZR~ke$uQvpw',
     // Set expiration time @ 2hrs
     { expiresIn: '2h' },
   );
@@ -129,7 +129,7 @@ userSchema.methods.generateAuthToken = function () {
 userSchema.statics.verifyAuthToken = function (token) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, 'your-secret-key');
+    const decoded = jwt.verify(token, 'u\Z%rK=`{j\HaJ=>HP#HRV.VC~qrIsWY^$ijD%(dU$Gc\f:F?>et?ZJXSVz/SrO;a|d`u_:lQtgdzr/-t~.GjdZR~ke$uQvpw');
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
