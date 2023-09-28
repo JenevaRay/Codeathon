@@ -67,6 +67,34 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
   }`
 */
 
+const containerStyle = {
+  backgroundColor: '#ffffff',
+  padding: '20px',
+  borderRadius: '8px',
+  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
+  marginBottom: '20px',
+};
+
+const eventItemStyle = {
+  backgroundColor: '#f9f9f9',
+  padding: '15px',
+  marginBottom: '10px',
+  borderRadius: '4px',
+  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+  backgroundImage: 'linear-gradient(to right, #800080, #FF69B4)',
+  backgroundSize: '100% 100%',
+  color: 'white',
+};
+
+const buttonStyle = {
+  backgroundColor: '#4a90e2',
+  color: '#ffffff',
+  padding: '8px 16px',
+  border: 'none',
+  borderRadius: '4px',
+  cursor: 'pointer',
+};
+
 function registerForEvent(eventId) {
     console.log(eventId)
     console.log("TEST")
@@ -93,10 +121,9 @@ function EventList() {
         
     }
     return (
-    <li key={event._id}>
+    <li key={event._id} style={eventItemStyle}>
       <p>{expiry}</p>
       <p>event name {event.name}</p>
-      <p>event _id {event._id}</p>
       <p>
         event posted by {event.organizerUserId.nameFirst}{' '}
         {event.organizerUserId.nameLast}
@@ -108,7 +135,7 @@ function EventList() {
       <p>registrations must be done before {event.dateCutoff}</p>
       <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
       
-      <button onClick={()=>{registerForEvent(event._id)}}>REGISTER</button>
+      <button onClick={()=>{registerForEvent(event._id)}} style={buttonStyle}>REGISTER</button>
       <ul>REGISTRATIONS:{event.registrations.map((registration)=>(<li key={registration._id}>{registration._id}</li>))}</ul>
       <p>groups are included in the query</p>
       {console.log(event)}
@@ -118,7 +145,7 @@ function EventList() {
 
   const profile = Auth.getProfile()
   return (
-    <div>
+    <div style={containerStyle}>
         <h2>My ID: {profile.data._id}</h2>
         <hr />
       <ul>{events}</ul>
