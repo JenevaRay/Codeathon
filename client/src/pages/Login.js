@@ -39,7 +39,7 @@ const Login = () => {
 
   return (
     <div className="relative h-full w-full overflow-hidden">
-//     <div className="relative h-full w-full overflow-hidden bg-zinc-50">
+{/* //     <div className="relative h-full w-full overflow-hidden bg-zinc-50">
 //       <div className="absolute inset-0 aspect-square opacity-5">
 //         <img
 //           src="https://img.freepik.com/premium-vector/seamless-pattern-abstract-background-with-futuristic-style-use-business-cover-banner_7505-1820.jpg"
@@ -47,7 +47,7 @@ const Login = () => {
 //           // the following line throws an error, fill wants a string.
 //           fill="true"
 //         />
-//       </div>
+//       </div> */}
       <div className="relative z-50 mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
         <div className="flex flex-col items-center justify-center">
           <a
@@ -140,7 +140,9 @@ const Login = () => {
                 type="submit"
                 width="w-full"
                 borderRadius="rounded-md"
-                disabled={loading}>
+                // disabled={loading === "false"}
+                
+                >
                 Log in
               </Button>
               <p className="text-sm font-light text-gray-700 dark:text-gray-400">

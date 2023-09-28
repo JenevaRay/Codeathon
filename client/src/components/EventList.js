@@ -1,21 +1,16 @@
-<<<<<<< HEAD
 import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-import { useStoreContext } from '../utils/';
 
 import { gql, useQuery } from '@apollo/client';
-=======
 // import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-import { useQuery } from '@apollo/client';
 
 import { useStoreContext, QUERY_EVENTS } from '../utils/';
 // import dayjs from 'dayjs';
->>>>>>> 75d5bc21fdc0f50b844c12ace2c18a51556270db
 
 /*
   query Events {
@@ -68,35 +63,7 @@ import { useStoreContext, QUERY_EVENTS } from '../utils/';
         venueTimeZone
       }
     }
-  }
-<<<<<<< HEAD
-`;
-
-const EventList = () => {
-  const { loading, error, data } = useQuery(QUERY_EVENTS);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-
-  return <div>Text</div>;
-  // const [state, dispatch] = useStoreContext()
-
-  // const { currentEvent } = state
-
-  // const { loading, data } = useQuery(QUERY_EVENTS)
-
-  // useEffect(()=>{
-  //     console.log(loading)
-  //     console.log(data)
-  //     if(data) {
-
-  //         console.log(data)
-  //     } else if (!loading) {
-
-  //     }
-  // }, [data, loading, dispatch])
-};
-
-=======
+  }`
 */
 
 function EventList() {
@@ -132,5 +99,4 @@ function EventList() {
   );
 }
 
->>>>>>> 75d5bc21fdc0f50b844c12ace2c18a51556270db
 export default EventList;
