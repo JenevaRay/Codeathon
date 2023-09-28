@@ -1,11 +1,11 @@
 import { createContext, useContext } from 'react';
-import { useEventReducer } from './';
+import { useRegistrationReducer } from './';
 
 const StoreContext = createContext();
 const { Provider } = StoreContext;
 
 const StoreProvider = ({ value = [], ...props }) => {
-  const [state, dispatch] = useEventReducer({
+  const [state, dispatch] = useRegistrationReducer({
     events: [],
     reservations: [],
     cart: [],

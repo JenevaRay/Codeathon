@@ -1,71 +1,7 @@
-import { useEffect } from 'react';
-import dayjs from 'dayjs'
-// import Event from '../Event'
-// import { useStoreContext } from '../utils/GlobalState'
-// import { useStoreContext } from ''
-
-import { gql, useQuery } from '@apollo/client';
-// import { useEffect } from 'react';
-// import Event from '../Event'
-// import { useStoreContext } from '../utils/GlobalState'
-// import { useStoreContext } from ''
-
+import dayjs from 'dayjs';
+import { ADD_REGISTRATION } from '../utils/mutations';
+import { useMutation, useQuery } from '@apollo/client';
 import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
-// import dayjs from 'dayjs';
-
-/*
-  query Events {
-    events {
-      name
-      registrationPaymentRequiredDate
-      dateStart
-      dateEnd
-      dateCutoff
-      feeRegistration
-      feeVenue
-      groups {
-        _id
-      }
-      organizerUserId {
-        _id
-        nameFirst
-        nameLast
-        email
-        emailType
-        otherContactMethod
-        preferredContactMethod
-        phoneNumbers {
-          _id
-          number
-          type
-          isUserPrimary
-        }
-      }
-      registrations {
-        _id
-        paid
-        role
-      }
-      venues {
-        _id
-        addressId {
-          streetAddress
-          extendedAddress
-          city
-        }
-        hostId {
-          nameFirst
-          nameLast
-        }
-        name
-        phoneId {
-          number
-        }
-        venueTimeZone
-      }
-    }
-  }`
-*/
 
 const containerStyle = {
   backgroundColor: '#ffffff',
@@ -95,59 +31,94 @@ const buttonStyle = {
   cursor: 'pointer',
 };
 
-function registerForEvent(eventId) {
-    console.log(eventId)
-    console.log("TEST")
-}
-
 function EventList() {
-  const nowTime = Date.now()
-  const { loading, error, data } = useQuery(QUERY_EVENTS);
+  const profile = Auth.getProfile();
+  const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-
-  const { currentEvent } = state;
-  //   console.log(data.events[0]);
-  console.log(state)
-
-  const strToDayJS = function(unixEpochStr) {
-    return dayjs(new Date(Number(unixEpochStr)))
-  }
-
-  const events = data.events.map((event) => {
-    const expiry = (strToDayJS(event.dateStart) > dayjs(Date.now()))? "FUTURE" : ((strToDayJS(event.dateEnd) > dayjs(Date.now()))? "CURRENT" : "EXPIRED")
-    if (expiry === "EXPIRED") {
-        
+  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const { data, loading, error } = mutation_info;
+  
+  const registerForEvent = async (eventId) => {
+    // calling this throws an ApolloError, is this cacheing at work?
+    if (profile.data) {
+        console.log(profile)
+        const data = profile.data
+        if (data._id) {
+            const userId = data._id;
+            try {
+                const mutationResponse = await register({
+                    variables: { eventId, userId },
+                });
+                // console.log(mutationResponse);
+            } catch (e) {
+                console.log(e);
+            }      
+        }
     }
-    return (
-    <li key={event._id} style={eventItemStyle}>
-      <p>{expiry}</p>
-      <p>event name {event.name}</p>
-      <p>
-        event posted by {event.organizerUserId.nameFirst}{' '}
-        {event.organizerUserId.nameLast}
-      </p>
-      <p>
-        event starts {strToDayJS(event.dateStart).format("MM/DD/YY [at] HH:mm")}</p><p> event finishes {strToDayJS(event.dateEnd).format("MM/DD/YY [at] HH:mm")}, and current time is {Date.now()}
-        {/* event starts {(Number(event.dateStart)<nowTime)} and finished {Number(event.dateEnd)<nowTime} */}
-      </p>
-      <p>registrations must be done before {event.dateCutoff}</p>
-      <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
-      
-      <button onClick={()=>{registerForEvent(event._id)}} style={buttonStyle}>REGISTER</button>
-      <ul>REGISTRATIONS:{event.registrations.map((registration)=>(<li key={registration._id}>{registration._id}</li>))}</ul>
-      <p>groups are included in the query</p>
-      {console.log(event)}
-      <p>&nbsp;</p>
-    </li>
-  )});
+  };
 
-  const profile = Auth.getProfile()
+  if (query_info.loading) return 'Loading...';
+  if (query_info.error) return `Error! ${query_info.error.message}`;
+
+//   const { currentEvent } = state;
+  //   console.log(data.events[0]);
+  console.log(state);
+
+  const strToDayJS = function (unixEpochStr) {
+    return dayjs(new Date(Number(unixEpochStr)));
+  };
+
+  const events = query_info.data.events.map((event) => {
+    // registrations must be submitted before event.dateCutoff
+    const expiry =
+      strToDayJS(event.dateStart) > dayjs(Date.now())
+        ? 'FUTURE'
+        : strToDayJS(event.dateEnd) > dayjs(Date.now())
+        ? 'CURRENT'
+        : strToDayJS(event.dateCutoff) < dayjs(Date.now())
+        ? 'OVERDUE'
+        : 'EXPIRED';
+    const costStr = String(event.feeRegistration + event.feeVenue);
+    const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+    if (['OVERDUE', 'EXPIRED'].includes(expiry)) {
+      // omit expired events
+      // TODO: (luxury) do this in the SERVER side, so we are transmitting less info, and potentially even QUERYING less info.
+      // returning this instead of <></> because 
+      return <div key={event._id}></div>;
+    } else
+      return (
+        <li
+          key={event._id}
+          style={eventItemStyle}>
+          <p>
+            <em>{event.name}</em> hosted by {event.organizerUserId.nameFirst}{' '}
+            {event.organizerUserId.nameLast}
+          </p>
+          <p>
+            {strToDayJS(event.dateStart).format('MM/DD/YY [at] HH:mm')} - to -{' '}
+            {strToDayJS(event.dateEnd).format('MM/DD/YY [at] HH:mm')}
+          </p>
+          {expiry === 'FUTURE' ? (
+            <button
+              value={event._id}
+              onClick={(e) => {
+                registerForEvent(e.target.value);
+              }}
+              style={buttonStyle}>
+              REGISTER {cost}
+            </button>
+          ) : (
+            <></>
+          )}
+          <p>Current Registrations: {event.registrations.length}</p>
+          {console.log(event)}
+          <p>&nbsp;</p>
+        </li>
+      );
+  });
+
   return (
     <div style={containerStyle}>
-        <h2>My ID: {profile.data._id}</h2>
-        <hr />
       <ul>{events}</ul>
     </div>
   );

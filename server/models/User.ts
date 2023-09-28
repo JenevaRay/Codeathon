@@ -130,7 +130,9 @@ userSchema.methods.generateAuthToken = function (this: IUser) {
 userSchema.statics.verifyAuthToken = function (token: string) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, process.env.SECRET_KEY! ) as { _id: string };
+    const decoded = jwt.verify(token, process.env.SECRET_KEY!) as {
+      _id: string;
+    };
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
@@ -139,7 +141,7 @@ userSchema.statics.verifyAuthToken = function (token: string) {
 
 userSchema.pre('save', async function (next) {
   if (this.isNew || this.isModified('password')) {
-    const saltRounds = 20;
+    const saltRounds = 9;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
   if (this.isNew) {

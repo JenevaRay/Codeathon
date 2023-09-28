@@ -77,12 +77,16 @@ const resolvers = {
     },
   },
   Mutation: {
-    // addUser: async (_, args) => {
-    //   const user = await User.create(args);
-    //   const token = signToken(user);
-
-    //   return { token, user }
-    // },
+    addUser: async (_: any, args: any) => {
+      try {
+        const user = await User.create(args);
+        const token = signToken(user);
+        return { token, user }
+      } catch (e) {
+        console.log(e)
+        return e
+      }
+    },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;
       const userId = args.userId;
@@ -94,23 +98,36 @@ const resolvers = {
       } else if (type === undefined || type === null) {
         type = 'attendee';
       }
-      console.log(context)
+      console.log(context);
       if (context.user) {
         // const regist{ eventId, userId, type, paid })
         const registration = new Registration({ eventId, userId, type, paid });
-        
+
         return registration;
-        // await User.findByIdAndUpdate(context.user._id, { $push: { registrations: registration } })
       } else {
-        return Registration.create({ 
+        const registration = await Registration.create({
           schemaVersion,
           schemaDate,
           registrationDate: Date.now(),
           registrationType: type,
           eventId,
-          userId, 
-          paid, 
+          userId,
+          paid,
+        });
+        // const event = await Event.findById(eventId)
+        const event = await Event.findByIdAndUpdate(eventId, {
+          $push: { registrations: registration._id },
+        }, {new: true});
+        console.log(event)
+        const user = await User.findByIdAndUpdate(userId, {
+          $push: { registrations: registration._id}
         })
+        console.log(user)
+        if (event && user && registration) {
+          return registration;
+        } else {
+          return "ERROR"
+        }
       }
     },
     // updateUser: async (parent, args, context) => {

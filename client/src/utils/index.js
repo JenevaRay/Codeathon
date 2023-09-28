@@ -7,21 +7,22 @@ import {
   QUERY_VENUES,
   QUERY_USERS,
 } from './queries';
-import { useEventReducer } from './reducers';
+import { useRegistrationReducer } from './reducers';
 import AuthService from './auth';
-import { LOGIN } from './mutations';
+import { LOGIN, ADD_REGISTRATION } from './mutations';
 
 const Auth = AuthService;
 
 export {
   StoreProvider,
   useStoreContext,
-  useEventReducer,
+  useRegistrationReducer,
   QUERY_EVENTS,
   QUERY_REGISTRATIONS,
   QUERY_GROUPS,
   QUERY_VENUES,
   QUERY_USERS,
+  ADD_REGISTRATION,
   LOGIN,
   httpLink,
   Auth,

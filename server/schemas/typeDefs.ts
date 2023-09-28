@@ -93,8 +93,23 @@ const typeDefs: DocumentNode = gql`
 
   type Mutation {
     login(email: String!, password: String!): Auth
-    addRegistration(eventId: String! userId: String! type: String): Registration
+    addRegistration(
+      eventId: String!
+      userId: String!
+      type: String
+    ): Registration
+    addUser(
+      email: String!, nameFirst: String!, nameLast: String!, emailType: String!, otherContactMethod: String!, preferredContactMethod: String!
+    ): User
   }
 `;
+
+// type User {
+  // NOT IMPLEMENTED FOR addUser...
+//   addresses: [Address]
+//   phoneNumbers: [Phone]
+//   registrations: [Registration]
+// }
+
 
 export { typeDefs };
