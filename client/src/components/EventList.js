@@ -3,70 +3,42 @@ import { ADD_REGISTRATION } from '../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
 import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
-const containerStyle = {
-  backgroundColor: '#ffffff',
-  padding: '20px',
-  borderRadius: '8px',
-  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-  marginBottom: '20px',
-};
+import Button from './ui/Button';
 
-const eventItemStyle = {
-  backgroundColor: '#f9f9f9',
-  padding: '15px',
-  marginBottom: '10px',
-  borderRadius: '4px',
-  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-  backgroundImage: 'linear-gradient(to right, #800080, #FF69B4)',
-  backgroundSize: '100% 100%',
-  color: 'white',
-};
-
-const buttonStyle = {
-  backgroundColor: '#4a90e2',
-  color: '#ffffff',
-  padding: '8px 16px',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-};
-
-function EventList() {
+const EventList = () => {
   const profile = Auth.getProfile();
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
   const { data, loading, error } = mutation_info;
-  
+
   const registerForEvent = async (eventId) => {
     // calling this throws an ApolloError, is this cacheing at work?
     if (profile.data) {
-        console.log(profile)
-        const data = profile.data
-        if (data._id) {
-            const userId = data._id;
-            try {
-                const mutationResponse = await register({
-                    variables: { eventId, userId },
-                });
-                // console.log(mutationResponse);
-            } catch (e) {
-                console.log(e);
-            }      
+      console.log(profile);
+      const data = profile.data;
+      if (data._id) {
+        const userId = data._id;
+        try {
+          const mutationResponse = await register({
+            variables: { eventId, userId },
+          });
+          // console.log(mutationResponse);
+        } catch (e) {
+          console.log(e);
         }
+      }
     }
   };
 
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
-//   const { currentEvent } = state;
+  //   const { currentEvent } = state;
   //   console.log(data.events[0]);
   console.log(state);
 
-  const strToDayJS = function (unixEpochStr) {
-    return dayjs(new Date(Number(unixEpochStr)));
-  };
+  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
 
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
@@ -83,45 +55,58 @@ function EventList() {
     if (['OVERDUE', 'EXPIRED'].includes(expiry)) {
       // omit expired events
       // TODO: (luxury) do this in the SERVER side, so we are transmitting less info, and potentially even QUERYING less info.
-      // returning this instead of <></> because 
+      // returning this instead of <></> because
       return <div key={event._id}></div>;
     } else
       return (
-        <li
+        <div
           key={event._id}
-          style={eventItemStyle}>
-          <p>
-            <em>{event.name}</em> hosted by {event.organizerUserId.nameFirst}{' '}
+          className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+          <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
+            {event.name}
+          </h5>
+          <p className="text-base leading-loose text-zinc-800">
+            <strong>HOST:</strong> {event.organizerUserId.nameFirst}{' '}
             {event.organizerUserId.nameLast}
-          </p>
-          <p>
-            {strToDayJS(event.dateStart).format('MM/DD/YY [at] HH:mm')} - to -{' '}
-            {strToDayJS(event.dateEnd).format('MM/DD/YY [at] HH:mm')}
+            <br />
+            <strong>DATE:</strong>{' '}
+            {strToDayJS(event.dateStart).format('MM/DD/YYYY [@] h:mma')} -{' '}
+            {strToDayJS(event.dateEnd).format('MM/DD/YYYY [@] h:mma')}
+            <br />
+            <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
           {expiry === 'FUTURE' ? (
-            <button
+            <Button
               value={event._id}
+              margin="mt-4"
+              width="w-full"
+              padding="py-2"
               onClick={(e) => {
                 registerForEvent(e.target.value);
-              }}
-              style={buttonStyle}>
-              REGISTER {cost}
-            </button>
+              }}>
+              Register {cost}
+            </Button>
           ) : (
-            <></>
+            <Button
+              value={event._id}
+              margin="mt-4"
+              width="w-full"
+              padding="py-2"
+              bgColor="bg-zinc-900/50"
+              disabled={true}
+              animations={false}>
+              Event Expired
+            </Button>
           )}
-          <p>Current Registrations: {event.registrations.length}</p>
-          {console.log(event)}
-          <p>&nbsp;</p>
-        </li>
+        </div>
       );
   });
 
   return (
-    <div style={containerStyle}>
-      <ul>{events}</ul>
+    <div className="mt-16 flex flex-wrap items-center justify-center">
+      {events}
     </div>
   );
-}
+};
 
 export default EventList;

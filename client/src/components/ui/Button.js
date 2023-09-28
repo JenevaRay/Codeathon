@@ -11,12 +11,15 @@ const Button = ({
   type,
   disabled,
   value,
+  onClick,
+  animations,
 }) => {
   return (
     <button
       type={`${type}`}
       disabled={disabled}
       value={value}
+      onClick={onClick}
       className={`cursor-pointer border-0 ${
         bgColor
           ? bgColor
@@ -29,7 +32,11 @@ const Button = ({
         color ? color : 'text-zinc-100'
       } ${width ? width : ''} ${margin ? margin : ''} ${
         borderRadius ? borderRadius : 'rounded-full'
-      } shadow-lg transition duration-300 ease-in-out hover:scale-[0.97]`}>
+      } shadow-xl ${
+        animations === false
+          ? ''
+          : 'transition duration-300 ease-in-out hover:scale-[0.97] hover:shadow-sm'
+      }`}>
       {children}
     </button>
   );
