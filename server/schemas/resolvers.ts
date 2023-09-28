@@ -138,6 +138,33 @@ const resolvers = {
     // updateRegistration: async (parent, { _id, quantity}) => {
 
     // },
+    myEvents: async (userId: string) => {
+        const result = await Event.find({organizerUserId: userId})
+          .populate([
+            {
+              path: 'organizerUserId',
+              populate: [
+                {
+                  path: 'phoneNumbers',
+                  model: Phone,
+                },
+              ],
+            },
+          ])
+          .populate({ path: 'registrations', model: Registration })
+          .populate({
+            path: 'venues',
+            model: Venue,
+            populate: [
+              { path: 'addressId', model: Address },
+              { path: 'phoneId', model: Phone },
+              { path: 'hostId', model: User },
+            ],
+          })
+          .populate({ path: 'groups', model: Group });
+      console.log(result)
+      return result
+    },
     login: async (_: any, props: any) => {
       const email: string = props.email;
       const password: string = props.password;

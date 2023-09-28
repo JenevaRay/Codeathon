@@ -6,4 +6,4 @@ import Registration from './Registration';
 import Signup from './Signup'
 import Dashboard from './Dashboard'
 
-export { Checkout, Home, Events, Login, Registration, Signup };
+export { Checkout, Home, Events, Login, Registration, Signup, Dashboard };
