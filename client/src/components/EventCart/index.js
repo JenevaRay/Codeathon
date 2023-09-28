@@ -36,4 +36,5 @@ const EventCart = ({ event }) => {
     }
   }
 }
-  export default EventCart;
+
+export default EventCart;
