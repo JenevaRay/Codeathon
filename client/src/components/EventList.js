@@ -80,12 +80,21 @@ function EventList() {
   if (error) return `Error! ${error.message}`;
 
   const { currentEvent } = state;
-
   //   console.log(data.events[0]);
   console.log(state)
 
-  const events = data.events.map((event) => (
+  const strToDayJS = function(unixEpochStr) {
+    return dayjs(new Date(Number(unixEpochStr)))
+  }
+
+  const events = data.events.map((event) => {
+    const expiry = (strToDayJS(event.dateStart) > dayjs(Date.now()))? "FUTURE" : ((strToDayJS(event.dateEnd) > dayjs(Date.now()))? "CURRENT" : "EXPIRED")
+    if (expiry === "EXPIRED") {
+        
+    }
+    return (
     <li key={event._id}>
+      <p>{expiry}</p>
       <p>event name {event.name}</p>
       <p>event _id {event._id}</p>
       <p>
@@ -93,19 +102,19 @@ function EventList() {
         {event.organizerUserId.nameLast}
       </p>
       <p>
-        event starts {dayjs(new Date(Number(event.dateStart))).format("MM/DD/YY [at] HH:mm")} and finished {event.dateEnd}, and current time is {Date.now()}
+        event starts {strToDayJS(event.dateStart).format("MM/DD/YY [at] HH:mm")}</p><p> event finishes {strToDayJS(event.dateEnd).format("MM/DD/YY [at] HH:mm")}, and current time is {Date.now()}
         {/* event starts {(Number(event.dateStart)<nowTime)} and finished {Number(event.dateEnd)<nowTime} */}
       </p>
       <p>registrations must be done before {event.dateCutoff}</p>
       <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
-      <p>timeNOW = {Date.now()}</p>
+      
       <button onClick={()=>{registerForEvent(event._id)}}>REGISTER</button>
       <ul>REGISTRATIONS:{event.registrations.map((registration)=>(<li key={registration._id}>{registration._id}</li>))}</ul>
       <p>groups are included in the query</p>
       {console.log(event)}
       <p>&nbsp;</p>
     </li>
-  ));
+  )});
 
   const profile = Auth.getProfile()
   return (
