@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import dayjs from 'dayjs'
+import { ADD_REGISTRATION } from '../utils/mutations';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
-
-import { gql, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 // import { useEffect } from 'react';
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
@@ -12,6 +12,7 @@ import { gql, useQuery } from '@apollo/client';
 
 import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 // import dayjs from 'dayjs';
+
 
 /*
   query Events {
@@ -67,17 +68,34 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
   }`
 */
 
-function registerForEvent(eventId) {
-    console.log(eventId)
-    console.log("TEST")
-}
 
 function EventList() {
+
   const nowTime = Date.now()
-  const { loading, error, data } = useQuery(QUERY_EVENTS);
+  const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
+  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const { data, loading, error } = mutation_info
+
+  const registerForEvent = async (eventId) => {
+    const profile = Auth.getProfile()
+    const userId = profile.data._id
+    try {
+        const mutationResponse = await register({
+            variables: {eventId, userId}
+        })
+        console.log(mutationResponse)
+    } catch (e) {
+        console.log(e)
+    }
+    // console.log({eventId, userId: profile.data._id})
+    // console.log("TEST")
+    // return (<></>)
+    }
+
+
+  if (query_info.loading) return 'Loading...';
+  if (query_info.error) return `Error! ${query_info.error.message}`;
 
   const { currentEvent } = state;
   //   console.log(data.events[0]);
@@ -87,7 +105,7 @@ function EventList() {
     return dayjs(new Date(Number(unixEpochStr)))
   }
 
-  const events = data.events.map((event) => {
+  const events = query_info.data.events.map((event) => {
     const expiry = (strToDayJS(event.dateStart) > dayjs(Date.now()))? "FUTURE" : ((strToDayJS(event.dateEnd) > dayjs(Date.now()))? "CURRENT" : "EXPIRED")
     if (expiry === "EXPIRED") {
         
@@ -116,10 +134,10 @@ function EventList() {
     </li>
   )});
 
-  const profile = Auth.getProfile()
+  
   return (
     <div>
-        <h2>My ID: {profile.data._id}</h2>
+        {/* <h2>My ID: {profile.data._id}</h2> */}
         <hr />
       <ul>{events}</ul>
     </div>

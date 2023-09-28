@@ -11,7 +11,6 @@ const Navbar = ({ logged_in }) => {
     navItems.push('Checkout');
   } else {
     navItems.push('Events');
-    navItems.push('Login');
   }
   const elements = navItems.map((item) => {
     const className = 'text-sm font-semibold leading-6 text-gray-900';
@@ -94,9 +93,9 @@ const Navbar = ({ logged_in }) => {
           // <a href="/logout">
           //   <Button>Logout</Button>
           // </a>
-          <a href="/login">
-            <Button>Login</Button>
-          </a>
+          // <a href="/login">
+            <Button><a href="/login">Login</a></Button>
+          // </a>
         )}
       </div>
     </nav>

@@ -11,11 +11,12 @@ export const LOGIN = gql`
   }
 `;
 
-export const REGISTER = gql`
+export const ADD_REGISTRATION = gql`
 mutation AddRegistration($userId: String!, $eventId: String!, $type: String) {
     addRegistration(userId: $userId, eventId: $eventId) {
+      _id
       paid
-      role
+      role 
     }
   }
 `
