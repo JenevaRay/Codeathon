@@ -19,20 +19,14 @@ import {
 
 const resolvers = {
   Query: {
-    // all users.  because easy proof of concept.
     users: async () => {
-      const users = await User.find().populate([
-        {
-          path: 'addresses',
-        },
-      ]);
-      return users;
+      return await User.find();
     },
     registrations: async () => {
       return await Registration.find().populate({ path: 'eventId' });
     },
     venues: async () => {
-      return await Venue.find().populate({ path: 'addressId' });
+      return await Venue.find();
     },
     events: async () => {
       return await Event.find()
@@ -139,9 +133,9 @@ const resolvers = {
 
     // },
     login: async (_: any, props: any) => {
-      const email: string = props.email;
+      const emailAddress: string = props.emailAddress;
       const password: string = props.password;
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ emailAddress });
 
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
@@ -154,9 +148,9 @@ const resolvers = {
 
       const simplifiedUser = {
         _id: String(user._id), // we are typecasting _id here.
-        nameFirst: user.nameFirst,
+        emailAddress: user.emailAddress,
         nameLast: user.nameLast,
-        email: user.email,
+        nameFirst: user.nameFirst,
       };
 
       const token = signToken(simplifiedUser);
