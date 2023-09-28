@@ -26,7 +26,7 @@ const resolvers = {
       return await Registration.find().populate({ path: 'eventId' });
     },
     venues: async () => {
-      return await Venue.find().populate({ path: 'addressId' });
+      return await Venue.find();
     },
     events: async () => {
       return await Event.find()

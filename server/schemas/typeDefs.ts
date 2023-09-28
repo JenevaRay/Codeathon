@@ -77,10 +77,15 @@ const typeDefs: DocumentNode = gql`
   type Venue {
     _id: ID
     name: String
-    addressId: Address
-    venueTimeZone: String
-    phoneId: Phone
-    hostId: User
+    addressStreet: String
+    addressExtended: String
+    addressCity: String
+    addressState: String
+    addressPostalCode: String
+    addressCountry: String
+    phoneNumber: String
+    website: String
+    events: [Event]
   }
 
   type Auth {
@@ -115,6 +120,5 @@ const typeDefs: DocumentNode = gql`
 //   phoneNumbers: [Phone]
 //   registrations: [Registration]
 // }
-
 
 export { typeDefs };
