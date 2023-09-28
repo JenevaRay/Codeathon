@@ -8,6 +8,10 @@ import {
   QUERY_USERS,
 } from './queries';
 import { useEventReducer } from './reducers';
+import AuthService from './auth';
+import { LOGIN } from './mutations';
+
+const Auth = AuthService;
 
 export {
   StoreProvider,
@@ -18,5 +22,7 @@ export {
   QUERY_GROUPS,
   QUERY_VENUES,
   QUERY_USERS,
+  LOGIN,
   httpLink,
+  Auth,
 };

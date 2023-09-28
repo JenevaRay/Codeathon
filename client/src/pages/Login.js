@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { Link } from 'react-router-dom';
+import { LOGIN, Auth } from '../utils/';
 
 import Button from '../components/ui/Button';
 
@@ -7,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
+  const [login, { error }] = useMutation(LOGIN);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -21,10 +25,29 @@ const Login = () => {
     setLoading(true);
     setSubmitError(''); // This would be for a unsuccessful response from the backend etc
     console.log('Logging in...');
+    try {
+      const mutationResponse = await login({
+        variables: { email: email, password: password },
+      });
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
+    } catch (err) {
+      console.log(err);
+      console.log(error);
+    }
   };
 
   return (
     <div className="relative h-full w-full overflow-hidden">
+//     <div className="relative h-full w-full overflow-hidden bg-zinc-50">
+//       <div className="absolute inset-0 aspect-square opacity-5">
+//         <img
+//           src="https://img.freepik.com/premium-vector/seamless-pattern-abstract-background-with-futuristic-style-use-business-cover-banner_7505-1820.jpg"
+//           alt="background"
+//           // the following line throws an error, fill wants a string.
+//           fill="true"
+//         />
+//       </div>
       <div className="relative z-50 mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
         <div className="flex flex-col items-center justify-center">
           <a

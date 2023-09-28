@@ -1,12 +1,34 @@
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+import * as jwt from 'jsonwebtoken';
 
 // Need to create secret key
-const secret = 'mysecretssshhhhhhh'; 
+const secret = process.env.SECRET_KEY || 'default-secret-key';
 const expiration = '2h';
 
-module.exports = {
-  signToken: function ({ email, username, _id}: { email: string; username: string; _id: string }) {
-    const payload = { email, username, _id };
-    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
-  },
+
+// we don't actually have usernames in our user table. 
+const signToken = function ({
+  email,
+
+  nameFirst,
+  nameLast,
+  _id,
+}: {
+  email: string;
+  nameFirst: string;
+  nameLast: string;
+  _id: string;
+}) {
+  const payload = {
+    email,
+
+    nameFirst,
+    nameLast,
+    _id,
+  };
+  const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+  // console.log(token);
+  return token;
 };
+
+export { signToken };
