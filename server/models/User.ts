@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
-import { Model, Schema, model } from 'mongoose';
+import jwt, { SignOptions } from 'jsonwebtoken';
+import { Model, Schema, model, Document } from 'mongoose';
+import dotenv from 'dotenv';
+dotenv.config();
 
 // Import the overall schema version and schema date from the index.ts file
 import {
@@ -9,7 +11,7 @@ import {
   schemaDate,
 } from './index';
 
-interface IUser {
+interface IUser extends Document {
   schemaVersion: string;
   schemaDate: Date;
   nameFirst: string;
@@ -25,7 +27,7 @@ interface IUser {
 }
 
 interface IUserMethods {
-  isCorrectPassword(password: string): boolean;
+  isCorrectPassword(password: string): Promise<boolean>;
 }
 
 type UserModel = Model<IUser, {}, IUserMethods>;
@@ -113,23 +115,23 @@ const userSchema = new Schema({
 });
 
 // Function to generate a JWT token for a user
-userSchema.methods.generateAuthToken = function () {
+userSchema.methods.generateAuthToken = function (this: IUser) {
   const token = jwt.sign(
     // Include user-specific data as payload
     { _id: this._id },
     // Replace with secret key
-    'u\Z%rK=`{j\HaJ=>HP#HRV.VC~qrIsWY^$ijD%(dU$Gc\f:F?>et?ZJXSVz/SrO;a|d`u_:lQtgdzr/-t~.GjdZR~ke$uQvpw',
+    process.env.SECRET_KEY!,
     // Set expiration time @ 2hrs
-    { expiresIn: '2h' },
+    { expiresIn: '2h' } as SignOptions,
   );
   return token;
 };
 
 // Create a static function to verify a JWT token for a user
-userSchema.statics.verifyAuthToken = function (token) {
+userSchema.statics.verifyAuthToken = function (token: string) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, 'u\Z%rK=`{j\HaJ=>HP#HRV.VC~qrIsWY^$ijD%(dU$Gc\f:F?>et?ZJXSVz/SrO;a|d`u_:lQtgdzr/-t~.GjdZR~ke$uQvpw');
+    const decoded = jwt.verify(token, process.env.SECRET_KEY! ) as { _id: string };
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
@@ -149,6 +151,7 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.isCorrectPassword = async function (
+  this: IUser,
   password: string,
 ): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
