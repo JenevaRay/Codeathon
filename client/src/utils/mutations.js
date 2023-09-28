@@ -10,3 +10,12 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const REGISTER = gql`
+mutation AddRegistration($userId: String!, $eventId: String!, $type: String) {
+    addRegistration(userId: $userId, eventId: $eventId) {
+      paid
+      role
+    }
+  }
+`
