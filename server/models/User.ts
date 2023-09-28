@@ -101,7 +101,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: 12,
-
   },
   registrations: [
     {

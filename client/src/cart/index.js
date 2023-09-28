@@ -43,20 +43,19 @@ const Cart = () => {
   // When the submit checkout method is invoked, loop through each item in the cart
   // Add each item id to the productIds array and then invoke the getCheckout query passing an object containing the id for all our products
   function submitCheckout() {
-    
     // Users can only add one item to the cart at a time.
     if (state.cart.length > 1) {
-        // Display an error message or prevent the checkout process
-        alert('You can only add one item to the cart.');
-        return;
-      }
+      // Display an error message or prevent the checkout process
+      alert('You can only add one item to the cart.');
+      return;
+    }
 
     getCheckout({
-      variables: { 
+      variables: {
         products: [...state.cart],
       },
     });
-}
+  }
 };
 
 export default Cart;

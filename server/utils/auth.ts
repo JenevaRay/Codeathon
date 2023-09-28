@@ -5,8 +5,7 @@ import * as jwt from 'jsonwebtoken';
 const secret = process.env.SECRET_KEY || 'default-secret-key';
 const expiration = '2h';
 
-
-// we don't actually have usernames in our user table. 
+// we don't actually have usernames in our user table.
 const signToken = function ({
   email,
 
