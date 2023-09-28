@@ -20,25 +20,25 @@ const emailSchema = new Schema({
     default: dayjs().toDate(),
   },
   emailAddress: {
-    type: String, 
+    type: String,
     trim: true,
-    required: true
+    required: true,
   },
   isUserPrimary: {
     // isPrimary makes no sense for the one-to-one relationship for Venues
     type: Boolean,
-    required: true
+    required: true,
   },
-})
+});
 
 emailSchema.pre('save', async function (next) {
   if (this.isNew) {
     this.schemaVersion = schemaVersion;
     this.schemaDate = schemaDate.toDate();
   }
-  next()
-})
+  next();
+});
 
-const Email = mongoose.model('Email', emailSchema)
+const Email = mongoose.model('Email', emailSchema);
 
-export { Email }
+export { Email };

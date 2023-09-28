@@ -71,8 +71,9 @@ function EventList() {
 
   //   console.log(data.events[0]);
   const events = data.events.map((event) => (
-    <div>
+    <li key={event._id}>
       <p>event name {event.name}</p>
+      <p>event _id {event._id}</p>
       <p>
         event posted by {event.organizerUserId.nameFirst}{' '}
         {event.organizerUserId.nameLast}
@@ -83,10 +84,14 @@ function EventList() {
       <p>registrations must be done before {event.dateCutoff}</p>
       <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
       <p>groups are included in the query</p>
-      <p></p>
-    </div>
+      <p>&nbsp;</p>
+    </li>
   ));
-  return <div>{events}</div>;
+  return (
+    <div>
+      <ul>{events}</ul>
+    </div>
+  );
 }
 
 export default EventList;

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import mongoose, { Schema } from 'mongoose';
+import * as jwt from 'jsonwebtoken';
+import { Model, Schema, model } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
 import {
@@ -9,6 +9,26 @@ import {
   schemaDate,
 } from './index';
 
+interface IUser {
+  schemaVersion: string;
+  schemaDate: Date;
+  nameFirst: string;
+  nameLast: string;
+  email: string;
+  addresses: Schema.Types.ObjectId[];
+  emailType: string;
+  phoneNumbers: Schema.Types.ObjectId[];
+  otherContactMethod: string;
+  preferredContactMethod: string;
+  password: string;
+  registrations: Schema.Types.ObjectId[];
+}
+
+interface IUserMethods {
+  isCorrectPassword(password: string): boolean;
+}
+
+type UserModel = Model<IUser, {}, IUserMethods>;
 
 // possible features (definitely not MVP):
 // internal messaging if no contact info?
@@ -81,6 +101,7 @@ const userSchema = new Schema({
     type: String,
     required: true,
     minlength: 12,
+
   },
   registrations: [
     {
@@ -92,23 +113,23 @@ const userSchema = new Schema({
 });
 
 // Function to generate a JWT token for a user
-userSchema.methods.generateAuthToken = function() {
+userSchema.methods.generateAuthToken = function () {
   const token = jwt.sign(
     // Include user-specific data as payload
-    { _id: this._id }, 
+    { _id: this._id },
     // Replace with secret key
-    'your-secret-key', 
+    'your-secret-key',
     // Set expiration time @ 2hrs
-    { expiresIn: '2h' } 
+    { expiresIn: '2h' },
   );
   return token;
 };
 
 // Create a static function to verify a JWT token for a user
-userSchema.statics.verifyAuthToken = function(token) {
+userSchema.statics.verifyAuthToken = function (token) {
   try {
     // Verify the token with secret key
-    const decoded = jwt.verify(token, 'your-secret-key'); 
+    const decoded = jwt.verify(token, 'your-secret-key');
     return decoded;
   } catch (error) {
     throw new Error('Invalid token');
@@ -127,10 +148,12 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-userSchema.methods.isCorrectPassword = async function (password: string) {
+userSchema.methods.isCorrectPassword = async function (
+  password: string,
+): Promise<boolean> {
   return await bcrypt.compare(password, this.password);
 };
 
-const User = mongoose.model('User', userSchema);
+const User = model<IUser, UserModel>('User', userSchema);
 
 export { User };
