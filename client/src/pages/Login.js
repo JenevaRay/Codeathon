@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN, Auth } from '../utils/';
+
 import Button from '../components/ui/Button';
+import Bubbles from '../components/ui/Bubbles';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -111,7 +113,7 @@ const Login = () => {
                   padding="py-3"
                   borderRadius="rounded-xl"
                   disabled={loading}>
-                  Log in
+                  {loading ? <Bubbles text="Logging In" /> : 'Log In'}
                 </Button>
               </div>
               <p className="text-sm font-light text-gray-700 dark:text-gray-400">

@@ -14,7 +14,7 @@ const Button = ({
   return (
     <button
       type={`${type}`}
-      disabled={`${disabled}`}
+      disabled={disabled}
       className={`cursor-pointer border-0 ${
         bgColor
           ? bgColor
