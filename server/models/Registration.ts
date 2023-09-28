@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 // Import the overall schema version and schema date from the index.ts file
-import { schemaVersion, schemaDate } from './index';
+// import { schemaVersion, schemaDate } from './index';
 
 // either use this as an independent table, or use pared down versions of it as a subdocument table for both Users and Events...
 // Feature: can add a paidTimeUTC - so that we know who paid when, useful for invoice lookups
@@ -45,14 +45,6 @@ const registrationSchema = new Schema({
     type: Boolean,
     required: true,
   },
-});
-
-registrationSchema.pre('save', async function (next) {
-  if (this.isNew) {
-    this.schemaVersion = schemaVersion;
-    this.schemaDate = schemaDate.toDate();
-  }
-  next();
 });
 
 const Registration = mongoose.model('Registration', registrationSchema);

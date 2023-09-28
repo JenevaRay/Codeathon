@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import dayjs from 'dayjs'
 // import Event from '../Event'
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
@@ -9,7 +10,7 @@ import { gql, useQuery } from '@apollo/client';
 // import { useStoreContext } from '../utils/GlobalState'
 // import { useStoreContext } from ''
 
-import { useStoreContext, QUERY_EVENTS } from '../utils/';
+import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 // import dayjs from 'dayjs';
 
 /*
@@ -66,17 +67,34 @@ import { useStoreContext, QUERY_EVENTS } from '../utils/';
   }`
 */
 
+function registerForEvent(eventId) {
+    console.log(eventId)
+    console.log("TEST")
+}
+
 function EventList() {
+  const nowTime = Date.now()
   const { loading, error, data } = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
   const { currentEvent } = state;
-
   //   console.log(data.events[0]);
-  const events = data.events.map((event) => (
+  console.log(state)
+
+  const strToDayJS = function(unixEpochStr) {
+    return dayjs(new Date(Number(unixEpochStr)))
+  }
+
+  const events = data.events.map((event) => {
+    const expiry = (strToDayJS(event.dateStart) > dayjs(Date.now()))? "FUTURE" : ((strToDayJS(event.dateEnd) > dayjs(Date.now()))? "CURRENT" : "EXPIRED")
+    if (expiry === "EXPIRED") {
+        
+    }
+    return (
     <li key={event._id}>
+      <p>{expiry}</p>
       <p>event name {event.name}</p>
       <p>event _id {event._id}</p>
       <p>
@@ -84,16 +102,25 @@ function EventList() {
         {event.organizerUserId.nameLast}
       </p>
       <p>
-        event starts {event.dateStart} and finished {event.dateEnd}
+        event starts {strToDayJS(event.dateStart).format("MM/DD/YY [at] HH:mm")}</p><p> event finishes {strToDayJS(event.dateEnd).format("MM/DD/YY [at] HH:mm")}, and current time is {Date.now()}
+        {/* event starts {(Number(event.dateStart)<nowTime)} and finished {Number(event.dateEnd)<nowTime} */}
       </p>
       <p>registrations must be done before {event.dateCutoff}</p>
       <p>registration fee is {event.feeRegistration + event.feeVenue}</p>
+      
+      <button onClick={()=>{registerForEvent(event._id)}}>REGISTER</button>
+      <ul>REGISTRATIONS:{event.registrations.map((registration)=>(<li key={registration._id}>{registration._id}</li>))}</ul>
       <p>groups are included in the query</p>
+      {console.log(event)}
       <p>&nbsp;</p>
     </li>
-  ));
+  )});
+
+  const profile = Auth.getProfile()
   return (
     <div>
+        <h2>My ID: {profile.data._id}</h2>
+        <hr />
       <ul>{events}</ul>
     </div>
   );
