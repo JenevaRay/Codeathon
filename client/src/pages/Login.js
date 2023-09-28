@@ -10,10 +10,11 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
-  const [login, { error }] = useMutation(LOGIN);
+  const [login] = useMutation(LOGIN);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    setSubmitError('');
   };
 
   const handlePasswordChange = (e) => {
@@ -22,7 +23,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setSubmitError('');
     try {
       setLoading(true);
       const mutationResponse = await login({
@@ -30,11 +30,9 @@ const Login = () => {
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
-      error && setSubmitError(error);
     } catch (err) {
       setLoading(false);
-      console.log(err);
-      setSubmitError(err);
+      setSubmitError(`ERROR: ${err.message}`);
     }
   };
 
@@ -105,7 +103,7 @@ const Login = () => {
                   ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 />
               </div>
-              {submitError ? <p className="text-red-600">Testing</p> : ''}
+              {submitError && <p className="text-red-600">{submitError}</p>}
               <div className="py-4">
                 <Button
                   type="submit"
