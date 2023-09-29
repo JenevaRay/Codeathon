@@ -1,7 +1,7 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import { Layout } from './components';
-import { Home, Events, Login, Signup, Registration, Checkout } from './pages';
+import { Home, Dashboard, Events, Login, Signup, Registration, Checkout } from './pages';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { StoreProvider, httpLink } from './utils';
 import { setContext } from '@apollo/client/link/context';
@@ -36,7 +36,7 @@ const App = () => {
               />
               <Route
                 path="/dashboard"
-                // element={<Dashboard />}
+                element={<Dashboard />}
               />
               <Route path="/signup" element={<Signup />} />
               <Route

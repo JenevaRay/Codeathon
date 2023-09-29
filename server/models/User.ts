@@ -1,28 +1,32 @@
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { Model, Schema, model, Document } from 'mongoose';
-import dotenv from 'dotenv';
-dotenv.config();
 
 // Import the overall schema version and schema date from the index.ts file
 import {
-  // Phone,
   schemaVersion,
   schemaDate,
 } from './index';
 
+dotenv.config();
+
 interface IUser extends Document {
   schemaVersion: string;
   schemaDate: Date;
-  nameFirst: string;
-  nameLast: string;
-  email: string;
-  addresses: Schema.Types.ObjectId[];
-  emailType: string;
-  phoneNumbers: Schema.Types.ObjectId[];
-  otherContactMethod: string;
-  preferredContactMethod: string;
+  emailAddress: string;
   password: string;
+  nameLast: string;
+  nameFirst: string;
+  nameMiddle: string;
+  addressStreet: string;
+  addressExtended: string;
+  addressCity: string;
+  addressState: string;
+  addressPostalCode: string;
+  addressCountry: string;
+  phoneNumber: string;
+  phoneType: string;
   registrations: Schema.Types.ObjectId[];
 }
 
@@ -37,7 +41,11 @@ type UserModel = Model<IUser, {}, IUserMethods>;
 // comments, like allergies, emergency contact info, admin reviews?
 
 const userSchema = new Schema({
-  // implied: _id of type mongoose.ObjectId
+  // IMPLIED: _id of type mongoose.ObjectId
+  // _id: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true,
+  // },
   schemaVersion: {
     // used internally in case things change
     type: String,
@@ -48,61 +56,72 @@ const userSchema = new Schema({
     type: Date,
     required: true,
   },
-  nameFirst: {
+  emailAddress: {
     type: String,
+    alias: 'username',
+    index: true,
+    lowercase: true,
     required: true,
     trim: true,
-    alias: 'firstName',
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+    // TODO: #66 Add password validation beyond minlength
+    // match: /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/
+    minlength: 12,
   },
   nameLast: {
     type: String,
     required: true,
     trim: true,
-    alias: 'lastName',
   },
-  // being kept one field for future user registration/authentication, if we can properly utilize multiple fields for this, then we can reimplement.  Naturally, there is no primary of a single email.
-  email: {
-    type: String,
-    trim: true,
-    index: true,
-    unique: true,
-    // this allows for nullable unique identifiers
-    sparse: true,
-  },
-  addresses: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Address',
-      required: true,
-    },
-  ],
-  emailType: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  phoneNumbers: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Phone',
-      required: true,
-    },
-  ],
-  //   phoneNumbers: [Phone.schema],
-  otherContactMethod: {
-    type: String,
-    trim: true,
-  },
-  preferredContactMethod: {
-    type: String,
-    trim: true,
-    // require at least one valid contact method from the user's profile.
-    required: true,
-  },
-  password: {
+  nameFirst: {
     type: String,
     required: true,
-    minlength: 12,
+    trim: true,
+  },
+  nameMiddle: {
+    type: String,
+    trim: true,
+  },
+  addressStreet: {
+    type: String,
+    trim: true,
+  },
+  addressExtended: {
+    type: String,
+    trim: true,
+  },
+  addressCity: {
+    type: String,
+    trim: true,
+  },
+  // TODO: #67 Add support for addresses outside the US or Canada
+  // addressCounty: {
+  //   type: String,
+  //   trim: true,
+  // }
+  addressState: {
+    type: String,
+    trim: true,
+  },
+  addressPostalCode: {
+    type: String,
+    trim: true,
+  },
+  addressCountry: {
+    type: String,
+    trim: true,
+  },
+  phoneNumber: {
+    type: String,
+    trim: true,
+  },
+  phoneType: {
+    type: String,
+    trim: true,
   },
   registrations: [
     {
@@ -121,7 +140,7 @@ userSchema.methods.generateAuthToken = function (this: IUser) {
     // Replace with secret key
     process.env.SECRET_KEY!,
     // Set expiration time @ 2hrs
-    { expiresIn: '2h' } as SignOptions,
+    { expiresIn: '24h' } as SignOptions,
   );
   return token;
 };

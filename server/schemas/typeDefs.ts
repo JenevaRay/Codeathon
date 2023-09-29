@@ -6,14 +6,19 @@ import { DocumentNode } from 'graphql';
 const typeDefs: DocumentNode = gql`
   type User {
     _id: ID
-    nameFirst: String
+    emailAddress: String
+    password: String
     nameLast: String
-    addresses: [Address]
-    email: String
-    emailType: String
-    phoneNumbers: [Phone]
-    otherContactMethod: String
-    preferredContactMethod: String
+    nameFirst: String
+    nameMiddle: String
+    addressStreet: String
+    addressExtended: String
+    addressCity: String
+    addressState: String
+    addressPostalCode: String
+    addressCountry: String
+    phoneNumber: String
+    phoneType: String
     registrations: [Registration]
   }
 
@@ -72,10 +77,15 @@ const typeDefs: DocumentNode = gql`
   type Venue {
     _id: ID
     name: String
-    addressId: Address
-    venueTimeZone: String
-    phoneId: Phone
-    hostId: User
+    addressStreet: String
+    addressExtended: String
+    addressCity: String
+    addressState: String
+    addressPostalCode: String
+    addressCountry: String
+    phoneNumber: String
+    website: String
+    events: [Event]
   }
 
   type Auth {
@@ -92,24 +102,17 @@ const typeDefs: DocumentNode = gql`
   }
 
   type Mutation {
-    login(email: String!, password: String!): Auth
+    login(emailAddress: String!, password: String!): Auth
     addRegistration(
       eventId: String!
       userId: String!
       type: String
     ): Registration
     addUser(
-      email: String!, nameFirst: String!, nameLast: String!, emailType: String!, otherContactMethod: String!, preferredContactMethod: String!
+      emailAddress: String!, nameLast: String!, nameFirst: String!
     ): User
+    myEvents(organizerUserId: String!): [Event]
   }
 `;
-
-// type User {
-  // NOT IMPLEMENTED FOR addUser...
-//   addresses: [Address]
-//   phoneNumbers: [Phone]
-//   registrations: [Registration]
-// }
-
 
 export { typeDefs };

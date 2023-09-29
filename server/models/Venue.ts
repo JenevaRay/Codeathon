@@ -8,7 +8,11 @@ import { schemaVersion, schemaDate } from './index';
 // venue latitude/longitude, for regional searches, can be easily entered via map click...
 
 const venueSchema = new Schema({
-  // implied: _id of type mongoose.ObjectId
+  // IMPLIED: _id of type mongoose.ObjectId
+  // _id: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true,
+  // },
   schemaVersion: {
     // used internally in case things change
     type: String,
@@ -19,37 +23,57 @@ const venueSchema = new Schema({
     type: Date,
     required: true,
   },
-  // professional locations would have a name, impromptu locations might not
   name: {
     type: String,
-    trim: true,
     index: true,
-    unique: true,
-    // allow for nullable unique values
-    sparse: true,
-  },
-  addressId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Address',
     required: true,
+    trim: true,
+    unique: true,
   },
-  venueTimeZone: {
-    // format to be determined, examples like "UTC" or "MDT" are strings..
+  addressStreet: {
     type: String,
     trim: true,
-    required: true,
   },
-  phoneId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'Phone',
+  addressExtended: {
+    type: String,
+    trim: true,
   },
-  hostId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    index: true,
-    ref: 'User',
+  addressCity: {
+    type: String,
+    trim: true,
   },
+  // TODO: #67 Add support for addresses outside the US or Canada
+  // addressCounty: {
+  //   type: String,
+  //   trim: true,
+  // }
+  addressState: {
+    type: String,
+    trim: true,
+  },
+  addressPostalCode: {
+    type: String,
+    trim: true,
+  },
+  addressCountry: {
+    type: String,
+    trim: true,
+  },
+  phoneNumber: {
+    type: String,
+    trim: true,
+  },
+  website: {
+    type: String,
+    trim: true,
+  },
+  events: [
+    {
+      type: Schema.Types.ObjectId,
+      index: true,
+      ref: 'Event',
+    },
+  ],
 });
 
 venueSchema.pre('save', async function (next) {

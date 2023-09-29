@@ -1,59 +1,128 @@
 import { gql } from '@apollo/client';
 
 const QUERY_EVENTS = gql`
-  query Events {
-    events {
+query Events {
+  events {
+    _id
+    dateCutoff
+    dateEnd
+    dateStart
+    feeRegistration
+    feeVenue
+    name
+    registrationPaymentRequiredDate
+    groups {
       _id
       name
-      registrationPaymentRequiredDate
-      dateStart
-      dateEnd
-      dateCutoff
-      feeRegistration
-      feeVenue
-      groups {
+      projectName
+      projectDescription
+    }
+    registrations {
+      _id
+      userId {
         _id
-      }
-      organizerUserId {
-        _id
-        nameFirst
+        emailAddress
+        password
         nameLast
-        email
-        emailType
-        otherContactMethod
-        preferredContactMethod
-        phoneNumbers {
-          _id
-          number
-          type
-          isUserPrimary
-        }
+        nameFirst
+        nameMiddle
+        addressStreet
+        addressExtended
+        addressCity
+        addressState
+        addressPostalCode
+        addressCountry
+        phoneNumber
+        phoneType
       }
-      registrations {
-        _id
-        paid
-        role
-      }
-      venues {
-        _id
-        addressId {
-          streetAddress
-          extendedAddress
-          city
-        }
-        hostId {
-          nameFirst
-          nameLast
-        }
-        name
-        phoneId {
-          number
-        }
-        venueTimeZone
-      }
+      role
+      paid
+    }
+    organizerUserId {
+      _id
+      emailAddress
+      password
+      nameLast
+      nameFirst
+      nameMiddle
+      addressStreet
+      addressExtended
+      addressCity
+      addressState
+      addressPostalCode
+      addressCountry
+      phoneNumber
+      phoneType
+    }
+    venues {
+      _id
+      name
+      addressStreet
+      addressExtended
+      addressCity
+      addressState
+      addressPostalCode
+      addressCountry
+      phoneNumber
+      website
     }
   }
-`;
+}`
+
+// const QUERY_EVENTS = gql`
+//   query Events {
+//     events {
+//       _id
+//       name
+//       registrationPaymentRequiredDate
+//       dateStart
+//       dateEnd
+//       dateCutoff
+//       feeRegistration
+//       feeVenue
+//       groups {
+//         _id
+//       }
+//       organizerUserId {
+//         _id
+//         nameFirst
+//         nameLast
+//         email
+//         emailType
+//         otherContactMethod
+//         preferredContactMethod
+//         phoneNumbers {
+//           _id
+//           number
+//           type
+//           isUserPrimary
+//         }
+//       }
+//       registrations {
+//         _id
+//         paid
+//         role
+//       }
+//       venues {
+//         _id
+//         addressId {
+//           streetAddress
+//           extendedAddress
+//           city
+//         }
+//         hostId {
+//           nameFirst
+//           nameLast
+//         }
+//         name
+//         phoneId {
+//           number
+//         }
+//         venueTimeZone
+//       }
+//     }
+//   }
+// `;
 
 const QUERY_USERS = gql`
   query Users {
