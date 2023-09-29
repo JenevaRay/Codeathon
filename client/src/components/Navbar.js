@@ -1,39 +1,7 @@
 import Button from '../components/ui/Button';
 import { Auth } from '../utils';
-// import { Link } from 'react-router-dom'
 
-const Navbar = ({ logged_in }) => {
-  let navItems = [];
-  if (Auth.loggedIn()) {
-    navItems.push('Dashboard');
-    navItems.push('Events');
-    navItems.push('Registration');
-    navItems.push('Checkout');
-  } else {
-    navItems.push('Events');
-  }
-  const elements = navItems.map((item) => {
-    const className = 'text-sm font-semibold leading-6 text-gray-900';
-    if (item === 'Logout') {
-      return (
-        <a
-          key={item}
-          href="/"
-          onClick={() => Auth.logout()}
-          className={className}>
-          {item}
-        </a>
-      );
-    } else
-      return (
-        <a
-          key={item}
-          href={'/' + item.toLowerCase()}
-          className={className}>
-          {item}
-        </a>
-      );
-  });
+const Navbar = () => {
   return (
     <nav
       className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
@@ -46,42 +14,30 @@ const Navbar = ({ logged_in }) => {
           {'</>'} codeathon
         </a>
       </div>
-      <div className="flex gap-x-12">
-        {elements}
-        {/* <a
-          href="/"
-          className="text-sm font-semibold leading-6 text-zinc-900">
-          Home
-        </a>
-        <a
-          href="/dashboard"
-          className="text-sm font-semibold leading-6 text-gray-900">
-          Dashboard
-        </a>
-        <a
-          href="/login"
-          className="text-sm font-semibold leading-6 text-gray-900">
-          Login
-        </a> */}
-        {/* <a
-          href="/events"
-          className="text-sm font-semibold leading-6 text-gray-900">
-          Events
-        </a> */}
-        {/* <a
-          href="/registration"
-          className="text-sm font-semibold leading-6 text-gray-900">
-          Registration
-        </a> */}
-        {/* <a
-          href="/checkout"
-          className="text-sm font-semibold leading-6 text-gray-900">
-          Checkout
-        </a> */}
-        {/*             element={<Home />}
-          />
- */}
-      </div>
+      {Auth.loggedIn() && (
+        <div className="flex gap-x-12">
+          <a
+            href="/dashboard"
+            className="text-sm font-semibold leading-6 text-zinc-900">
+            Dashboard
+          </a>
+          <a
+            href="/events"
+            className="text-sm font-semibold leading-6 text-gray-900">
+            Events
+          </a>
+          <a
+            href="/registration"
+            className="text-sm font-semibold leading-6 text-gray-900">
+            Registration
+          </a>
+          <a
+            href="/checkout"
+            className="text-sm font-semibold leading-6 text-gray-900">
+            Checkout
+          </a>
+        </div>
+      )}
       <div className="flex lg:flex-1 lg:justify-end">
         {Auth.loggedIn() ? (
           <a
@@ -90,14 +46,9 @@ const Navbar = ({ logged_in }) => {
             <Button>Logout</Button>
           </a>
         ) : (
-          // <a href="/logout">
-          //   <Button>Logout</Button>
-          // </a>
-          // <a href="/login">
-          <Button>
-            <a href="/login">Login</a>
-          </Button>
-          // </a>
+          <a href="/login">
+            <Button>Login</Button>
+          </a>
         )}
       </div>
     </nav>
