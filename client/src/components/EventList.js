@@ -5,6 +5,7 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
+import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe('pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO');
@@ -123,14 +124,16 @@ const EventList = () => {
     </div>
 
           {expiry === 'FUTURE' ? (
-            <Button
-              value={event._id}
-              margin="mt-4"
-              width="w-full"
-              padding="py-2"
-              onClick={(e) => handleCheckout(event._id, cost)}>
-              Register {cost}
-            </Button>
+            <Elements stripe={stripePromise} options={options}>
+              <Button
+                value={event._id}
+                margin="mt-4"
+                width="w-full"
+                padding="py-2"
+                onClick={(e) => handleCheckout(event._id, cost)}>
+                Register {cost}
+              </Button>
+            </Elements>
           ) : (
             <Button
               value={event._id}
