@@ -41,7 +41,7 @@ const EventList = () => {
 
   const handleStripeCheckout = () => {
     // Redirects the user to the Stripe Checkout page
-    window.location.href = 'https://buy.stripe.com/test_6oEfYY4uu2sFcs8bII';
+    window.location.href = 'https://buy.stripe.com/test_14k6oo8KK5ER8bS3cd';
   };
 
    // Handles the checkout process
