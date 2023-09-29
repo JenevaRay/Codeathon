@@ -6,9 +6,8 @@ import { createHttpLink } from '@apollo/client';
 // 'http://192.168.56.102:3001/graphql',
 // it's temporary, when we deploy this will point to the API server.
 
-
 const httpLink = createHttpLink({
-  uri: 'http://192.168.56.102:3001/graphql',
+  uri: 'http://localhost:3001/graphql',
 });
 
 export default httpLink;

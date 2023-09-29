@@ -36,7 +36,7 @@ const Hero = () => {
           <motion.img
             alt="Codeathon Image"
             src="/img2.png"
-            className="z-50 mx-[-150px]"
+            className="z-20 mx-[-150px]"
             height={300}
             width={300}
             custom={0}
@@ -88,7 +88,7 @@ const Hero = () => {
           <motion.img
             alt="Codeathon Image"
             src="/img2.png"
-            className="z-50 mx-[-100px]"
+            className="z-20 mx-[-100px]"
             height={300}
             width={300}
             custom={0}
