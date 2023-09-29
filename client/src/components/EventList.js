@@ -78,7 +78,7 @@ const EventList = () => {
   console.log(state);
 
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-
+  console.log(query_info.data)
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const expiry =
@@ -115,16 +115,16 @@ const EventList = () => {
             <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
           <div>
-      {events.map((event) => (
+      
         <div key={event._id} className="event-card">
           <h3>{event.name}</h3>
           <button onClick={handleStripeCheckout}>Pay Now</button>
         </div>
-      ))}
+      
     </div>
 
           {expiry === 'FUTURE' ? (
-            <Elements stripe={stripePromise} options={options}>
+            <Elements stripe={stripePromise}>
               <Button
                 value={event._id}
                 margin="mt-4"
