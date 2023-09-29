@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import Button from '../components/ui/Button';
 import { Auth } from '../utils';
@@ -22,7 +22,7 @@ const Navbar = () => {
     setNav(!nav);
     setTimeout(() => {
       setAnimation(animation === 'closed' ? 'open' : 'closed');
-    }, 2000);
+    }, 100);
   };
   return (
     <nav
