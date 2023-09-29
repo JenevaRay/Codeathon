@@ -12,7 +12,7 @@
     "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\""
   },
   "engines": {
-    "node": "16.x"
+    "node": "16.14.0"
   },
   "repository": {
     "type": "git",
@@ -50,7 +50,6 @@
     "prettier-plugin-tailwindcss": "^0.5.4"
   },
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@stripe/stripe-js": "^2.1.6"
   }
 }
