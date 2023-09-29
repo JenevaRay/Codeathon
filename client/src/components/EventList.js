@@ -54,7 +54,7 @@ const EventList = () => {
       },
       body: JSON.stringify({
         eventId,
-        cost,
+        cost: 75.00
       }),
     }).then((res) => res.json());
 
