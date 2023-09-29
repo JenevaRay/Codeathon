@@ -5,6 +5,10 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO');
+
 const EventList = () => {
   let profile
   if (Auth.loggedIn()) {
@@ -31,6 +35,37 @@ const EventList = () => {
           console.log(e);
         }
       }
+    }
+  };
+
+  const handleStripeCheckout = () => {
+    // Redirects the user to the Stripe Checkout page
+    window.location.href = 'https://buy.stripe.com/test_6oEfYY4uu2sFcs8bII';
+  };
+
+   // Handles the checkout process
+   const handleCheckout = async (eventId, cost) => {
+    // Create a new Stripe session on the server
+    const { data } = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId,
+        cost,
+      }),
+    }).then((res) => res.json());
+
+    // Redirect the user to the Stripe checkout page
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: data.sessionId,
+    });
+
+    // Handle any errors that occur during the redirect.
+    if (error) {
+      console.error(error);
     }
   };
 
@@ -78,13 +113,22 @@ const EventList = () => {
             <br />
             <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
+          <div>
+      {events.map((event) => (
+        <div key={event._id} className="event-card">
+          <h3>{event.name}</h3>
+          <button onClick={handleStripeCheckout}>Pay Now</button>
+        </div>
+      ))}
+    </div>
+
           {expiry === 'FUTURE' ? (
             <Button
               value={event._id}
               margin="mt-4"
               width="w-full"
               padding="py-2"
-              onClick={(e) => {registerForEvent(e.target.value);}}>
+              onClick={(e) => handleCheckout(event._id, cost)}>
               Register {cost}
             </Button>
           ) : (
