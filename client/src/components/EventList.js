@@ -6,7 +6,10 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 import Button from './ui/Button';
 
 const EventList = () => {
-  const profile = Auth.getProfile();
+  let profile
+  if (Auth.loggedIn()) {
+    profile = Auth.getProfile();
+  }
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
