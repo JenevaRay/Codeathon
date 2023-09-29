@@ -15,7 +15,7 @@ const Navbar = () => {
         </a>
       </div>
       {Auth.loggedIn() && (
-        <div className="flex gap-x-12">
+        <div className="hidden gap-x-12 md:flex">
           <a
             href="/dashboard"
             className="text-sm font-semibold leading-6 text-zinc-900">
@@ -38,7 +38,7 @@ const Navbar = () => {
           </a>
         </div>
       )}
-      <div className="flex lg:flex-1 lg:justify-end">
+      <div className="hidden md:flex md:flex-1 md:justify-end">
         {Auth.loggedIn() ? (
           <a
             href="/"
