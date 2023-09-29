@@ -47,5 +47,9 @@
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4"
+  },
+  "dependencies": {
+    "@stripe/stripe-js": "^2.1.6",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }
