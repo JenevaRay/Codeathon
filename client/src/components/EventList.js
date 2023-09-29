@@ -81,9 +81,7 @@ const EventList = () => {
               margin="mt-4"
               width="w-full"
               padding="py-2"
-              onClick={(e) => {
-                registerForEvent(e.target.value);
-              }}>
+              onClick={(e) => {registerForEvent(e.target.value);}}>
               Register {cost}
             </Button>
           ) : (

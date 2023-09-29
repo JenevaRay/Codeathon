@@ -7,11 +7,12 @@ import {
   Venue,
   Event,
   Group,
-  Phone,
-  Address,
+  // Phone,
+  // Address,
   schemaVersion,
   schemaDate,
 } from '../models';
+
 
 // import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
@@ -33,23 +34,19 @@ const resolvers = {
         .populate([
           {
             path: 'organizerUserId',
-            populate: [
-              {
-                path: 'phoneNumbers',
-                model: Phone,
-              },
-            ],
+            model: User
+            // populate: [
+            //   {
+            //     path: 'phoneNumbers',
+            //     model: Phone,
+            //   },
+            // ],
           },
         ])
         .populate({ path: 'registrations', model: Registration })
         .populate({
           path: 'venues',
           model: Venue,
-          populate: [
-            { path: 'addressId', model: Address },
-            { path: 'phoneId', model: Phone },
-            { path: 'hostId', model: User },
-          ],
         })
         .populate({ path: 'groups', model: Group });
     },
@@ -63,7 +60,7 @@ const resolvers = {
             {
               path: 'userId',
               model: User,
-              populate: { path: 'phoneNumbers', model: Phone },
+              // populate: { path: 'phoneNumbers', model: Phone },
             },
           ],
         },
@@ -132,6 +129,34 @@ const resolvers = {
     // updateRegistration: async (parent, { _id, quantity}) => {
 
     // },
+    myEvents: async (_: any, args: any) => {
+      // console.log(args)
+      const { organizerUserId } = args
+        const result = await Event.find({organizerUserId})
+          .populate([
+            {
+              path: 'organizerUserId',
+              // populate: [
+              //   {
+              //     path: 'phoneNumbers',
+              //     model: Phone,
+              //   },
+              // ],
+            },
+          ])
+          .populate({ path: 'registrations', model: Registration })
+          .populate({
+            path: 'venues',
+            model: Venue,
+            populate: [
+              // { path: 'addressId', model: Address },
+              // { path: 'phoneId', model: Phone },
+              { path: 'hostId', model: User },
+            ],
+          })
+          .populate({ path: 'groups', model: Group });
+      return result
+    },
     login: async (_: any, props: any) => {
       const emailAddress: string = props.emailAddress;
       const password: string = props.password;

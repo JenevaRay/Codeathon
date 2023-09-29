@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import mongoose from 'mongoose';
 
 import { db } from './connection';
 
@@ -11,8 +10,8 @@ import {
   Group,
   Venue,
   Registration,
-  Address,
-  Phone,
+  // Address,
+  // Phone,
 } from '../models/index';
 
 // Seed dynamic dates and times based upon the current date and time using Day.js
@@ -22,14 +21,9 @@ const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
 
-const usersIds = [
-  new mongoose.Types.ObjectId(),
-  new mongoose.Types.ObjectId(),
-];
-
 const users = [
-  { // Seed a user with only the bare minimum fields
-    _id: usersIds[0],
+  { 
+    _id: '000000111111', // hardcoded because backreferences.  cons of multiple tables, pointers to pointers everywhere.
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'davesmith@acme.net',
@@ -38,8 +32,8 @@ const users = [
     nameFirst: 'Dave',
     registrations: ['012345012345'],
   },
-  { // Seed a user with all available fields
-    _id: usersIds[1],
+  { 
+    _id: '222222333333',  // _id is required.
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'lastfirst@lifo.org',
@@ -123,41 +117,41 @@ const groups = [
   },
 ];
 
-const addresses = [
-  {
-    _id: '224466224466',
-    schemaVersion: schemaVersion,
-    schemaDate: schemaDate.toDate(),
-    streetAddress: '123 Sesame Street',
-    extendedAddress: undefined,
-    country: 'US',
-    state: 'New York',
-    county: 'New York',
-    city: 'Manhattan',
-    postalCode: '12345',
-    type: 'venue',
-    isUserPrimary: false,
-  },
-];
+// const addresses = [
+//   {
+//     _id: '224466224466',
+//     schemaVersion: schemaVersion,
+//     schemaDate: schemaDate.toDate(),
+//     streetAddress: '123 Sesame Street',
+//     extendedAddress: undefined,
+//     country: 'US',
+//     state: 'New York',
+//     county: 'New York',
+//     city: 'Manhattan',
+//     postalCode: '12345',
+//     type: 'venue',
+//     isUserPrimary: false,
+//   },
+// ];
 
-const phones = [
-  {
-    schemaVersion: schemaVersion,
-    schemaDate: schemaDate.toDate(),
-    type: 'venue',
-    _id: '111112222233',
-    number: '+1 234-567-8901',
-    isUserPrimary: false,
-  },
-  {
-    schemaVersion: schemaVersion,
-    schemaDate: schemaDate.toDate(),
-    type: 'cell',
-    _id: '222223333344',
-    number: '+1 (234) 567-0001',
-    isUserPrimary: true,
-  },
-];
+// const phones = [
+//   {
+//     schemaVersion: schemaVersion,
+//     schemaDate: schemaDate.toDate(),
+//     type: 'venue',
+//     _id: '111112222233',
+//     number: '+1 234-567-8901',
+//     isUserPrimary: false,
+//   },
+//   {
+//     schemaVersion: schemaVersion,
+//     schemaDate: schemaDate.toDate(),
+//     type: 'cell',
+//     _id: '222223333344',
+//     number: '+1 (234) 567-0001',
+//     isUserPrimary: true,
+//   },
+// ];
 
 const venues = [
   {
@@ -208,13 +202,13 @@ db.once('open', async () => {
   await Event.insertMany(events);
   console.log('Events seeded.');
 
-  await Address.deleteMany();
-  await Address.insertMany(addresses);
-  console.log('Addresses seeded');
+  // await Address.deleteMany();
+  // await Address.insertMany(addresses);
+  // console.log('Addresses seeded');
 
-  await Phone.deleteMany();
-  await Phone.insertMany(phones);
-  console.log('Phones seeded');
+  // await Phone.deleteMany();
+  // await Phone.insertMany(phones);
+  // console.log('Phones seeded');
 
   await Group.deleteMany();
   await Group.insertMany(groups);

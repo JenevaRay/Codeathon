@@ -25,3 +25,29 @@ export const ADD_REGISTRATION = gql`
     }
   }
 `;
+
+export const MY_EVENTS = gql`
+mutation MyEvents($organizerUserId: String!) {
+    myEvents(organizerUserId: $organizerUserId) {
+      _id
+      name
+      venues {
+        addressId {
+          streetAddress
+          extendedAddress
+          country
+          state
+          county
+          city
+          postalCode
+        }
+        name
+        venueTimeZone
+        phoneId {
+          number
+          type
+        }
+      }
+    }
+  }
+`

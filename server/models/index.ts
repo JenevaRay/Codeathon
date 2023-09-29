@@ -4,8 +4,8 @@ import { Venue } from './Venue';
 import { Registration } from './Registration';
 import { Event } from './Event';
 import { Group } from './Group';
-import { Address } from './Address';
-import { Phone } from './Phone';
+// import { Address } from './Address';
+// import { Phone } from './Phone';
 import dayjs from 'dayjs';
 
 // Define a schema version and a schema date for future compatibility
@@ -19,8 +19,8 @@ export {
   Registration,
   Event,
   Group,
-  Address,
-  Phone,
+  // Address,
+  // Phone,
   schemaVersion,
   schemaDate,
 };

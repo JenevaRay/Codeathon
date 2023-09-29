@@ -111,14 +111,8 @@ const typeDefs: DocumentNode = gql`
     addUser(
       emailAddress: String!, nameLast: String!, nameFirst: String!
     ): User
+    myEvents(organizerUserId: String!): [Event]
   }
 `;
-
-// type User {
-  // NOT IMPLEMENTED FOR addUser...
-//   addresses: [Address]
-//   phoneNumbers: [Phone]
-//   registrations: [Registration]
-// }
 
 export { typeDefs };
