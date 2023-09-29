@@ -36,7 +36,7 @@ const Navbar = () => {
           {'</>'} codeathon
         </a>
       </div>
-      {!Auth.loggedIn() && (
+      {Auth.loggedIn() && (
         <div className="hidden gap-x-12 md:flex">
           <a
             href="/dashboard"
@@ -169,7 +169,7 @@ const Navbar = () => {
           <motion.div
             animate={nav ? 'open' : 'closed'}
             variants={seventhVariant}>
-            {!Auth.loggedIn() ? (
+            {Auth.loggedIn() ? (
               <a
                 href="/"
                 onClick={() => Auth.logout()}>
@@ -184,7 +184,7 @@ const Navbar = () => {
         </div>
       </ul>
       <div className="hidden md:flex md:flex-1 md:justify-end">
-        {!Auth.loggedIn() ? (
+        {Auth.loggedIn() ? (
           <a
             href="/"
             onClick={() => Auth.logout()}>
