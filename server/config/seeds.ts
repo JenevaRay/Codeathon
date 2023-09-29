@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import mongoose from 'mongoose';
 
 import { db } from './connection';
 
@@ -21,9 +22,18 @@ const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
 
+const usersIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const venueIds = [
+  new mongoose.Types.ObjectId(),
+];
+
 const users = [
-  { 
-    _id: '000000111111', // hardcoded because backreferences.  cons of multiple tables, pointers to pointers everywhere.
+  { // Seed a user with only the bare minimum fields
+    _id: usersIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'davesmith@acme.net',
@@ -32,8 +42,8 @@ const users = [
     nameFirst: 'Dave',
     registrations: ['012345012345'],
   },
-  { 
-    _id: '222222333333',  // _id is required.
+  { // Seed a user with all available fields
+    _id: usersIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'lastfirst@lifo.org',
@@ -64,10 +74,10 @@ const events = [
     registrations: [],
     registrationCutoffDate: now.toDate(),
     registrationPaymentRequiredDate: now.toDate(),
-    organizerUserId: '000000111111',
+    organizerUserId: usersIds[0],
     feeRegistration: 1299,
     feeVenue: 1000,
-    venues: ['555666555666'],
+    venues: [venueIds[0]],
     groups: [],
   },
   {
@@ -80,10 +90,10 @@ const events = [
     registrations: ['012345012345', '987654987654'],
     registrationCutoffDate: lastMonth.toDate(),
     registrationPaymentRequiredDate: lastMonth.toDate(),
-    organizerUserId: '000000111111',
+    organizerUserId: usersIds[0],
     feeRegistration: 1299,
     feeVenue: 1000,
-    venues: ['555666555666'],
+    venues: [venueIds[0]],
     groups: ['554466554466'],
   },
   {
@@ -96,10 +106,10 @@ const events = [
     registrations: [],
     registrationCutoffDate: nextWeek.toDate(),
     registrationPaymentRequiredDate: nextMonth.toDate(),
-    organizerUserId: '000000111111',
+    organizerUserId: usersIds[0],
     feeRegistration: 1399,
     feeVenue: 1000,
-    venues: ['555666555666'],
+    venues: [venueIds[0]],
     groups: ['554466554466'],
   },
 ];
@@ -154,15 +164,19 @@ const groups = [
 // ];
 
 const venues = [
-  {
-    _id: '555666555666',
+  {  // Seed a venue with all available fields
+    _id: venueIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    addressId: '224466224466',
     name: "Elmo's House",
-    phoneId: '111112222233',
-    venueTimeZone: 'EST',
-    hostId: '000000111111',
+    addressStreet: '123 Sesame Street',
+    addressExtended: 'Apt 1',
+    addressCity: 'Manhattan',
+    addressState: 'New York',
+    addressPostalCode: '12345',
+    addressCountry: 'United States',
+    phoneNumber: '+1 (234) 567-8910',
+    events: ['000000111111'],
   },
 ];
 
@@ -171,7 +185,7 @@ const registrations = [
     _id: '012345012345',
     schemaVersion: schemaVersion,
     schemaDate: schemaDate,
-    userId: '000000111111',
+    userId: usersIds[0],
     eventId: '888877776666',
     registrationDate: lastMonth.toDate(),
     registrationType: 'host',
