@@ -4,13 +4,13 @@ import { Venue } from './Venue';
 import { Registration } from './Registration';
 import { Event } from './Event';
 import { Group } from './Group';
-import { Address } from './Address';
-import { Phone } from './Phone';
+// import { Address } from './Address';
+// import { Phone } from './Phone';
 import dayjs from 'dayjs';
 
 // Define a schema version and a schema date for future compatibility
-const schemaVersion = '0.0.5'; // 0.0.5 due to suggestions by AH
-const schemaDate = dayjs('2023-09-25');
+const schemaVersion = '0.0.6';
+const schemaDate = dayjs('2023-09-28');
 
 // Export all models plus the schema version and schema date
 export {
@@ -19,8 +19,8 @@ export {
   Registration,
   Event,
   Group,
-  Address,
-  Phone,
+  // Address,
+  // Phone,
   schemaVersion,
   schemaDate,
 };

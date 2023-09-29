@@ -1,27 +1,27 @@
-// const jwt = require('jsonwebtoken');
-import * as jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
-// Need to create secret key
-const secret = process.env.SECRET_KEY || 'default-secret-key';
-const expiration = '2h';
+dotenv.config();
 
-// we don't actually have usernames in our user table.
+const secret = process.env.SECRET_KEY!;
+const expiration = '24h';
+
 const signToken = function ({
-  email,
-  nameFirst,
-  nameLast,
   _id,
+  emailAddress,
+  nameLast,
+  nameFirst,
 }: {
-  email: string;
-  nameFirst: string;
-  nameLast: string;
   _id: string;
+  emailAddress: string;
+  nameLast: string;
+  nameFirst: string;
 }) {
   const payload = {
-    email,
-    nameFirst,
-    nameLast,
     _id,
+    emailAddress,
+    nameLast,
+    nameFirst,
   };
   const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   return token;

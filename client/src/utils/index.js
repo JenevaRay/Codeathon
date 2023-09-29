@@ -9,7 +9,7 @@ import {
 } from './queries';
 import { useRegistrationReducer } from './reducers';
 import AuthService from './auth';
-import { LOGIN, ADD_REGISTRATION } from './mutations';
+import { LOGIN, ADD_REGISTRATION, MY_EVENTS } from './mutations';
 
 const Auth = AuthService;
 
@@ -23,6 +23,7 @@ export {
   QUERY_VENUES,
   QUERY_USERS,
   ADD_REGISTRATION,
+  MY_EVENTS,
   LOGIN,
   httpLink,
   Auth,
