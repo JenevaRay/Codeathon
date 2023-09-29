@@ -161,12 +161,12 @@ const resolvers = {
       const emailAddress: string = props.emailAddress;
       const password: string = props.password;
       const user = await User.findOne({ emailAddress });
-
+      
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
       }
       const correctPw = await user.isCorrectPassword(password);
-
+      
       if (!correctPw) {
         throw new AuthenticationError('Incorrect credentials');
       }
@@ -179,7 +179,7 @@ const resolvers = {
       };
 
       const token = signToken(simplifiedUser);
-
+      
       return { token, user };
     },
   },

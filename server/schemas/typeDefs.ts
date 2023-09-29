@@ -6,6 +6,8 @@ import { DocumentNode } from 'graphql';
 const typeDefs: DocumentNode = gql`
   type User {
     _id: ID
+    schemaVersion: String
+    schemaDate: String
     emailAddress: String
     password: String
     nameLast: String
@@ -76,6 +78,8 @@ const typeDefs: DocumentNode = gql`
 
   type Venue {
     _id: ID
+    schemaVersion: String
+    schemaDate: String    
     name: String
     addressStreet: String
     addressExtended: String

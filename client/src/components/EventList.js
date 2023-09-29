@@ -5,8 +5,16 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO');
+
 const EventList = () => {
-  const profile = Auth.getProfile();
+  let profile
+  if (Auth.loggedIn()) {
+    profile = Auth.getProfile();
+  }
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
@@ -31,6 +39,37 @@ const EventList = () => {
     }
   };
 
+  const handleStripeCheckout = () => {
+    // Redirects the user to the Stripe Checkout page
+    window.location.href = 'https://buy.stripe.com/test_6oEfYY4uu2sFcs8bII';
+  };
+
+   // Handles the checkout process
+   const handleCheckout = async (eventId, cost) => {
+    // Create a new Stripe session on the server
+    const { data } = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        eventId,
+        cost,
+      }),
+    }).then((res) => res.json());
+
+    // Redirect the user to the Stripe checkout page
+    const stripe = await stripePromise;
+    const { error } = await stripe.redirectToCheckout({
+      sessionId: data.sessionId,
+    });
+
+    // Handle any errors that occur during the redirect.
+    if (error) {
+      console.error(error);
+    }
+  };
+
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
@@ -39,7 +78,7 @@ const EventList = () => {
   console.log(state);
 
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-
+  console.log(query_info.data)
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const expiry =
@@ -75,15 +114,26 @@ const EventList = () => {
             <br />
             <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
+          <div>
+      
+        <div key={event._id} className="event-card">
+          <h3>{event.name}</h3>
+          <button onClick={handleStripeCheckout}>Pay Now</button>
+        </div>
+      
+    </div>
+
           {expiry === 'FUTURE' ? (
-            <Button
-              value={event._id}
-              margin="mt-4"
-              width="w-full"
-              padding="py-2"
-              onClick={(e) => {registerForEvent(e.target.value);}}>
-              Register {cost}
-            </Button>
+            <Elements stripe={stripePromise}>
+              <Button
+                value={event._id}
+                margin="mt-4"
+                width="w-full"
+                padding="py-2"
+                onClick={(e) => handleCheckout(event._id, cost)}>
+                Register {cost}
+              </Button>
+            </Elements>
           ) : (
             <Button
               value={event._id}

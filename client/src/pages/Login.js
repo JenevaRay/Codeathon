@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [emailAddress, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -26,7 +26,7 @@ const Login = () => {
     try {
       setLoading(true);
       const mutationResponse = await login({
-        variables: { email: email, password: password },
+        variables: { emailAddress: emailAddress, password: password },
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
@@ -57,14 +57,14 @@ const Login = () => {
               onSubmit={handleLogin}>
               <div>
                 <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  htmlFor="emailAddress"
+                  className="mb-2 block text-sm font-medium text-gray-900">
                   EMAIL
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  value={email}
+                  type="emailAddress"
+                  name="emailAddress"
+                  value={emailAddress}
                   onChange={handleEmailChange}
                   className="focus:border-purple
                 m-0
