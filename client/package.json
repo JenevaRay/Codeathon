@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "prettier-plugin-tailwindcss": "^0.5.4",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.22.20",
+    "tailwindcss": "^3.3.3",
     "@apollo/client": "^3.8.4",
     "@stripe/stripe-js": "^2.1.6",
     "@testing-library/jest-dom": "^5.17.0",
@@ -43,9 +47,5 @@
     ]
   },
   "devDependencies": {
-    "prettier-plugin-tailwindcss": "^0.5.4",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@babel/preset-env": "^7.22.20",
-    "tailwindcss": "^3.3.3"
   }
 }
