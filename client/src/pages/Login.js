@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [emailAddress, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
@@ -19,7 +19,6 @@ const Login = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    setSubmitError('');
   };
 
   const handleLogin = async (e) => {
@@ -27,13 +26,13 @@ const Login = () => {
     try {
       setLoading(true);
       const mutationResponse = await login({
-        variables: { email: email, password: password },
+        variables: { emailAddress: emailAddress, password: password },
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
     } catch (err) {
       setLoading(false);
-      setSubmitError(err.message);
+      setSubmitError(`ERROR: ${err.message}`);
     }
   };
 
@@ -48,9 +47,9 @@ const Login = () => {
             {'</>'} codeathon
           </a>
         </div>
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl md:mt-0 xl:p-0">
+        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
-            <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+            <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Login
             </h1>
             <form
@@ -58,14 +57,14 @@ const Login = () => {
               onSubmit={handleLogin}>
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="emailAddress"
                   className="mb-2 block text-sm font-medium text-gray-900">
                   EMAIL
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  value={email}
+                  type="emailAddress"
+                  name="emailAddress"
+                  value={emailAddress}
                   onChange={handleEmailChange}
                   className="focus:border-purple
                 m-0
@@ -76,14 +75,14 @@ const Login = () => {
                 font-normal
                 text-zinc-700
                 transition
-                  ease-in-out focus:outline-none"
+                  ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                   placeholder="email@example.com"
                 />
               </div>
               <div>
                 <label
                   htmlFor="password"
-                  className="mb-2 block text-sm font-medium text-gray-900">
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   PASSWORD
                 </label>
                 <input
@@ -101,10 +100,10 @@ const Login = () => {
                 font-normal
                 text-zinc-700
                 transition
-                  ease-in-out focus:outline-none"
+                  ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 />
               </div>
-              {submitError && <p className="text-pink-500">{submitError}</p>}
+              {submitError && <p className="text-red-600">{submitError}</p>}
               <div className="py-4">
                 <Button
                   type="submit"
@@ -115,11 +114,11 @@ const Login = () => {
                   {loading ? <Bubbles text="Logging In" /> : 'Log In'}
                 </Button>
               </div>
-              <p className="text-sm font-light text-gray-700">
+              <p className="text-sm font-light text-gray-700 dark:text-gray-400">
                 Don't have an account yet?&nbsp;
                 <a
                   href="/signup"
-                  className="text-purple font-medium hover:underline">
+                  className="text-purple dark:text-primary-500 font-medium hover:underline">
                   Sign up
                 </a>
               </p>

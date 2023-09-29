@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
-const secret = process.env.SECRET_KEY!;
+const secret = process.env.SECRET_KEY || "thereisnopassword";
 const expiration = '24h';
 
 const signToken = function ({
@@ -23,6 +23,7 @@ const signToken = function ({
     nameLast,
     nameFirst,
   };
+
   const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
   return token;
 };

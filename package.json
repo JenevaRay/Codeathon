@@ -49,5 +49,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^2.1.6"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+
   }
 }

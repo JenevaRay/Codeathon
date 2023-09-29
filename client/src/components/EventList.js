@@ -10,7 +10,10 @@ import { loadStripe } from '@stripe/stripe-js';
 const stripePromise = loadStripe('pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO');
 
 const EventList = () => {
-  const profile = Auth.getProfile();
+  let profile
+  if (Auth.loggedIn()) {
+    profile = Auth.getProfile();
+  }
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
