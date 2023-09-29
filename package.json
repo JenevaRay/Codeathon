@@ -12,7 +12,7 @@
     "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\""
   },
   "engines": {
-    "node": "16.x"
+    "node": "18.x"
   },
   "repository": {
     "type": "git",
