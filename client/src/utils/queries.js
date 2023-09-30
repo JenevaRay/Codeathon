@@ -154,6 +154,7 @@ const QUERY_REGISTRATIONS = gql`
     registrations {
       _id
       eventId {
+        name
         dateStart
         dateEnd
         feeRegistration
