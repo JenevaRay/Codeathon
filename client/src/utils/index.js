@@ -11,6 +11,7 @@ import { useRegistrationReducer } from './reducers';
 import AuthService from './auth';
 import { LOGIN, ADD_REGISTRATION, MY_EVENTS } from './mutations';
 import {
+  States,
   svgPathVariant1,
   svgPathVariant2,
   firstVariant,
@@ -37,6 +38,7 @@ export {
   LOGIN,
   httpLink,
   Auth,
+  States,
   svgPathVariant1,
   svgPathVariant2,
   firstVariant,

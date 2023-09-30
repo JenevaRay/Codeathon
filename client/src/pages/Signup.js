@@ -6,12 +6,13 @@ import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
 
 const Signup = () => {
-  const [formData, setFormdata] = useState({
+  const [formData, setFormData] = useState({
     nameFirst: '',
     nameLast: '',
     emailAddress: '',
     password: '',
     submitError: '',
+    loading: false,
   });
 
   // const [addUser] = useMutation(ADD_USER)
@@ -19,7 +20,7 @@ const Signup = () => {
   // const [addPhone] = useMutation(ADD_PHONE)
 
   const handleChange = (e) => {
-    setFormdata({
+    setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
@@ -28,7 +29,14 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setFormdata({ loading: true });
+      setFormData({
+        nameFirst: formData.nameFirst,
+        nameLast: formData.nameLast,
+        emailAddress: formData.emailAddress,
+        password: formData.password,
+        submitError: '',
+        loading: true,
+      });
       //const mutationResponse = await addUser({
       //  variables: {
       //    nameFirst: formData.nameFirst,
@@ -40,7 +48,14 @@ const Signup = () => {
       //const token = mutationResponse.data.addUser.token;
       //Auth.login(token);
     } catch (err) {
-      setFormdata({ loading: false, submitError: err.message });
+      setFormData({
+        nameFirst: '',
+        nameLast: '',
+        emailAddress: '',
+        password: '',
+        submitError: err.message,
+        loading: false,
+      });
     }
   };
 
@@ -74,6 +89,7 @@ const Signup = () => {
                   name="nameFirst"
                   value={formData.nameFirst}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
@@ -98,6 +114,7 @@ const Signup = () => {
                   name="nameLast"
                   value={formData.nameLast}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
@@ -122,6 +139,7 @@ const Signup = () => {
                   name="emailAddress"
                   value={formData.emailAddress}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
@@ -147,6 +165,7 @@ const Signup = () => {
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
