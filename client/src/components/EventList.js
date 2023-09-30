@@ -5,13 +5,15 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
-import { Elements } from '@stripe/react-stripe-js'
+import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe('pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO');
+const stripePromise = loadStripe(
+  'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
+);
 
 const EventList = () => {
-  let profile
+  let profile;
   if (Auth.loggedIn()) {
     profile = Auth.getProfile();
   }
@@ -41,11 +43,11 @@ const EventList = () => {
 
   const handleStripeCheckout = () => {
     // Redirects the user to the Stripe Checkout page
-    window.location.href = 'https://buy.stripe.com/test_6oEfYY4uu2sFcs8bII';
+    window.location.href = 'https://buy.stripe.com/test_14k6oo8KK5ER8bS3cd';
   };
 
-   // Handles the checkout process
-   const handleCheckout = async (eventId, cost) => {
+  // Handles the checkout process
+  const handleCheckout = async (eventId, cost) => {
     // Create a new Stripe session on the server
     const { data } = await fetch('/api/checkout', {
       method: 'POST',
@@ -54,7 +56,7 @@ const EventList = () => {
       },
       body: JSON.stringify({
         eventId,
-        cost,
+        cost: 75.00
       }),
     }).then((res) => res.json());
 
@@ -78,7 +80,7 @@ const EventList = () => {
   console.log(state);
 
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-  console.log(query_info.data)
+  console.log(query_info.data);
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const expiry =
@@ -115,13 +117,13 @@ const EventList = () => {
             <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
           <div>
-      
-        <div key={event._id} className="event-card">
-          <h3>{event.name}</h3>
-          <button onClick={handleStripeCheckout}>Pay Now</button>
-        </div>
-      
-    </div>
+            <div
+              key={event._id}
+              className="event-card">
+              <h3>{event.name}</h3>
+              <button onClick={handleStripeCheckout}>Pay Now</button>
+            </div>
+          </div>
 
           {expiry === 'FUTURE' ? (
             <Elements stripe={stripePromise}>
@@ -130,7 +132,10 @@ const EventList = () => {
                 margin="mt-4"
                 width="w-full"
                 padding="py-2"
-                onClick={(e) => handleCheckout(event._id, cost)}>
+                onClick={(e) => {
+                  handleCheckout(event._id, cost);
+                  console.log(event);
+                }}>
                 Register {cost}
               </Button>
             </Elements>
