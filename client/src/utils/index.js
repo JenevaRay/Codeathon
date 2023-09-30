@@ -10,7 +10,17 @@ import {
 import { useRegistrationReducer } from './reducers';
 import AuthService from './auth';
 import { LOGIN, ADD_REGISTRATION, MY_EVENTS } from './mutations';
-
+import {
+  svgPathVariant1,
+  svgPathVariant2,
+  firstVariant,
+  secondVariant,
+  thirdVariant,
+  fourthVariant,
+  fifthVariant,
+  sixthVariant,
+  seventhVariant,
+} from './constants';
 const Auth = AuthService;
 
 export {
@@ -27,4 +37,13 @@ export {
   LOGIN,
   httpLink,
   Auth,
+  svgPathVariant1,
+  svgPathVariant2,
+  firstVariant,
+  secondVariant,
+  thirdVariant,
+  fourthVariant,
+  fifthVariant,
+  sixthVariant,
+  seventhVariant,
 };
