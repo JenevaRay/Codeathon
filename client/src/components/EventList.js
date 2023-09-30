@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { ADD_REGISTRATION } from '../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
+import { useStoreContext, QUERY_EVENTS /*, Auth */ } from '../utils/';
 
 import Button from './ui/Button';
 
@@ -13,38 +13,35 @@ import Button from './ui/Button';
 // );
 
 const EventList = () => {
-  let profile;
-  if (Auth.loggedIn()) {
-    profile = Auth.getProfile();
-  }
+  // const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
-  const { data, loading, error } = mutation_info;
+  const { /* data, loading,*/ error } = mutation_info;
 
-  const registerForEvent = async (eventId) => {
-    // calling this throws an ApolloError, is this cacheing at work?
-    if (profile.data) {
-      console.log(profile);
-      const data = profile.data;
-      if (data._id) {
-        const userId = data._id;
-        try {
-          const mutationResponse = await register({
-            variables: { eventId, userId },
-          });
-          // console.log(mutationResponse);
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    }
-  };
+  // const registerForEvent = async (eventId) => {
+  //   // calling this throws an ApolloError, is this cacheing at work?
+  //   if (profile.data) {
+  //     console.log(profile);
+  //     const data = profile.data;
+  //     if (data._id) {
+  //       const userId = data._id;
+  //       try {
+  //         const mutationResponse = await register({
+  //           variables: { eventId, userId },
+  //         });
+  //         // console.log(mutationResponse);
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     }
+  //   }
+  // };
 
-  const handleStripeCheckout = () => {
-    // Redirects the user to the Stripe Checkout page
-    window.location.href = 'https://buy.stripe.com/test_14k6oo8KK5ER8bS3cd';
-  };
+  // const handleStripeCheckout = () => {
+  //   // Redirects the user to the Stripe Checkout page
+  //   window.location.href = 'https://buy.stripe.com/test_14k6oo8KK5ER8bS3cd';
+  // };
 
   // Handles the checkout process
   const handleCheckout = async (eventId, cost) => {

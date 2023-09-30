@@ -1,21 +1,21 @@
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
+// import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+// import { setContext } from '@apollo/client/link/context';
 
 import { StoreProvider } from '../utils/GlobalState';
-import { MyEventList, EventList, AddEvent } from '../components';
-import { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_EVENTS, LOGIN, Auth } from '../utils/';
+import { MyEventList, /* EventList,*/ AddEvent } from '../components';
+// import { useState } from 'react';
+// import { useMutation, useQuery } from '@apollo/client';
+// import { useStoreContext, QUERY_EVENTS, LOGIN, Auth } from '../utils/';
 
-import Button from '../components/ui/Button';
-import Bubbles from '../components/ui/Bubbles';
+// import Button from '../components/ui/Button';
+// import Bubbles from '../components/ui/Bubbles';
 
-import { httpLink } from '../utils';
+// import { httpLink } from '../utils';
 
-import { Reservations, Events, Cart } from '../components/'
+// import { Reservations, Events, Cart } from '../components/'
 
-import dayjs from 'dayjs';
-import { ADD_REGISTRATION } from '../utils/mutations';
+// import dayjs from 'dayjs';
+// import { ADD_REGISTRATION } from '../utils/mutations';
 
 
 const Dashboard = () => {
