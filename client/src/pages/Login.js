@@ -6,7 +6,7 @@ import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
 
 const Login = () => {
-  const [formData, setFormdata] = useState({
+  const [formData, setFormData] = useState({
     emailAddress: '',
     password: '',
     loading: false,
@@ -16,7 +16,7 @@ const Login = () => {
   const [login] = useMutation(LOGIN);
 
   const handleChange = (e) => {
-    setFormdata({
+    setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
@@ -25,12 +25,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // setFormData needs all of these to be defined to not throw an error.
-      setFormdata({ 
+      setFormData({
         loading: true,
-        submitError: formData.submitError,
+        submitError: '',
         emailAddress: formData.emailAddress,
-        password: formData.password
+        password: formData.password,
       });
       const mutationResponse = await login({
         variables: {
@@ -41,9 +40,8 @@ const Login = () => {
       const token = mutationResponse.data.login.token;
       Auth.login(token);
     } catch (err) {
-      // setFormData needs all of these to be defined to not throw an error.
-      setFormdata({
-        loading: false, 
+      setFormData({
+        loading: false,
         submitError: err.message,
         emailAddress: '',
         password: '',
@@ -81,6 +79,7 @@ const Login = () => {
                   name="emailAddress"
                   value={formData.emailAddress}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
@@ -106,6 +105,7 @@ const Login = () => {
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
+                  required
                   className="focus:border-purple
                 m-0
                 w-full
