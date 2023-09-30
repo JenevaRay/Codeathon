@@ -50,7 +50,7 @@ const Login = () => {
             {'</>'} codeathon
           </a>
         </div>
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="w-full max-w-lg rounded-xl bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Login
@@ -65,7 +65,7 @@ const Login = () => {
                   EMAIL
                 </label>
                 <input
-                  type="emailAddress"
+                  type="email"
                   name="emailAddress"
                   value={formData.emailAddress}
                   onChange={handleChange}
