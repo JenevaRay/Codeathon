@@ -152,15 +152,21 @@ const QUERY_USERS = gql`
 const QUERY_REGISTRATIONS = gql`
   query Registrations {
     registrations {
+      _id
       eventId {
+        name
         dateStart
         dateEnd
+        feeRegistration
+        feeVenue
       }
       paid
       role
+      userId {
+        _id
+      }
     }
-  }
-`;
+  }`;
 
 const QUERY_VENUES = gql`
   query Venues {

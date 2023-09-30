@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import { useStoreContext, QUERY_REGISTRATIONS, Auth} from '../utils/';
+import { ADD_REGISTRATION } from '../utils/mutations';
+import { useQuery, useMutation } from '@apollo/client';
+import dayjs from 'dayjs'
+
 import Button from '../components/ui/Button';
 
+const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+const usStates = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Federated States of Micronesia','Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin','Wyoming']
+
 const Checkout = () => {
-  // Define isChecked and handleCheckboxChange using useState
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheckboxChange = () => {
-    // Toggle the value of isChecked when the checkbox is changed
-    setIsChecked(!isChecked);
-  };
-
   return (
     <>
       <div className="flex flex-col items-center border-b bg-white py-8 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -101,11 +101,7 @@ const Checkout = () => {
                 src="/daypass.png"
                 alt=""
               />
-              <div className="flex w-full flex-col px-4 py-4">
-                <span className="font-semibold">Codeathon Day Pass Ticket</span>
-                <span className="float-right text-zinc-400">9AM - 9PM</span>
-                <p className="text-lg font-bold">$75.00</p>
-              </div>
+              {itemizedList}
             </div>
             <div className="flex flex-col rounded-lg bg-white sm:flex-row">
               <img
@@ -129,8 +125,7 @@ const Checkout = () => {
                 id="radio_1"
                 type="radio"
                 name="radio"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
+                checked
               />
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
@@ -149,7 +144,7 @@ const Checkout = () => {
                 </div>
               </label>
             </div>
-            <div className="relative">
+            {/* <div className="relative">
               <input
                 className="peer hidden"
                 id="radio_2"
@@ -174,7 +169,7 @@ const Checkout = () => {
                   </p>
                 </div>
               </label>
-            </div>
+            </div> */}
           </form>
         </div>
         <div className="mt-0 bg-zinc-50 px-4 pt-20 lg:mt-0">
@@ -308,6 +303,8 @@ const Checkout = () => {
                 name="billing-state"
                 className="w-full rounded-md border border-zinc-200 px-4 py-3 text-sm shadow-sm outline-none focus:z-10 focus:border-blue-500 focus:ring-blue-500">
                 <option value="State">State</option>
+                {usStates.map((state)=>{return (<option key={state.replace(" ", '')} value="State">{state}</option>)})}
+                
               </select>
               <input
                 type="text"
@@ -320,7 +317,7 @@ const Checkout = () => {
             <div className="mt-6 border-b border-t py-2">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-zinc-900">Subtotal</p>
-                <p className="font-semibold text-zinc-900">$75.00</p>
+                <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-sm font-medium text-zinc-900">Shipping</p>
@@ -329,7 +326,7 @@ const Checkout = () => {
             </div>
             <div className="mt-6 flex items-center justify-between">
               <p className="text-sm font-medium text-zinc-900">Total</p>
-              <p className="text-2xl font-semibold text-zinc-900">$75.00</p>
+              <p className="text-2xl font-semibold text-zinc-900">{itemizedTotal}</p>
             </div>
           </div>
           <Button
@@ -348,3 +345,40 @@ const Checkout = () => {
  };
 
 export default Checkout;
+
+
+
+
+// function RegistrationList() {
+//   const [state, dispatch] = useStoreContext();
+
+//   const { currentEvent } = state;
+
+//   const registrations = data.registrations.filter((registration)=>registration.userId._id === profile.data._id).map((registration) => (
+    
+//     <div key={registration._id} className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+
+//       <p className="text-base leading-loose text-zinc-800">
+//         Event starts at {strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}
+//       </p>
+//       <p className="text-base leading-loose text-zinc-800">
+//         Event ends at {strToDayJS(registration.eventId.dateEnd).format('MM/DD/YYYY [@] h:mma')}
+//       </p>
+//       {/* <p>This registration is {registration.paid ? 'paid' : 'not paid'}</p> */}
+//       {registration.paid ? 
+//         <Button value={registration._id} margin="mt-4" width="w-full" padding="py-2">
+//           {registration.role === 'host'? 'HOSTING': 'PAID'}
+//         </Button> :
+//         <Button value={registration._id} margin="mt-4" width="w-full" padding="py-2">
+//           PAY {
+//             ['$', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(0, -2), '.', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(2)]
+//           } as {registration.role === 'attendee'? 'an ' : ''}{registration.role.toUpperCase()}
+//         </Button>
+//         }
+//       {/* <p>You are {registration.role} for this event.</p> */}
+//     </div>
+//   ));
+//   return <div className="mt-16 flex flex-wrap items-center justify-center">{registrations}</div>;
+// }
+
+// // export default RegistrationList;

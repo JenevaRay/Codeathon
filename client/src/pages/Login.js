@@ -25,7 +25,13 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setFormdata({ loading: true });
+      // setFormData needs all of these to be defined to not throw an error.
+      setFormdata({ 
+        loading: true,
+        submitError: formData.submitError,
+        emailAddress: formData.emailAddress,
+        password: formData.password
+      });
       const mutationResponse = await login({
         variables: {
           emailAddress: formData.emailAddress,
@@ -35,7 +41,13 @@ const Login = () => {
       const token = mutationResponse.data.login.token;
       Auth.login(token);
     } catch (err) {
-      setFormdata({ loading: false, submitError: err.message });
+      // setFormData needs all of these to be defined to not throw an error.
+      setFormdata({
+        loading: false, 
+        submitError: err.message,
+        emailAddress: '',
+        password: '',
+      });
     }
   };
 
