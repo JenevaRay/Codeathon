@@ -135,7 +135,7 @@ const Checkout = () => {
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
                 className="flex cursor-pointer select-none rounded-lg border border-zinc-300 p-4 peer-checked:border-2 peer-checked:border-zinc-700 peer-checked:bg-zinc-50"
-                for="radio_1">
+                htmlFor="radio_1">
                 <img
                   className="w-14 object-contain"
                   src="/email.png"
@@ -155,12 +155,13 @@ const Checkout = () => {
                 id="radio_2"
                 type="radio"
                 name="radio"
-                checked
+                checked={isChecked}
+                onChange={handleCheckboxChange}
               />
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
                 className="flex cursor-pointer select-none rounded-lg border border-zinc-300 p-4 peer-checked:border-2 peer-checked:border-zinc-700 peer-checked:bg-zinc-50"
-                for="radio_2">
+                htmlFor="radio_2">
                 <img
                   className="w-14 object-contain"
                   src="/fedex.png"
@@ -183,7 +184,7 @@ const Checkout = () => {
           </p>
           <div className="">
             <label
-              for="email"
+              htmlFor="email"
               className="mb-2 mt-4 block text-sm font-medium">
               Email
             </label>
@@ -212,7 +213,7 @@ const Checkout = () => {
               </div>
             </div>
             <label
-              for="card-holder"
+              htmlFor="card-holder"
               className="mb-2 mt-4 block text-sm font-medium">
               Card Holder
             </label>
@@ -241,7 +242,7 @@ const Checkout = () => {
               </div>
             </div>
             <label
-              for="card-no"
+              htmlFor="card-no"
               className="mb-2 mt-4 block text-sm font-medium">
               Card Details
             </label>
@@ -281,7 +282,7 @@ const Checkout = () => {
               />
             </div>
             <label
-              for="billing-address"
+              htmlFor="billing-address"
               className="mb-2 mt-4 block text-sm font-medium">
               Billing Address
             </label>
