@@ -1,6 +1,15 @@
+import React, { useState } from 'react';
 import Button from '../components/ui/Button';
 
 const Checkout = () => {
+  // Define isChecked and handleCheckboxChange using useState
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = () => {
+    // Toggle the value of isChecked when the checkbox is changed
+    setIsChecked(!isChecked);
+  };
+
   return (
     <>
       <div className="flex flex-col items-center border-b bg-white py-8 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -120,7 +129,8 @@ const Checkout = () => {
                 id="radio_1"
                 type="radio"
                 name="radio"
-                checked
+                checked={isChecked}
+                onChange={handleCheckboxChange}
               />
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
@@ -334,6 +344,6 @@ const Checkout = () => {
       </div>
     </>
   );
-};
+ };
 
 export default Checkout;
