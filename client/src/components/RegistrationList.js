@@ -1,6 +1,6 @@
-import { useStoreContext, QUERY_REGISTRATIONS, Auth} from '../utils/';
-import { ADD_REGISTRATION } from '../utils/mutations';
-import { useQuery, useMutation } from '@apollo/client';
+import { /* useStoreContext,*/ QUERY_REGISTRATIONS, Auth} from '../utils/';
+// import { ADD_REGISTRATION } from '../utils/mutations';
+import { useQuery /*, useMutation*/ } from '@apollo/client';
 import dayjs from 'dayjs'
 
 import Button from './ui/Button'
@@ -10,11 +10,11 @@ const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
 function RegistrationList() {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
   const { loading, error, data } = useQuery(QUERY_REGISTRATIONS);
-  const [state, dispatch] = useStoreContext();
+  // const [state, dispatch] = useStoreContext();
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
 
-  const { currentEvent } = state;
+  // const { currentEvent } = state;
 
   const registrations = data.registrations.filter((registration)=>registration.userId._id === profile.data._id).map((registration) => (
     

@@ -4,11 +4,11 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start": "cross-env NODE_ENV=production node server.js",
+    "start": "node server.js",
+    "tsc-watch": "tsc -w",
     "ts-start": "ts-node server.ts",
     "watch": "nodemon server.ts",
-    "seed": "ts-node config/seeds.ts",
-    "postinstall": "tsc"
+    "seed": "ts-node config/seeds.ts"
   },
   "contributors": [
     {

@@ -9,7 +9,7 @@
         "lib": ["ESNext", "ES7", "ES6"],
         "module":"CommonJS",
         "moduleResolution": "node",
-        "noEmit": true,
+        "noEmit": false,
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -20,11 +20,11 @@
         "strict": true,
         "strictNullChecks": true,
         "types": ["node"],
-        "target": "ESNext",
+        "target": "ES6",
         "useUnknownInCatchVariables": false,
     },
     "include": [
-        "**/*", "package.json"
+        "./**/*", "package.json"
     ],
     "exclude": [
         "node_modules",
