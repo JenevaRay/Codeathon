@@ -10,31 +10,6 @@ const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
 const usStates = ['Alabama','Alaska','American Samoa','Arizona','Arkansas','California','Colorado','Connecticut','Delaware','District of Columbia','Federated States of Micronesia','Florida','Georgia','Guam','Hawaii','Idaho','Illinois','Indiana','Iowa','Kansas','Kentucky','Louisiana','Maine','Marshall Islands','Maryland','Massachusetts','Michigan','Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire','New Jersey','New Mexico','New York','North Carolina','North Dakota','Northern Mariana Islands','Ohio','Oklahoma','Oregon','Palau','Pennsylvania','Puerto Rico','Rhode Island','South Carolina','South Dakota','Tennessee','Texas','Utah','Vermont','Virgin Island','Virginia','Washington','West Virginia','Wisconsin','Wyoming']
 
 const Checkout = () => {
-  const { loading, error, data } = useQuery(QUERY_REGISTRATIONS);
-  if (loading) return 'Loading...';
-  if (error) return `Error! ${error.message}`;
-  const registrations = data.registrations
-    .filter((registration)=>(registration.userId._id === profile.data._id && !registration.paid))
-  const itemizedTotalInt = registrations
-    .map((registration)=>(registration.eventId.feeRegistration + registration.eventId.feeVenue))
-    .reduce((previousValue, currentValue)=>{return previousValue + currentValue}, 0)
-  const itemizedTotal = ['$', String(itemizedTotalInt).slice(0, -2), '.', String(itemizedTotalInt).slice(2)].join('')
-  const itemizedList = registrations.map((registration)=>(
-    <>
-      <div className="flex w-full flex-col px-4 py-4" key={registration._id}>
-        <span className="font-semibold">{registration.eventId.name}</span>
-        <span className="float-right text-zinc-400">Start {strToDayJS(registration.eventId.dateStart).format('MM/DD [@] h:mm A')}</span>
-        <span className="float-right text-zinc-400">End {strToDayJS(registration.eventId.dateEnd).format('MM/DD [@] h:mm A')}</span>
-        <p className="text-lg font-bold">{['$', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(0, -2), '.', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(2)]}</p>
-      </div>
-    </>
-
-    
-  ))
-  //   .map((registration) => {
-
-  // })
-  // console.log(registrations)
   return (
     <>
       <div className="flex flex-col items-center border-b bg-white py-8 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -150,7 +125,7 @@ const Checkout = () => {
                 id="radio_1"
                 type="radio"
                 name="radio"
-                defaultChecked
+                checked
               />
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
@@ -175,7 +150,8 @@ const Checkout = () => {
                 id="radio_2"
                 type="radio"
                 name="radio"
-                checked
+                checked={isChecked}
+                onChange={handleCheckboxChange}
               />
               <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
               <label
@@ -366,7 +342,7 @@ const Checkout = () => {
       </div>
     </>
   );
-};
+ };
 
 export default Checkout;
 
