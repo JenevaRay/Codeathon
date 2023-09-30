@@ -8,8 +8,7 @@ const Layout = ({ children }) => {
 
   return (
     <>
-      {pathname === '/checkout' ? null : pathname ===
-        '/login' ? null : pathname === '/signup' ? null : (
+      {pathname === '/login' ? null : pathname === '/signup' ? null : (
         <Navbar />
       )}
       <main className="w-full">{children}</main>
