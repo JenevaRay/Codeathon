@@ -5,12 +5,12 @@ import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+// import { Elements } from '@stripe/react-stripe-js';
+// imp/me ort { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(
-  'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
-);
+// const stripePromise = loadStripe(
+//   'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
+// );
 
 const EventList = () => {
   let profile;
@@ -61,10 +61,10 @@ const EventList = () => {
     }).then((res) => res.json());
 
     // Redirect the user to the Stripe checkout page
-    const stripe = await stripePromise;
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: data.sessionId,
-    });
+    // const stripe = await stripePromise;
+    // const { error } = await stripe.redirectToCheckout({
+    //   sessionId: data.sessionId,
+    // });
 
     // Handle any errors that occur during the redirect.
     if (error) {
@@ -116,17 +116,17 @@ const EventList = () => {
             <br />
             <strong>REGISTERED:</strong> {event.registrations.length}
           </p>
-          <div>
+          {/* <div>
             <div
               key={event._id}
               className="event-card">
               <h3>{event.name}</h3>
               <button onClick={handleStripeCheckout}>Pay Now</button>
             </div>
-          </div>
+          </div> */}
 
           {expiry === 'FUTURE' ? (
-            <Elements stripe={stripePromise}>
+            // <Elements stripe={stripePromise}>
               <Button
                 value={event._id}
                 margin="mt-4"
@@ -138,7 +138,7 @@ const EventList = () => {
                 }}>
                 Register {cost}
               </Button>
-            </Elements>
+            // </Elements>
           ) : (
             <Button
               value={event._id}
