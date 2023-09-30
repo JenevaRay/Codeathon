@@ -6,33 +6,36 @@ import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
 
 const Login = () => {
-  const [emailAddress, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [formData, setFormdata] = useState({
+    emailAddress: '',
+    password: '',
+    loading: false,
+    submitError: '',
+  });
+
   const [login] = useMutation(LOGIN);
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-    setSubmitError('');
+  const handleChange = (e) => {
+    setFormdata({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
+      setFormdata({ loading: true });
       const mutationResponse = await login({
-        variables: { emailAddress: emailAddress, password: password },
+        variables: {
+          emailAddress: formData.emailAddress,
+          password: formData.password,
+        },
       });
       const token = mutationResponse.data.login.token;
       Auth.login(token);
     } catch (err) {
-      setLoading(false);
-      setSubmitError(`ERROR: ${err.message}`);
+      setFormdata({ loading: false, submitError: err.message });
     }
   };
 
@@ -54,7 +57,7 @@ const Login = () => {
             </h1>
             <form
               className="space-y-4 md:space-y-6"
-              onSubmit={handleLogin}>
+              onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="emailAddress"
@@ -64,8 +67,8 @@ const Login = () => {
                 <input
                   type="emailAddress"
                   name="emailAddress"
-                  value={emailAddress}
-                  onChange={handleEmailChange}
+                  value={formData.emailAddress}
+                  onChange={handleChange}
                   className="focus:border-purple
                 m-0
                 w-full
@@ -89,8 +92,8 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="••••••••"
-                  value={password}
-                  onChange={handlePasswordChange}
+                  value={formData.password}
+                  onChange={handleChange}
                   className="focus:border-purple
                 m-0
                 w-full
@@ -103,15 +106,17 @@ const Login = () => {
                   ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 />
               </div>
-              {submitError && <p className="text-red-600">{submitError}</p>}
+              {formData.submitError && (
+                <p className="text-red-600">{formData.submitError}</p>
+              )}
               <div className="py-4">
                 <Button
                   type="submit"
                   width="w-full"
                   padding="py-3"
                   borderRadius="rounded-xl"
-                  disabled={loading}>
-                  {loading ? <Bubbles text="Logging In" /> : 'Log In'}
+                  disabled={formData.loading}>
+                  {formData.loading ? <Bubbles text="Logging In" /> : 'Log In'}
                 </Button>
               </div>
               <p className="text-sm font-light text-gray-700 dark:text-gray-400">

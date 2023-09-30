@@ -7,53 +7,42 @@ import Button from '../components/ui/Button';
 // TODO: additional forms for address(es), phone(s)
 
 const Signup = () => {
-    const [submitError, setSubmitError] = useState('')
-    const [formState, setFormState] = useState({
-        nameFirst: '', 
-        nameLast: '', 
-        email: '', 
-        emailType: '', 
-        otherContactMethod: '', 
-        preferredContactMethod: '', 
-        password: '',
-        phone: '',
-        streetAddress: '',
-        extendedAddress: '',
-        country: '',
-        state: '',
-        county: '',
-        city: '',
-        postalCode: ''
-    })
-    // const [addUser] = useMutation(ADD_USER)
-    // const [addAddress] = useMutation(ADD_ADDRESS)
-    // const [addPhone] = useMutation(ADD_PHONE)
+  const [submitError, setSubmitError] = useState('');
+  const [formState, setFormState] = useState({
+    nameFirst: '',
+    nameLast: '',
+    emailAddress: '',
+    password: '',
+  });
+  // const [addUser] = useMutation(ADD_USER)
+  // const [addAddress] = useMutation(ADD_ADDRESS)
+  // const [addPhone] = useMutation(ADD_PHONE)
 
-    const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        console.log(formState)
-        // const mutationResponse = await addUser({
-        //     variables: {
-        //         nameFirst: formState.nameFirst,
-        //         nameLast: formState.nameLast,
-        //         email: formState.email,
-        //         emailType: formState.emailType,
-        //         otherContactMethod: formState.otherContactMethod,
-        //         preferredContactMethod: formState.preferredContactMethod,
-        //         password: formState.password
-        //     }
-        // })
-        // const token = mutationResponse.data.addUser.token
-        // Auth.login(token)
-    }
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formState);
+    // const mutationResponse = await addUser({
+    //     variables: {
+    //         nameFirst: formState.nameFirst,
+    //         nameLast: formState.nameLast,
+    //         email: formState.email,
+    //         emailType: formState.emailType,
+    //         otherContactMethod: formState.otherContactMethod,
+    //         preferredContactMethod: formState.preferredContactMethod,
+    //         password: formState.password
+    //     }
+    // })
+    // const token = mutationResponse.data.addUser.token
+    // Auth.login(token)
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({
-        ...formState,
-        [name]: value
-    })
-  }
+      ...formState,
+      [name]: value,
+    });
+  };
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div className="relative z-50 mx-auto flex min-h-screen flex-col items-center justify-center px-6 py-8 lg:py-0">
@@ -74,68 +63,194 @@ const Signup = () => {
               className="space-y-4 md:space-y-6"
               onSubmit={handleFormSubmit}>
               <div>
-                <label htmlFor="nameFirst" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                <input type="text" name="nameFirst" value={formState.nameFirst} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="First Name" />
+                <label
+                  htmlFor="nameFirst"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="nameFirst"
+                  value={formState.nameFirst}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="First Name"
+                />
               </div>
               <div>
-                <label htmlFor="nameLast" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                <input type="text" name="nameLast" value={formState.nameLast} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="Last Name" />
+                <label
+                  htmlFor="nameLast"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="nameLast"
+                  value={formState.nameLast}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="Last Name"
+                />
               </div>
               {/* We can change emailType to a drowdown. */}
               <div>
-                <label htmlFor="emailType" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Email Type</label>
-                <input type="text" name="emailType" value={formState.emailType} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="Email Type" />
+                <label
+                  htmlFor="emailType"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Email Type
+                </label>
+                <input
+                  type="text"
+                  name="emailType"
+                  value={formState.emailType}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="Email Type"
+                />
               </div>
               <div>
-                <label htmlFor="preferredContactMethod" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Preferred Contact Method</label>
-                <input type="text" name="preferredContactMethod" value={formState.preferredContactMethod} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="Preferred Contact Method" />
+                <label
+                  htmlFor="preferredContactMethod"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Preferred Contact Method
+                </label>
+                <input
+                  type="text"
+                  name="preferredContactMethod"
+                  value={formState.preferredContactMethod}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="Preferred Contact Method"
+                />
               </div>
               <div>
-                <label htmlFor="otherContactMethod" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Other Contact Method</label>
-                <input type="text" name="otherContactMethod" value={formState.otherContactMethod} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="Other Contact Method" />
+                <label
+                  htmlFor="otherContactMethod"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Other Contact Method
+                </label>
+                <input
+                  type="text"
+                  name="otherContactMethod"
+                  value={formState.otherContactMethod}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="Other Contact Method"
+                />
               </div>
               <div>
-                <label htmlFor="phone" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Phone #</label>
-                <input type="text" name="phone" value={formState.phone} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                  placeholder="Phone #" />
+                <label
+                  htmlFor="phone"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Phone #
+                </label>
+                <input
+                  type="text"
+                  name="phone"
+                  value={formState.phone}
+                  onChange={handleChange}
+                  className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                  placeholder="Phone #"
+                />
               </div>
               <div>
                 <div>
-                    <label htmlFor="streetAddress" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                    <input type="text" name="streetAddress" value={formState.streetAddress} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="Street Address" />
-                    <input type="text" name="extendedAddress" value={formState.streetAddress} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="Extended Address" />
+                  <label
+                    htmlFor="streetAddress"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    name="streetAddress"
+                    value={formState.streetAddress}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="Street Address"
+                  />
+                  <input
+                    type="text"
+                    name="extendedAddress"
+                    value={formState.streetAddress}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="Extended Address"
+                  />
                 </div>
                 <div>
-                    <label htmlFor="country" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Country</label>
-                    <input type="text" name="country" value={formState.country} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="Country" />
+                  <label
+                    htmlFor="country"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    Country
+                  </label>
+                  <input
+                    type="text"
+                    name="country"
+                    value={formState.country}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="Country"
+                  />
                 </div>
                 <div>
-                    <label htmlFor="state" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">State</label>
-                    <input type="text" name="state" value={formState.state} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="State" />
+                  <label
+                    htmlFor="state"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    State
+                  </label>
+                  <input
+                    type="text"
+                    name="state"
+                    value={formState.state}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="State"
+                  />
                 </div>
                 <div>
-                    <label htmlFor="county" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">County</label>
-                    <input type="text" name="county" value={formState.county} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="County" />
+                  <label
+                    htmlFor="county"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    County
+                  </label>
+                  <input
+                    type="text"
+                    name="county"
+                    value={formState.county}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="County"
+                  />
                 </div>
                 <div>
-                    <label htmlFor="city" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">City</label>
-                    <input type="text" name="city" value={formState.city} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="City" />
+                  <label
+                    htmlFor="city"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    City
+                  </label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={formState.city}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="City"
+                  />
                 </div>
                 <div>
-                    <label htmlFor="postalCode" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
-                    <input type="text" name="postalCode" value={formState.postalCode} onChange={handleChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-                    placeholder="Postal Code" />
+                  <label
+                    htmlFor="postalCode"
+                    className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                    Postal Code
+                  </label>
+                  <input
+                    type="text"
+                    name="postalCode"
+                    value={formState.postalCode}
+                    onChange={handleChange}
+                    className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                    placeholder="Postal Code"
+                  />
                 </div>
               </div>
               <div>
@@ -221,7 +336,7 @@ const Signup = () => {
                 type="submit"
                 className="bg-purple hover:bg-purpleDark w-full rounded-lg px-5 py-2.5 text-center text-sm font-medium text-white hover:shadow-lg focus:outline-none"
                 // disabled={loading}>
-                >
+              >
                 Sign in
               </button>
               {submitError && <p>{submitError}</p>}
@@ -230,8 +345,8 @@ const Signup = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 // const Login = () => {
 //   const [email, setEmail] = useState('');
