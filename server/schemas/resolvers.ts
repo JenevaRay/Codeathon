@@ -32,23 +32,11 @@ const resolvers = {
     events: async () => {
       return await Event.find()
         .populate([
-          {
-            path: 'organizerUserId',
-            model: User
-            // populate: [
-            //   {
-            //     path: 'phoneNumbers',
-            //     model: Phone,
-            //   },
-            // ],
-          },
-        ])
-        .populate({ path: 'registrations', model: Registration })
-        .populate({
-          path: 'venues',
-          model: Venue,
-        })
-        .populate({ path: 'groups', model: Group });
+          { path: 'organizerUserId', model: User },
+          { path: 'registrations', model: Registration },
+          { path: 'venues', model: Venue },
+          { path: 'groups', model: Group }
+        ]);
     },
     groups: async () => {
       return await Group.find().populate([

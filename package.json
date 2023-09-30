@@ -4,12 +4,13 @@
   "description": "Bringing Coders Together",
   "main": "server/server.ts",
   "scripts": {
-    "start": "ts-node server/server.ts",
+    "start": "concurrently \"cd server && npm run ts-start\" \"cd client && npm start\"",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
-    "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\""
+    "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\"",
+    "deploy": "npm run build && git add -A && git commit -m Heroku && git push heroku main"
   },
   "engines": {
     "node": "16.14.0"
