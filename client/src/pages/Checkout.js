@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import { useContext, useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-//import { ADD_REGISTRATION } from '../utils/mutations';
-//import { useQuery, useMutation } from '@apollo/client';
-//import dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 import Button from '../components/ui/Button';
+import { useQuery } from '@apollo/client';
+
 
 const stripePromise = loadStripe('your-publishable-key-here');
 //const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
@@ -64,18 +66,7 @@ function Checkout() {
               Check your items and select your preferred shipping method
             </p>
             <div className="shadow-px-2 mt-8 space-y-3 rounded-xl bg-white py-4 shadow-xl sm:px-6">
-              <div className="flex flex-col rounded-xl bg-white sm:flex-row">
-                <img
-                  className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
-                  src="/daypass.png"
-                  alt=""
-                />
-                <div className="flex w-full flex-col px-4 py-4">
-                  <span className="font-semibold">Codeathon Event Lanyard</span>
-                  <span className="float-right text-zinc-400">Green</span>
-                  <p className="mt-auto text-lg font-bold">$0.00</p>
-                </div>
-              </div>
+              {formatReservations()}
               <div className="flex flex-col rounded-xl bg-white sm:flex-row">
                 <img
                   className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
@@ -299,7 +290,7 @@ function Checkout() {
               <div className="mt-6 border-b border-t py-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Subtotal</p>
-                  <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
+                  <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Shipping</p>
@@ -310,9 +301,7 @@ function Checkout() {
               </div>
               <div className="mt-6 flex items-center justify-between">
                 <p className="text-sm font-medium text-zinc-900">Total</p>
-                <p className="text-2xl font-semibold text-zinc-900">
-                  {itemizedTotal}
-                </p>
+                <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
               </div>
             </div>
             <Button

@@ -5,13 +5,14 @@
   "main": "server/server.ts",
   "type": "module",
   "scripts": {
-    "start": "concurrently \"cd server && npm run start\" \"cd client && npm start\"",
-    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+    "start": "cd client && npm start",
+    "develop": "concurrently \"cd server && npm run develop\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
+    "build-server": "cd server && npm run deploy",
     "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\"",
-    "deploy": "npm run build && git add -A && git commit -m Heroku && git push heroku main"
+    "deploy": "npm run build && npm run build-server && git add -A && git commit -m Heroku && git push origin heroku"
   },
   "engines": {
     "node": "18.16.0"

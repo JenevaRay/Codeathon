@@ -14,9 +14,7 @@ import { StoreProvider } from '../utils/GlobalState';
 
 const Events = () => {
   return (
-    <div>
-      <RegistrationList />
-    </div>
+    <RegistrationList />
   );
 };
 
