@@ -11,7 +11,6 @@ import { db } from './config/connection';
 // import { DocumentNode } from 'graphql'
 
 const PORT = process.env.PORT || 3001;
-console.log(process.env)
 const app = Express();
 const server = new ApolloServer({
   typeDefs,
