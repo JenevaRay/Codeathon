@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import { ADD_REGISTRATION } from '../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_EVENTS /*, Auth */ } from '../utils/';
+import { useStoreContext, QUERY_EVENTS, Auth } from '../utils/';
 
 import Button from './ui/Button';
 
 // import { Elements } from '@stripe/react-stripe-js';
-// imp/me ort { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 
 // const stripePromise = loadStripe(
 //   'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
@@ -19,24 +19,25 @@ const EventList = () => {
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
   const { /* data, loading,*/ error } = mutation_info;
 
-  // const registerForEvent = async (eventId) => {
-  //   // calling this throws an ApolloError, is this cacheing at work?
-  //   if (profile.data) {
-  //     console.log(profile);
-  //     const data = profile.data;
-  //     if (data._id) {
-  //       const userId = data._id;
-  //       try {
-  //         const mutationResponse = await register({
-  //           variables: { eventId, userId },
-  //         });
-  //         // console.log(mutationResponse);
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     }
-  //   }
-  // };
+  const registerForEvent = async (eventId) => {
+    // calling this throws an ApolloError, is this cacheing at work?
+    const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+    if (profile.data) {
+      const data = profile.data;
+      if (data._id) {
+        const userId = data._id;
+        try {
+          const mutationResponse = await register({
+            variables: { eventId, userId },
+          });
+          // window.location.assign('/checkout')
+          // console.log(mutationResponse);
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    }
+  };
 
   // const handleStripeCheckout = () => {
   //   // Redirects the user to the Stripe Checkout page
@@ -74,10 +75,8 @@ const EventList = () => {
 
   //   const { currentEvent } = state;
   //   console.log(data.events[0]);
-  console.log(state);
 
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-  console.log(query_info.data);
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const expiry =
@@ -130,8 +129,10 @@ const EventList = () => {
                 width="w-full"
                 padding="py-2"
                 onClick={(e) => {
-                  handleCheckout(event._id, cost);
-                  console.log(event);
+                  // window.location.assign('/checkout')
+                  registerForEvent(event._id)
+                  // handleCheckout(event._id, cost);
+                  // console.log(event);
                 }}>
                 Register {cost}
               </Button>

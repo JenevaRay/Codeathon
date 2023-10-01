@@ -27,6 +27,7 @@ const app = (0, express_1.default)();
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: index_1.typeDefs,
     resolvers: index_1.resolvers,
+    // context: authMiddleware
 });
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
