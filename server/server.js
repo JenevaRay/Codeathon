@@ -22,11 +22,11 @@ const index_1 = require("./schemas/index");
 const connection_1 = require("./config/connection");
 // import { DocumentNode } from 'graphql'
 const PORT = process.env.PORT || 3001;
+console.log(process.env);
 const app = (0, express_1.default)();
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: index_1.typeDefs,
     resolvers: index_1.resolvers,
-    // context: authMiddleware
 });
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
