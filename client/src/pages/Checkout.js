@@ -1,20 +1,59 @@
 import { useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
+import { loadStripe } from '@stripe/stripe-js';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 //import { ADD_REGISTRATION } from '../utils/mutations';
 //import { useQuery, useMutation } from '@apollo/client';
 //import dayjs from 'dayjs'
 
 import Button from '../components/ui/Button';
 
+const stripePromise = loadStripe('your-publishable-key-here');
 //const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
 //const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
 let itemizedList = '';
 let itemizedTotal = '';
-const Checkout = () => {
+// const Checkout = () => {
+//   const [checked, setChecked] = useState(false);
+//   const handleChange = () => {
+//     setChecked(!checked);
+//   };
+
+function Checkout() {
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
   };
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  // Use Stripe methods to create a payment method
+  // and handle the payment flow here.
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet.
+      return;
+    }
+
+    // Create a payment method using CardElement
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
+
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(paymentMethod);
+
+      // Send the paymentMethod.id or other relevant data to your server
+      // for server-side processing (e.g., creating a charge, saving the payment method).
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-between pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -290,8 +329,7 @@ const Checkout = () => {
       </div>
     </>
   );
-};
-
+}
 export default Checkout;
 
 // function RegistrationList() {

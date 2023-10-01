@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Bringing Coders Together",
   "main": "server/server.ts",
+  "type": "module",
   "scripts": {
     "start": "concurrently \"cd server && npm run start\" \"cd client && npm start\"",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
@@ -13,7 +14,7 @@
     "deploy": "npm run build && git add -A && git commit -m Heroku && git push heroku main"
   },
   "engines": {
-    "node": "16.14.0"
+    "node": "18.16.0"
   },
   "repository": {
     "type": "git",
