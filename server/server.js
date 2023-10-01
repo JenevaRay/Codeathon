@@ -21,7 +21,8 @@ const path_1 = __importDefault(require("path"));
 const index_1 = require("./schemas/index");
 const connection_1 = require("./config/connection");
 // import { DocumentNode } from 'graphql'
-const PORT = process.env.port || 3001;
+const PORT = process.env.PORT || 3001;
+console.log(process.env);
 const app = (0, express_1.default)();
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: index_1.typeDefs,
@@ -43,7 +44,7 @@ const startApolloServer = () => __awaiter(void 0, void 0, void 0, function* () {
     connection_1.db.once('open', () => {
         app.listen(PORT, () => {
             console.log(`API server running on port ${PORT}!`);
-            console.log(`Use GraphQL at http://localhost:${PORT}${server.graphqlPath}`);
+            console.log(`Use GraphQL at ${server.graphqlPath}`);
         });
     });
 });
