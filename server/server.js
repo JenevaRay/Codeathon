@@ -21,7 +21,7 @@ const path_1 = __importDefault(require("path"));
 const index_1 = require("./schemas/index");
 const connection_1 = require("./config/connection");
 // import { DocumentNode } from 'graphql'
-const PORT = process.env.port || 3001;
+const PORT = process.env.PORT || 3001;
 const app = (0, express_1.default)();
 const server = new apollo_server_express_1.ApolloServer({
     typeDefs: index_1.typeDefs,

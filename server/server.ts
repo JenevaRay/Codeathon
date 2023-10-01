@@ -10,7 +10,7 @@ import { typeDefs, resolvers } from './schemas/index';
 import { db } from './config/connection';
 // import { DocumentNode } from 'graphql'
 
-const PORT = process.env.port || 3001;
+const PORT = process.env.PORT || 3001;
 const app = Express();
 const server = new ApolloServer({
   typeDefs,
