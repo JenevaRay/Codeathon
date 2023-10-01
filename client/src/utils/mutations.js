@@ -51,3 +51,13 @@ mutation MyEvents($organizerUserId: String!) {
     }
   }
 `
+
+export const ADD_USER = gql`
+mutation Mutation($emailAddress: String!, $password: String!, $nameLast: String!, $nameFirst: String!) {
+  addUser(emailAddress: $emailAddress, password: $password, nameLast: $nameLast, nameFirst: $nameFirst) {
+    token
+    user {
+      _id
+    }
+  }
+}`

@@ -9,7 +9,6 @@ const typeDefs = (0, apollo_server_express_1.gql) `
     schemaVersion: String
     schemaDate: String
     emailAddress: String
-    password: String
     nameLast: String
     nameFirst: String
     nameMiddle: String
@@ -112,9 +111,7 @@ const typeDefs = (0, apollo_server_express_1.gql) `
       userId: String!
       type: String
     ): Registration
-    addUser(
-      emailAddress: String!, nameLast: String!, nameFirst: String!
-    ): User
+    addUser(emailAddress: String!, password: String!, nameLast: String!, nameFirst: String!): Auth
     myEvents(organizerUserId: String!): [Event]
   }
 `;

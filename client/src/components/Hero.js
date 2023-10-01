@@ -64,7 +64,7 @@ const Hero = () => {
               Codeathon makes it easy to create, join, or register for
               hackathons. Try it for free today!
             </p>
-            <a href="/dashboard">
+            <a href="/signup">
               <Button
                 margin="mt-8"
                 padding="px-6 py-3"
