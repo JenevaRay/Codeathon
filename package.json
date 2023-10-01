@@ -10,7 +10,8 @@
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build",
     "prettier": "prettier --write \"{,!(node_modules)/**/}*.?s\"",
-    "deploy": "npm run build && git add -A && git commit -m Heroku && git push origin heroku"
+    "deploy": "npm run build && git add -A && git commit -m Heroku && git push origin heroku",
+    "postdeploy": "npm run seed"
   },
   "engines": {
     "node": "16.14.0"
