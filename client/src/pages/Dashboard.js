@@ -1,7 +1,6 @@
 // import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 // import { setContext } from '@apollo/client/link/context';
 
-import { StoreProvider } from '../utils/GlobalState';
 import { MyEventList, /* EventList,*/ AddEvent } from '../components';
 // import { useState } from 'react';
 // import { useMutation, useQuery } from '@apollo/client';
@@ -21,10 +20,8 @@ import { MyEventList, /* EventList,*/ AddEvent } from '../components';
 const Dashboard = () => {
   return (
     <div>
-      <StoreProvider>
         <MyEventList />
         <AddEvent />
-      </StoreProvider>
     </div>
   );
 };
