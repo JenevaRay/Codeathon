@@ -5,16 +5,11 @@ import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
 import React, { useEffect } from "react";
-import "./App.css";
+// import "./App.css";
 
 import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
 
-const [state, dispatch] = useStoreContext();
-const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-const query_info = useQuery(QUERY_REGISTRATIONS);
-const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-let itemizedTotal = 0 // to be incremented by formatReservations
 const formatReservations = ()=>{
   if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
     // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
@@ -65,9 +60,26 @@ let itemizedList = '';
 //   };
 
 function Checkout() {
-  const [checked, setChecked] = useState(false);
+const [state, dispatch] = useStoreContext();
+const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+const query_info = useQuery(QUERY_REGISTRATIONS);
+const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+const [totalPrice, setTotalPrice] = useState(0);
+const [checked, setChecked] = useState(false);
+  useEffect(() => {
+    let calculatedTotal = 0;
+    calculatedTotal = itemizedTotal; 
+
+    // Set the total price in the state
+    setTotalPrice(calculatedTotal);
+  }, []); 
+
   const handleChange = () => {
     setChecked(!checked);
+
+   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    let itemizedTotal = 0;
+  
   };
 
   const stripe = useStripe();
@@ -368,6 +380,8 @@ function Checkout() {
               </div>
             </div>
             <Button
+            // Pass totalPrice to handlePayment
+              onClick={() => Checkout(totalPrice)} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"

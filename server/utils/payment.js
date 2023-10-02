@@ -6,7 +6,7 @@ const paymentMethodId = 'your-payment-method-id';
 
 // Create a payment intent to confirm the payment
 const paymentIntent = await stripe.paymentIntents.create({
-  amount: 1000, // Amount in cents
+  amount: totalPrice * 100, // Amount in cents
   currency: 'usd', // Currency code (e.g., 'usd')
   payment_method: paymentMethodId,
   confirm: true,
