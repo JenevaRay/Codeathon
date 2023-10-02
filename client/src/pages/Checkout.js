@@ -57,7 +57,6 @@ function StripeCheckout() {
       return ''
     }
   }
-<<<<<<< HEAD
 }
 
 const stripePromise = loadStripe('your-publishable-key-here');
@@ -88,10 +87,7 @@ const [checked, setChecked] = useState(false);
   const handleDeliveryMethodChange = (method) => {
     setSelectedDeliveryMethod(method);
   };
-=======
->>>>>>> origin
 
-  const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
     const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
