@@ -31,22 +31,30 @@ mutation MyEvents($organizerUserId: String!) {
     myEvents(organizerUserId: $organizerUserId) {
       _id
       name
+      dateStart
+      dateEnd
+      dateCutoff
+      registrationPaymentRequiredDate
+      feeRegistration
+      feeVenue
+      registrations {
+        _id
+        paid
+        role
+      }
+      organizerUserId {
+        _id
+      }
       venues {
-        addressId {
-          streetAddress
-          extendedAddress
-          country
-          state
-          county
-          city
-          postalCode
-        }
         name
-        venueTimeZone
-        phoneId {
-          number
-          type
-        }
+        addressStreet
+        addressExtended
+        addressCity
+        addressState
+        addressCountry
+        addressPostalCode
+        phoneNumber
+        website
       }
     }
   }
