@@ -7,8 +7,6 @@ import { useStoreContext, QUERY_EVENTS, Auth, StoreProvider } from '../utils/';
 
 import Button from './ui/Button';
 
-import { useEffect } from 'react';
-
 const strToDayJS = function (unixEpochStr) {
   return dayjs(new Date(Number(unixEpochStr)));
 };
