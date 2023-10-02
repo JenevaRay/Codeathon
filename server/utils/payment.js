@@ -1,4 +1,5 @@
 import stripe from 'stripe';
+const stripe = require('stripe')('your-publishable-key-here');
 
 async function handlePayment() {
 // paymentMethodId sent from the client
