@@ -12,25 +12,25 @@ const containerStyle = {
   marginBottom: '20px',
 };
 
-const eventItemStyle = {
-  backgroundColor: '#f9f9f9',
-  padding: '15px',
-  marginBottom: '10px',
-  borderRadius: '4px',
-  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-  backgroundImage: 'linear-gradient(to right, #800080, #FF69B4)',
-  backgroundSize: '100% 100%',
-  color: 'white',
-};
+// const eventItemStyle = {
+//   backgroundColor: '#f9f9f9',
+//   padding: '15px',
+//   marginBottom: '10px',
+//   borderRadius: '4px',
+//   boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+//   backgroundImage: 'linear-gradient(to right, #800080, #FF69B4)',
+//   backgroundSize: '100% 100%',
+//   color: 'white',
+// };
 
-const buttonStyle = {
-  backgroundColor: '#4a90e2',
-  color: '#ffffff',
-  padding: '8px 16px',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-};
+// const buttonStyle = {
+//   backgroundColor: '#4a90e2',
+//   color: '#ffffff',
+//   padding: '8px 16px',
+//   border: 'none',
+//   borderRadius: '4px',
+//   cursor: 'pointer',
+// };
 
 function MyEventList() {
   // const query_info = useQuery(QUERY_EVENTS);

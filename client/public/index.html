@@ -22,7 +22,8 @@
       href="%PUBLIC_URL%/manifest.json" />
     <title>Codeathon</title>
     <script type="module" src="payment.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <!-- double loading throws a "invalid prop `stripe` supplied to `Elements` error with React" -->
+    <!-- <script src="https://js.stripe.com/v3/" async></script> -->
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
