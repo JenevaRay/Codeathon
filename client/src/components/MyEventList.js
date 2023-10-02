@@ -145,8 +145,12 @@ const NewEventForm = () => {
           </div>
           <div>
             <label htmlFor="dateStart" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Time & Date</label>
+            <input required type="time" name="timeStart" value={venueState.timeStart} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Starting Time" />
             <input required type="date" name="dateStart" value={venueState.dateStart} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
               placeholder="Starting Date" />
+            <input required type="time" name="timeEnd" value={venueState.timeEnd} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Starting Time" />
             <input required type="date" name="dateEnd" value={venueState.dateEnd} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
               placeholder="Ending Date" />
           </div>
@@ -156,7 +160,7 @@ const NewEventForm = () => {
               placeholder="Register before" />
             <label htmlFor="registrationPaymentRequiredDate" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Payment Required Before</label>
             <input required type="date" name="registrationPaymentRequiredDate" value={venueState.registrationPaymentRequiredDate} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
-              placeholder="Pay for Registration before" />
+              placeholder="Pay for Registration before..." />
           </div>
           <div>
             <label htmlFor="feeRegistration" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Fees</label>
