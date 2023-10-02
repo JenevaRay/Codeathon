@@ -1,16 +1,66 @@
-import { useState } from 'react';
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
+import { useContext, useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-//import { ADD_REGISTRATION } from '../utils/mutations';
-//import { useQuery, useMutation } from '@apollo/client';
-//import dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 import Button from '../components/ui/Button';
+import { useQuery } from '@apollo/client';
 
-//const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-//const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-let itemizedList = '';
-let itemizedTotal = '';
+
 const Checkout = () => {
+  const stripePromise = loadStripe(
+    'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
+  );
+
+  // const registrations = useContext(StoreContext)
+  const [state, dispatch] = useStoreContext();
+  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+  const query_info = useQuery(QUERY_REGISTRATIONS);
+  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+  let itemizedTotal = 0 // to be incremented by formatReservations
+  const formatReservations = ()=>{
+    if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
+      // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
+      // TODO: which is, right now, all the time...
+      const {loading, data} = query_info
+      // console.log(loading)
+      // console.log(data)
+  
+      if (!loading && data) {
+        // console.log(data)
+        const registrations = data.registrations
+          .filter((registration)=>!registration.paid)
+          .map((registration)=>{
+            const costStr = String(registration.eventId.feeRegistration + registration.eventId.feeVenue);
+            const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+            itemizedTotal += registration.eventId.feeRegistration + registration.eventId.feeVenue
+            return (
+            <div className="flex flex-col rounded-xl bg-white sm:flex-row">
+              <img
+                className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
+                src="/daypass.png"
+                alt=""
+              />
+              <div className="flex w-full flex-col px-4 py-4">
+                <span className="font-semibold">{registration.eventId.name}</span>
+                <span className="float-right text-zinc-400">{strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}</span>
+                <p className="mt-auto text-lg font-bold">{cost}</p>
+              </div>
+            </div>
+          )})  
+        return registrations
+      } else {
+        return ''
+      }
+    } else {
+      console.log("TODO")
+      return ''
+    }
+  }
+    // console.log(query_info)
+  
+  console.log(state)
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
@@ -25,18 +75,7 @@ const Checkout = () => {
               Check your items and select your preferred shipping method
             </p>
             <div className="shadow-px-2 mt-8 space-y-3 rounded-xl bg-white py-4 shadow-xl sm:px-6">
-              <div className="flex flex-col rounded-xl bg-white sm:flex-row">
-                <img
-                  className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
-                  src="/daypass.png"
-                  alt=""
-                />
-                <div className="flex w-full flex-col px-4 py-4">
-                  <span className="font-semibold">Codeathon Event Lanyard</span>
-                  <span className="float-right text-zinc-400">Green</span>
-                  <p className="mt-auto text-lg font-bold">$0.00</p>
-                </div>
-              </div>
+              {formatReservations()}
               <div className="flex flex-col rounded-xl bg-white sm:flex-row">
                 <img
                   className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
@@ -260,7 +299,7 @@ const Checkout = () => {
               <div className="mt-6 border-b border-t py-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Subtotal</p>
-                  <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
+                  <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Shipping</p>
@@ -271,9 +310,7 @@ const Checkout = () => {
               </div>
               <div className="mt-6 flex items-center justify-between">
                 <p className="text-sm font-medium text-zinc-900">Total</p>
-                <p className="text-2xl font-semibold text-zinc-900">
-                  {itemizedTotal}
-                </p>
+                <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
               </div>
             </div>
             <Button

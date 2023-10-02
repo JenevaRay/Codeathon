@@ -4,7 +4,7 @@ import { EventList } from '../components';
 
 // import { Login, Signup, NoMatch, Detail, Success, OrderHistory } from './'
 
-import { StoreProvider } from '../utils/GlobalState';
+
 import { httpLink } from '../utils';
 
 // note: this was an App.js that used as a template; some things, like ApolloProvider, belong in the global context.
@@ -13,11 +13,7 @@ import { httpLink } from '../utils';
 
 const Events = () => {
   return (
-    <div>
-      <StoreProvider>
-        <EventList />
-      </StoreProvider>
-    </div>
+    <EventList />
   );
 };
 

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-//import { useMutation } from '@apollo/client';
-//import { Auth } from '../utils/';
+import { useMutation } from '@apollo/client';
+import { Auth } from '../utils/';
 
 import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
+import { ADD_USER } from '../utils/mutations';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -11,19 +12,28 @@ const Signup = () => {
     nameLast: '',
     emailAddress: '',
     password: '',
+    passwordVerif: '',
     submitError: '',
     loading: false,
   });
 
-  // const [addUser] = useMutation(ADD_USER)
+  const [addUser] = useMutation(ADD_USER)
   // const [addAddress] = useMutation(ADD_ADDRESS)
   // const [addPhone] = useMutation(ADD_PHONE)
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    if (e.target.name === 'passwordVerif' && formData.password !== e.target.value) {
+      setFormData({...formData,
+        [e.target.name]: e.target.value,
+        submitError: "Passwords do not match"
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+        submitError: ''
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -34,19 +44,15 @@ const Signup = () => {
         nameLast: formData.nameLast,
         emailAddress: formData.emailAddress,
         password: formData.password,
+        passwordVerif: formData.passwordVerif,
         submitError: '',
         loading: true,
       });
-      //const mutationResponse = await addUser({
-      //  variables: {
-      //    nameFirst: formData.nameFirst,
-      //    nameLast: formData.nameLast,
-      //    emailAddress: formData.emailAddress,
-      //    password: formData.password,
-      //  },
-      //});
-      //const token = mutationResponse.data.addUser.token;
-      //Auth.login(token);
+      const mutationResponse = await addUser({
+       variables: {...formData},
+      });
+      const token = mutationResponse.data.addUser.token;
+      Auth.login(token);
     } catch (err) {
       setFormData({
         nameFirst: '',
@@ -178,6 +184,32 @@ const Signup = () => {
                   ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 />
               </div>
+              <div>
+                <label
+                  htmlFor="passwordVerif"
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
+                  Verify Password
+                </label>
+                <input
+                  type="password"
+                  name="passwordVerif"
+                  placeholder="••••••••"
+                  value={formData.passwordVerif}
+                  onChange={handleChange}
+                  required
+                  className="focus:border-purple
+                m-0
+                w-full
+                rounded-xl border
+                border-solid border-zinc-300 bg-zinc-50
+                bg-clip-padding px-4 py-4 text-base
+                font-normal
+                text-zinc-700
+                transition
+                  ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                />
+              </div>
+
               {formData.submitError && (
                 <p className="text-red-600">{formData.submitError}</p>
               )}

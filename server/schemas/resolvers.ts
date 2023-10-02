@@ -58,7 +58,7 @@ const resolvers = {
   Mutation: {
     addUser: async (_: any, args: any) => {
       try {
-        const user = await User.create(args);
+        const user = await User.create({...args, schemaVersion, schemaDate});
         const token = signToken(user);
         return { token, user }
       } catch (e) {
