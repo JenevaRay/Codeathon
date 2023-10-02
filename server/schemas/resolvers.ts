@@ -136,11 +136,11 @@ const resolvers = {
           .populate({
             path: 'venues',
             model: Venue,
-            populate: [
-              // { path: 'addressId', model: Address },
-              // { path: 'phoneId', model: Phone },
-              { path: 'hostId', model: User },
-            ],
+            // populate: [
+            //   // { path: 'addressId', model: Address },
+            //   // { path: 'phoneId', model: Phone },
+            //   { path: 'hostId', model: User },
+            // ],
           })
           .populate({ path: 'groups', model: Group });
       return result

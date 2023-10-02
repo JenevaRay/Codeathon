@@ -1,133 +1,324 @@
+import { useReducer, useState } from 'react'
 import dayjs from 'dayjs';
-import { ADD_REGISTRATION, MY_EVENTS } from '../utils/mutations';
-import { useMutation } from '@apollo/client';
-import { useStoreContext, Auth } from '../utils';
-import { useEffect, useState } from 'react';
+import { ADD_REGISTRATION_TO_CART } from '../utils/actions';
+import { ADD_REGISTRATION } from '../utils/mutations';
+import { useMutation, useQuery } from '@apollo/client';
+import { useStoreContext, QUERY_EVENTS, Auth, StoreProvider } from '../utils/';
 
-const containerStyle = {
-  backgroundColor: '#ffffff',
-  padding: '20px',
-  borderRadius: '8px',
-  boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)',
-  marginBottom: '20px',
+import Button from './ui/Button';
+
+import { useEffect } from 'react';
+
+const strToDayJS = function (unixEpochStr) {
+  return dayjs(new Date(Number(unixEpochStr)));
 };
 
-const eventItemStyle = {
-  backgroundColor: '#f9f9f9',
-  padding: '15px',
-  marginBottom: '10px',
-  borderRadius: '4px',
-  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-  backgroundImage: 'linear-gradient(to right, #800080, #FF69B4)',
-  backgroundSize: '100% 100%',
-  color: 'white',
-};
+const NewEventForm = () => {
+  const [submitError, setSubmitError] = useState('')
+  const [newEventMode, setNewEventMode] = useState('')
+  const [eventState, setEventState] = useState({
+    name: '', 
+    dateStart: '', 
+    dateEnd: '', 
+    dateCutoff: '',
+    registrationPaymentRequiredDate: '',
+    feeRegistration: '',
+    feeVenue: ''
+  })
+  const [venueState, setVenueState] = useState({
+    name: '',
+    addressStreet: '',
+    addressExtended: '',
+    addressCity: '',
+    addressState: '',
+    addressPostalCode: '',
+    addressCountry: '',
+    phoneNumber: '',
+    website: ''
+  })
+  
+  const handleEventFormSubmit = async (e) => {
+    e.preventDefault();
+    // validate things here...  right now everything in the event is required.  if everything validates, then submit and change the form mode.
+    console.log(eventState)
+    console.log(venueState)
+  }
+  const handleVenueFormSubmit = async (e) => {
+    e.preventDefault();
+    // validate things here...  right now everything in the venue is optional.  if everything validates, then change the form mode.
+    setNewEventMode('EVENT')
+  }
+  const handleEventChange = (event) => {
+    const { name, value } = event.target;
+    setEventState({
+      ...eventState,
+      [name]: value
+    })
+  }
+  const handleVenueChange = (event) => {
+    const { name, value } = event.target;
+    setVenueState({
+        ...venueState,
+        [name]: value
+    })
+  }
+  // console.log(venueState)
+// FIRST we display a form for the venue info
+// THEN we display a form for the event info
+  return (
+  <div
+    className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+    {newEventMode === '' ? (<h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
+      <Button 
+        margin="mt-4"
+        width="w-full"
+        padding="py-2"
+        onClick={()=>{setNewEventMode('VENUE')}}
+      >New Event</Button>
+    </h5>) : ''}
+    {newEventMode === 'VENUE' ? 
+      <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+          <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+            Address Information
+          </h1>
+        </div>
+        <form
+          className="space-y-4 md:space-y-6"
+          onSubmit={handleVenueFormSubmit}>
+          <div>
+            <label htmlFor="name" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Name</label>
+            <input type="text" name="name" value={venueState.name} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Venue Name" />
+          </div>
+          <div>
+            <label htmlFor="addressStreet" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Address</label>
+            <input type="text" name="addressStreet" value={venueState.addressStreet} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Address" />
+            <input type="text" name="addressExtended" value={venueState.addressExtended} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Address" />
+          </div>
+          <div>
+            <label htmlFor="addressCity" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">City</label>
+            <input type="text" name="addressCity" value={venueState.addressCity} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="City" />
+          </div>
+          <div>
+            <label htmlFor="addressState" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">State</label>
+            <input type="text" name="addressState" value={venueState.addressState} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="State" />
+          </div>
+          <div>
+            <label htmlFor="addressCountry" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Country</label>
+            <input type="text" name="addressCountry" value={venueState.addressCountry} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Country" />
+          </div>
+          <div>
+            <label htmlFor="addressPostalCode" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Postal Code</label>
+            <input type="text" name="addressPostalCode" value={venueState.addressPostalCode} onChange={handleVenueChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Postal Code" />
+          </div>
+            <Button
+                 type="submit"
+                 width="w-full"
+                 borderRadius="rounded-md"
+                 >
+                 Confirm Address
+               </Button>
 
-const buttonStyle = {
-  backgroundColor: '#4a90e2',
-  color: '#ffffff',
-  padding: '8px 16px',
-  border: 'none',
-  borderRadius: '4px',
-  cursor: 'pointer',
-};
-
-function MyEventList() {
-  // const query_info = useQuery(QUERY_EVENTS);
-  const [state, dispatch] = useStoreContext();
-  const [MyEvents, mutation_info] = useMutation(MY_EVENTS)
-  const { data, loading, error } = mutation_info;
-  useEffect(()=>{
-    async function fetchData() {
-      let profile
-      if (Auth.loggedIn()) {
-        profile = Auth.getProfile()
-      }
-      if (profile && profile.data) {
-        const data = profile.data
-        if (data._id) {
-          const userId = data._id
-          try {
-            const mutationResponse = await MyEvents({
-              variables: { organizerUserId: userId }
-            })
-            return mutationResponse.data.myEvents
-          } catch(e) {
-            console.log(e)
-          }
-        }
-      }
-      const events = fetchData()
-      console.log(events)
+        </form>
+      </div> : ''
     }
-    // const events = getMyEvents()
-    // console.log(events)
-  }, [])
-  // const getMyEvents = async ()=>{
-  //   if (profile && profile.data) {
-  //       const data = profile.data
-  //       if (data._id) {
-  //           const userId = data._id
-  //           try {
-  //               const mutationResponse = await MyEvents({
-  //                   variables: {organizerUserId: userId}
-  //               })
-  //               return (mutationResponse.data.myEvents)
-  //           } catch (e) {
-  //             console.log(e)
-  //           }
-  //       }
-  //   }
-  // }
+    {newEventMode === 'EVENT' ? 
+      <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
+          <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
+            Address Information
+          </h1>
+        </div>
+        <form
+          className="space-y-4 md:space-y-6"
+          onSubmit={handleEventFormSubmit}>
+          <div>
+            <label htmlFor="name" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Name</label>
+            <input required type="text" name="name" value={eventState.name} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Event Name" />
+          </div>
+          <div>
+            <label htmlFor="dateStart" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Time & Date</label>
+            <input required type="date" name="dateStart" value={venueState.dateStart} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Starting Date" />
+            <input required type="date" name="dateEnd" value={venueState.dateEnd} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Ending Date" />
+          </div>
+          <div>
+            <label htmlFor="dateCutoff" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Register Before</label>
+            <input required type="date" name="dateCutoff" value={venueState.dateCutoff} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Register before" />
+            <label htmlFor="registrationPaymentRequiredDate" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Payment Required Before</label>
+            <input required type="date" name="registrationPaymentRequiredDate" value={venueState.registrationPaymentRequiredDate} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Pay for Registration before" />
+          </div>
+          <div>
+            <label htmlFor="feeRegistration" className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Fees</label>
+            <input required type="number" name="feeRegistration" value={venueState.feeRegistration} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Event Fee, in pennies" />
+            <input required type="number" name="feeVenue" value={venueState.feeVenue} onChange={handleEventChange} className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+              placeholder="Venue Fee, in pennies" />
+          </div>
+            <Button
+              type="submit"
+              width="w-full"
+              borderRadius="rounded-md"
+              >
+              Confirm New Event
+            </Button>
+        </form>
+      </div> : ''
+    }
 
-  // if (query_info.loading) return 'Loading...';
-  // if (query_info.error) return `Error! ${query_info.error.message}`;
+  </div>
+)
+}
 
-  const strToDayJS = function (unixEpochStr) {
-    return dayjs(new Date(Number(unixEpochStr)));
-  };
+const MyEventList = () => {
+  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+  const query_info = useQuery(QUERY_EVENTS);
+  const [state, dispatch] = useStoreContext();
+  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const { /* data, loading,*/ error } = mutation_info;
+  if (!profile) {
+    return 'Not Logged In'
+  }
+  // console.log(state)
 
-  // const events = getMyEvents()
-  // console.log(events)
-  // const events = query_info.data.events.map((event) => {
-  //   // registrations must be submitted before event.dateCutoff
-  //   const expiry =
-  //     strToDayJS(event.dateStart) > dayjs(Date.now())
-  //       ? 'FUTURE'
-  //       : strToDayJS(event.dateEnd) > dayjs(Date.now())
-  //       ? 'CURRENT'
-  //       : strToDayJS(event.dateCutoff) < dayjs(Date.now())
-  //       ? 'OVERDUE'
-  //       : 'EXPIRED';
-  //   const costStr = String(event.feeRegistration + event.feeVenue);
-  //   const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-      // return (
-        // <li
-        //   key={event._id}
-        //   style={eventItemStyle}>
-        //   <p>
-        //     <h2>{expiry}</h2>
-        //     <em>{event.name}</em> hosted by {event.organizerUserId.nameFirst}{' '}
-        //     {event.organizerUserId.nameLast}
-        //   </p>
-        //   <p>
-        //     {strToDayJS(event.dateStart).format('MM/DD/YY [at] HH:mm')} - to -{' '}
-        //     {strToDayJS(event.dateEnd).format('MM/DD/YY [at] HH:mm')}
-        //   </p>
-        //   <p>Registrations: {event.registrations.length}</p>
-        //   {console.log(event)}
-          // <p>&nbsp;</p>
-        // </li>
-      // );
-  // });
+
+  // const handleStripeCheckout = () => {
+  //   // Redirects the user to the Stripe Checkout page
+  //   window.location.href = 'https://buy.stripe.com/test_14k6oo8KK5ER8bS3cd';
+  // };
+
+  // Handles the checkout process
+
+  if (query_info.loading) return 'Loading...';
+  if (query_info.error) return `Error! ${query_info.error.message}`;
+
+  //   const { currentEvent } = state;
+  //   console.log(data.events[0]);
+
+  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+  const myUnpaidReservations = []
+  const events = query_info.data.events.map((event) => {
+    // registrations must be submitted before event.dateCutoff
+    // console.log(event)
+    const isOrganizer = event.organizerUserId._id === profile.data._id
+    const expiry =
+      strToDayJS(event.dateStart) > dayjs(Date.now())
+        ? 'FUTURE'
+        : strToDayJS(event.dateEnd) > dayjs(Date.now())
+        ? 'CURRENT'
+        : strToDayJS(event.dateCutoff) < dayjs(Date.now())
+        ? 'OVERDUE'
+        : 'EXPIRED';
+    const costStr = String(event.feeRegistration + event.feeVenue);
+    const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+    const reservations = event.registrations.map((registration) => {
+      const button = ''
+      switch (registration.role) {
+        case 'host':
+          return <Button disabled={true} >HOST</Button>
+        case 'attendee':
+          return (<Button >{'Confirm ' + cost.join('')}</Button>)
+        default:
+          console.log(registration.role)
+      }
+      return button
+      // return (<Button>{registration.paid ? (registration.role === 'host' ? 'HOST' : ''): 'Confirm ' + cost.join('')}</Button>)
+    })
+    // if (['OVERDUE', 'EXPIRED'].includes(expiry)) {
+    //   // omit expired events
+    //   // TODO: (luxury) do this in the SERVER side, so we are transmitting less info, and potentially even QUERYING less info.
+    //   // returning this instead of <></> because
+    //   return <div key={event._id}></div>;
+    // } else
+      return (
+          <div
+            key={event._id}
+            className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+            <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
+              {event.name}
+            </h5>
+            <p className="text-base leading-loose text-zinc-800">
+              <strong>HOST:</strong> {event.organizerUserId.nameFirst}{' '}
+              {event.organizerUserId.nameLast}
+              <br />
+              <strong>DATE:</strong>{' '}
+              {strToDayJS(event.dateStart).format('MM/DD/YYYY [@] h:mma')} -{' '}
+              {strToDayJS(event.dateEnd).format('MM/DD/YYYY [@] h:mma')}
+              <br />
+              <strong>REGISTERED:</strong> {event.registrations.length}
+            </p>
+            {/* <div>
+              <div
+                key={event._id}
+                className="event-card">
+                <h3>{event.name}</h3>
+                <button onClick={handleStripeCheckout}>Pay Now</button>
+              </div>
+            </div> */}
+
+            {expiry === 'FUTURE' ? (
+              // <Elements stripe={stripePromise}>
+                <Button
+                  value={event._id}
+                  margin="mt-4"
+                  width="w-full"
+                  padding="py-2"
+                  onClick={(e) => {
+                    
+                    // registerForEvent(event._id)
+                    
+                  }}>
+                  Attend {cost}
+                </Button>
+              // </Elements>
+            ) : (
+              <Button
+                value={event._id}
+                margin="mt-4"
+                width="w-full"
+                padding="py-2"
+                bgColor="bg-zinc-900/50"
+                disabled={true}
+                animations={false}>
+                Event Expired
+              </Button>
+            )}
+            <p>&nbsp;</p>
+            {/* Future: the Manage button should allow edits to the Event posting. */}
+            {/* Future: the Volunteer button should allow someone to confirm for $0. */}
+            {isOrganizer? <Button>Manage</Button> : <Button>Volunteer</Button>}
+            
+            {reservations.length > 0 ? 
+            <>
+              <br />
+              <h4>Reservations</h4>
+            </> : ''}
+            {reservations}
+          </div>
+          
+      );
+  });
 
   return (
-    <div style={containerStyle}>
-      MY_EVENTS
-      {/* <ul>{events}</ul> */}
-    </div>
+    <StoreProvider value={[state, dispatch]}>
+      <div className="mt-16 flex flex-wrap items-center justify-center">
+        {events}
+        <NewEventForm />
+      </div>
+    </StoreProvider>
   );
-}
+};
 
 export default MyEventList;
 
@@ -135,36 +326,6 @@ export default MyEventList;
 
 
 
-
-
-
-// import { useState } from 'react';
-// import { useMutation } from '@apollo/client';
-// import { Link } from 'react-router-dom';
-// import { Auth } from '../utils/';
-// import Button from '../components/ui/Button';
-
-// // TODO: additional forms for address(es), phone(s)
-
-// const Signup = () => {
-//     const [submitError, setSubmitError] = useState('')
-//     const [formState, setFormState] = useState({
-//         nameFirst: '', 
-//         nameLast: '', 
-//         email: '', 
-//         emailType: '', 
-//         otherContactMethod: '', 
-//         preferredContactMethod: '', 
-//         password: '',
-//         phone: '',
-//         streetAddress: '',
-//         extendedAddress: '',
-//         country: '',
-//         state: '',
-//         county: '',
-//         city: '',
-//         postalCode: ''
-//     })
 //     // const [addUser] = useMutation(ADD_USER)
 //     // const [addAddress] = useMutation(ADD_ADDRESS)
 //     // const [addPhone] = useMutation(ADD_PHONE)
