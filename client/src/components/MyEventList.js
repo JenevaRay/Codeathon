@@ -42,6 +42,7 @@ const NewEventForm = () => {
     // validate things here...  right now everything in the event is required.  if everything validates, then submit and change the form mode.
     console.log(eventState)
     console.log(venueState)
+    setNewEventMode('')
   }
   const handleVenueFormSubmit = async (e) => {
     e.preventDefault();
