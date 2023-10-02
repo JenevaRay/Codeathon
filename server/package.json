@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
-  "type": "module",
   "scripts": {
     "start": "node server.js",
     "tsc-watch": "tsc -w",
@@ -47,6 +46,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.2",
     "stripe": "^13.6.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
   }
 }
