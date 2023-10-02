@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
-import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-import dayjs from 'dayjs'
-=======
 import { loadStripe } from '@stripe/stripe-js'
 import { useContext, useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import { PaymentElement, CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React, { useEffect } from "react";
-
+import React, { useEffect } from "react"
 import Button from '../components/ui/Button';
->>>>>>> origin
 import { useQuery } from '@apollo/client';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import Button from '../components/ui/Button';
