@@ -1,19 +1,3 @@
-const stripe = require('stripe')('sk_test_51NsbiVI8fwprByGXIci8Eoi4l78evAEy21duMyweE2RfkCt8IIggFqJHCPrLltuppsavVpd1R3tY9nf6iqN9BuqB00wpmAfGYr');
-
-const session = await stripe.checkout.sessions.create({
-    line_items: [
-      {
-        // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-        price: 'price_1NvUyeI8fwprByGXftc5lSl5',
-        quantity: 1,
-      },
-    ],
-    mode: 'payment',
-    success_url: `${YOUR_DOMAIN}?success=true`,
-    cancel_url: `${YOUR_DOMAIN}?canceled=true`,
-  });
-
-  res.redirect(303, session.url);
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
