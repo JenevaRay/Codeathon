@@ -1,14 +1,14 @@
+import React, { useEffect, useState } from "react";
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { useContext, useState } from 'react';
-import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React, { useEffect } from "react";
-// import "./App.css";
-
-import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
+import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
+import Button from '../components/ui/Button';
+import DeliveryMethod from "./DeliveryMethod";
+import OrderSummary from "./OrderSummary";
+import PaymentDetails from "./PaymentDetails";
 
 const formatReservations = ()=>{
   if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
@@ -49,15 +49,8 @@ const formatReservations = ()=>{
     return ''
   }
 }
+
 const stripePromise = loadStripe('your-publishable-key-here');
-//const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-//const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-let itemizedList = '';
-// const Checkout = () => {
-//   const [checked, setChecked] = useState(false);
-//   const handleChange = () => {
-//     setChecked(!checked);
-//   };
 
 function Checkout() {
 const [state, dispatch] = useStoreContext();
@@ -65,21 +58,31 @@ const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
 const query_info = useQuery(QUERY_REGISTRATIONS);
 const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
 const [totalPrice, setTotalPrice] = useState(0);
+const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null);
 const [checked, setChecked] = useState(false);
-  useEffect(() => {
-    let calculatedTotal = 0;
-    calculatedTotal = itemizedTotal; 
 
-    // Set the total price in the state
+  useEffect(() => {
+    let calculatedTotal = calculateTotalPrice();
     setTotalPrice(calculatedTotal);
-  }, []); 
+  }, [state.registrations]);
+
+  // Calculate the total price from event
+  const calculateTotalPrice = () => {
+    return state.registrations
+      .filter((registration) => !registration.paid)
+      .reduce(
+        (total, registration) =>
+          total + registration.eventId.feeRegistration + registration.eventId.feeVenue,0);
+  };  
+
+  const handleDeliveryMethodChange = (method) => {
+    setSelectedDeliveryMethod(method);
+  };
 
   const handleChange = () => {
     setChecked(!checked);
-
-   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
     let itemizedTotal = 0;
-  
   };
 
   const stripe = useStripe();
@@ -149,7 +152,11 @@ const [checked, setChecked] = useState(false);
                   type="radio"
                   name="radio"
                   checked={checked ? false : true}
-                  onChange={handleChange}
+                  onChange={() => {
+                    handleChange();
+                    handleDeliveryMethodChange();
+                  }}
+                  selectedMethod={selectedDeliveryMethod}
                 />
                 <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
                 <label
@@ -381,7 +388,7 @@ const [checked, setChecked] = useState(false);
             </div>
             <Button
             // Pass totalPrice to handlePayment
-              onClick={() => Checkout(totalPrice)} 
+              onClick={handleSubmit} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
