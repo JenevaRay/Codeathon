@@ -22,7 +22,6 @@ query Events {
       userId {
         _id
         emailAddress
-        password
         nameLast
         nameFirst
         nameMiddle
@@ -41,7 +40,6 @@ query Events {
     organizerUserId {
       _id
       emailAddress
-      password
       nameLast
       nameFirst
       nameMiddle
@@ -134,17 +132,13 @@ const QUERY_USERS = gql`
       nameLast
       otherContactMethod
       preferredContactMethod
-      addresses {
-        _id
-        streetAddress
-        isUserPrimary
-        extendedAddress
-        city
-        county
-        state
-        country
-        postalCode
-      }
+      streetAddress
+      extendedAddress
+      city
+      county
+      state
+      country
+      postalCode
     }
   }
 `;

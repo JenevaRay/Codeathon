@@ -21,7 +21,7 @@ const Dashboard = () => {
   return (
     <div>
         <MyEventList />
-        <AddEvent />
+        {/* <AddEvent /> */}
     </div>
   );
 };

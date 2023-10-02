@@ -22,7 +22,6 @@ function StripeCheckout() {
       const {loading, data} = query_info
       // console.log(loading)
       // console.log(data)
-  
       if (!loading && data) {
         // console.log(data)
         const registrations = data.registrations
@@ -55,10 +54,13 @@ function StripeCheckout() {
     }
   }
 
-
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
+
+   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    let itemizedTotal = 0;
+  
   };
 
   const stripe = useStripe();
@@ -359,6 +361,8 @@ function StripeCheckout() {
               </div>
             </div>
             <Button
+            // Pass totalPrice to handlePayment
+              onClick={() => Checkout(totalPrice)} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"

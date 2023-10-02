@@ -58,7 +58,7 @@ const resolvers = {
   Mutation: {
     addUser: async (_: any, args: any) => {
       try {
-        const user = await User.create(args);
+        const user = await User.create({...args, schemaVersion, schemaDate});
         const token = signToken(user);
         return { token, user }
       } catch (e) {
@@ -136,11 +136,11 @@ const resolvers = {
           .populate({
             path: 'venues',
             model: Venue,
-            populate: [
-              // { path: 'addressId', model: Address },
-              // { path: 'phoneId', model: Phone },
-              { path: 'hostId', model: User },
-            ],
+            // populate: [
+            //   // { path: 'addressId', model: Address },
+            //   // { path: 'phoneId', model: Phone },
+            //   { path: 'hostId', model: User },
+            // ],
           })
           .populate({ path: 'groups', model: Group });
       return result

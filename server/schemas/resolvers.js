@@ -56,7 +56,7 @@ const resolvers = {
     Mutation: {
         addUser: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const user = yield models_1.User.create(args);
+                const user = yield models_1.User.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
                 const token = (0, auth_1.signToken)(user);
                 return { token, user };
             }
@@ -136,11 +136,11 @@ const resolvers = {
                 .populate({
                 path: 'venues',
                 model: models_1.Venue,
-                populate: [
-                    // { path: 'addressId', model: Address },
-                    // { path: 'phoneId', model: Phone },
-                    { path: 'hostId', model: models_1.User },
-                ],
+                // populate: [
+                //   // { path: 'addressId', model: Address },
+                //   // { path: 'phoneId', model: Phone },
+                //   { path: 'hostId', model: User },
+                // ],
             })
                 .populate({ path: 'groups', model: models_1.Group });
             return result;
