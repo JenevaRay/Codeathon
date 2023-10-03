@@ -26,7 +26,7 @@ const stripe_1 = __importDefault(require("stripe"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3001;
 // Stripe payment info inspired by https://github.com/stripe-samples/accept-a-payment
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
     app.use((0, cors_1.default)());
 }
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -143,9 +143,9 @@ const server = new apollo_server_express_1.ApolloServer({
 if (process.env.NODE_ENV === 'production') {
     app.use(express_1.default.static(path_1.default.join(__dirname, '../client/build')));
 }
-app.get('/', (_, res) => {
-    res.sendFile(path_1.default.join(__dirname, '../client/build/index.html'));
-});
+// app.get('/', (_, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+// });
 const startApolloServer = () => __awaiter(void 0, void 0, void 0, function* () {
     yield server.start();
     server.applyMiddleware({ app });
