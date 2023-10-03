@@ -45,6 +45,7 @@ app.use((req, res, next) => {
     }
 });
 app.get("/config", (_, res) => {
+    console.log("PK fetched!");
     res.send({
         publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
     });
