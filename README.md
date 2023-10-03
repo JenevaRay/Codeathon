@@ -1,5 +1,5 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-![alt text](https://github.com/JenevaRay/Codeathon/tree/main/assets/codeathon.jpg)
+![alt text](https://github.com/JenevaRay/Codeathon/blob/main/assets/codeathon.jpg)
 
 # Codeathon
 
