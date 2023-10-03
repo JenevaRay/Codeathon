@@ -143,9 +143,9 @@ const server = new apollo_server_express_1.ApolloServer({
 if (process.env.NODE_ENV === 'production') {
     app.use(express_1.default.static(path_1.default.join(__dirname, '../client/build')));
 }
-// app.get('/', (_, res) => {
-//   res.sendFile(path.join(__dirname, '../client/build/index.html'));
-// });
+app.get('/', (_, res) => {
+    res.sendFile(path_1.default.join(__dirname, '../client/build/index.html'));
+});
 const startApolloServer = () => __awaiter(void 0, void 0, void 0, function* () {
     yield server.start();
     server.applyMiddleware({ app });

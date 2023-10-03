@@ -373,20 +373,14 @@ const Checkout = () => {
 //     <p>{message}</p>
 //   </section>
 // );
-}
 
-const Checkout = () => {
   // we have to wrap the whole checkout function in the Elements provider
   
-  const options = {
-    clientSecret: "your-client-secret/token-from-the-server-here"
-  }
-  
-  return (
-    // <Elements stripe={stripePromise}>
-      <StripeCheckout />
-    // </Elements>
-  )
+  // return (
+  //   // <Elements stripe={stripePromise}>
+  //     <StripeCheckout />
+  //   // </Elements>
+  // )
 }
 
 export default Checkout;
