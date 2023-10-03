@@ -53,8 +53,7 @@ const resolvers = {
         console.log(args);
         let event = await Event.create({ ...args, schemaVersion, schemaDate });
         return event;
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
         return error;
       }
@@ -131,7 +130,7 @@ const resolvers = {
         .populate([
           {
             path: 'organizerUserId',
-            model: User
+            model: User,
             // populate: [
             //   {
             //     path: 'phoneNumbers',
