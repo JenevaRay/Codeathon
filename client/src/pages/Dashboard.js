@@ -1,12 +1,11 @@
 
-import { MyEventList, /* EventList,*/ AddEvent } from '../components';
+import { MyEventList } from '../components';
 
 
 const Dashboard = () => {
   return (
     <div>
         <MyEventList />
-        {/* <AddEvent /> */}
     </div>
   );
 };
