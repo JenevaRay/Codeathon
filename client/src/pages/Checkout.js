@@ -1,67 +1,71 @@
-import { loadStripe } from '@stripe/stripe-js'
 import { useState } from 'react';
-import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
+import { useStoreContext, States} from '../utils/';
+import { CardElement} from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React from "react";
 
-  const formatReservations = ()=>{
-    if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
-      // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
-      // TODO: which is, right now, all the time...
-      const {loading, data} = query_info
-      // console.log(loading)
-      // console.log(data)
-      if (!loading && data) {
-        // console.log(data)
-        const registrations = data.registrations
-          .filter((registration)=>!registration.paid)
-          .map((registration)=>{
-            const costStr = String(registration.eventId.feeRegistration + registration.eventId.feeVenue);
-            const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-            itemizedTotal += registration.eventId.feeRegistration + registration.eventId.feeVenue
-            return (
-            <div className="flex flex-col rounded-xl bg-white sm:flex-row" key={registration._id}>
-              <img
-                className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
-                src="/daypass.png"
-                alt=""
-              />
-              <div className="flex w-full flex-col px-4 py-4">
-                <span className="font-semibold">{registration.eventId.name}</span>
-                <span className="float-right text-zinc-400">{strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}</span>
-                <p className="mt-auto text-lg font-bold">{cost}</p>
-              </div>
-            </div>
-          )})  
-        return registrations
-      } else {
-        return ''
+import Button from '../components/ui/Button'
+
+const Checkout = () => {
+    const [checked, setChecked] = useState(false);
+    const [state, dispatch] = useStoreContext()
+    const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    let itemizedTotal
+    let profile
+    let query_info
+      const formatReservations = () => {
+        if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
+          // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
+          // TODO: which is, right now, all the time...
+          const {loading, data} = query_info
+          // console.log(loading)
+          // console.log(data)
+          if (!loading && data) {
+            // console.log(data)
+            const registrations = data.registrations
+              .filter((registration)=>!registration.paid)
+              .map((registration)=>{
+                const costStr = String(registration.eventId.feeRegistration + registration.eventId.feeVenue);
+                const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+                itemizedTotal += registration.eventId.feeRegistration + registration.eventId.feeVenue
+                return (
+                <div className="flex flex-col rounded-xl bg-white sm:flex-row">
+                  <img
+                    className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
+                    src="/daypass.png"
+                    alt=""
+                  />
+                  <div className="flex w-full flex-col px-4 py-4">
+                    <span className="font-semibold">{registration.eventId.name}</span>
+                    <span className="float-right text-zinc-400">{strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}</span>
+                    <p className="mt-auto text-lg font-bold">{cost}</p>
+                  </div>
+                </div>
+              )})  
+            return registrations
+          } else {
+            return ''
+          }
+        
+        } else {
+          console.log("TODO")
+          return ''
+        }
       }
-    
-    } else {
-      console.log("TODO")
-      return ''
+
+    const handleChange = () => {
+      setChecked(!checked);  
     }
-  }
 
-  const [checked, setChecked] = useState(false);
-  const handleChange = () => {
-    setChecked(!checked);
+    const handleSubmit = () => {
+      console.log('Submitting order for checkout')
+    }
 
-   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-    let itemizedTotal = 0;
-  
-  
-
-  const calculateTotalPrice = () => {
-    // Calculate the total price based on the itemizedTotal and shipping method
-    const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
-    const totalPrice = itemizedTotal + shippingPrice;
-    return totalPrice.toFixed(2); 
-  };
-
-  const totalPrice = calculateTotalPrice();
+    const calculateTotalPrice = () => {
+      // Calculate the total price based on the itemizedTotal and shipping method
+      const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
+      const totalPrice = itemizedTotal + shippingPrice;
+      return totalPrice.toFixed(2); 
+    };
 
   return (
     <>
@@ -331,16 +335,13 @@ import React from "react";
             </div>
             <Button
             // Pass totalPrice to handlePayment
-            // totalPrice is undefined (no variable) in the Checkout function.
-              // onClick={() => Checkout(totalPrice)} 
-              onClick={() => Checkout()} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
               bgColor="bg-zinc-900"
               hoverColor="hover:bg-zinc-900/90"
               width="w-full"
-              onSubmit={Checkout}>
+              onSubmit={handleSubmit}>
               Place Order
             </Button>
           </div>
