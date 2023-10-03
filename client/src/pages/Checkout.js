@@ -94,6 +94,15 @@ function StripeCheckout() {
 
   };
 
+  const calculateTotalPrice = () => {
+    // Calculate the total price based on the itemizedTotal and shipping method
+    const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
+    const totalPrice = itemizedTotal + shippingPrice;
+    return totalPrice.toFixed(2); 
+  };
+
+  const totalPrice = calculateTotalPrice();
+
   return (
     <>
       <div className="flex flex-col items-center justify-between pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
