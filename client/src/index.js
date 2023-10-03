@@ -2,7 +2,6 @@ import React from 'react';
 import './index.css';
 import App from './App';
 import { createRoot } from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 
@@ -28,6 +27,3 @@ document.addEventListener('DOMContentLoaded', async()=>{
     </React.StrictMode>,
   );  
 })
-
-
-reportWebVitals();
