@@ -123,6 +123,7 @@ const resolvers = {
         .populate([
           {
             path: 'organizerUserId',
+            model: User
             // populate: [
             //   {
             //     path: 'phoneNumbers',
