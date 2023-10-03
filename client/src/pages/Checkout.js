@@ -1,5 +1,6 @@
 import { loadStripe } from '@stripe/stripe-js'
 import { useState } from 'react';
+import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
 import React from "react";
