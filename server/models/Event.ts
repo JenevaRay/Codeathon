@@ -66,10 +66,9 @@ const eventSchema = new Schema({
       return Math.round(v);
     },
   },
-  organizer: {
+  organizerUserId: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    alias: 'organizerUserId',
   },
   venues: [
     {

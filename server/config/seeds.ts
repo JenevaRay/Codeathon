@@ -26,6 +26,15 @@ const eventIds = [
   new mongoose.Types.ObjectId(),
 ];
 
+const groupIds = [
+  new mongoose.Types.ObjectId(),
+]
+
+const registrationIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
 const userIds = [
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
@@ -44,7 +53,7 @@ const users = [
     password: '=^^=NoSuchPassword:3',
     nameLast: 'Smith',
     nameFirst: 'Dave',
-    registrations: ['012345012345'],
+    registrations: [registrationIds[0]],
   },
   { // Seed a user with all available fields
     _id: userIds[1],
@@ -63,7 +72,7 @@ const users = [
     addressCountry: 'United States',
     phoneNumber: '+1 (234) 567-8910',
     phoneType: 'mobile',
-    registrations: ['987654987654'],
+    registrations: [registrationIds[1]],
   },
 ];
 
@@ -72,58 +81,55 @@ const events = [
     _id: eventIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventNowNoRegistrations',
+    name: 'Current Event No Registrations',
     dateStart: weekAgo.toDate(),
     dateEnd: nextWeek.toDate(),
-    registrations: [],
-    registrationCutoffDate: now.toDate(),
-    registrationPaymentRequiredDate: now.toDate(),
-    organizerUserId: userIds[0],
+    dateCutoff: now.toDate(),
     feeRegistration: 1299,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
+    registrations: [],
     groups: [],
   },
   {
     _id: eventIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventExpired',
+    name: 'Past Event',
     dateStart: lastMonth.toDate(),
     dateEnd: lastMonth.toDate(),
-    registrations: ['012345012345', '987654987654'],
-    registrationCutoffDate: lastMonth.toDate(),
-    registrationPaymentRequiredDate: lastMonth.toDate(),
-    organizerUserId: userIds[0],
+    dateCutoff: lastMonth.toDate(),
     feeRegistration: 1299,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
-    groups: ['554466554466'],
+    registrations: [registrationIds[0], registrationIds[1]],
+    groups: [groupIds[0]],
   },
   {
     _id: eventIds[2],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventFutureAcceptingRegistrations',
+    name: 'Future Event',
     dateStart: nextMonth.toDate(),
     dateEnd: nextMonth.toDate(),
-    registrations: [],
-    registrationCutoffDate: nextWeek.toDate(),
-    registrationPaymentRequiredDate: nextMonth.toDate(),
-    organizerUserId: userIds[0],
+    dateCutoff: nextWeek.toDate(),
     feeRegistration: 1399,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
-    groups: ['554466554466'],
+    registrations: [],
+    groups: [groupIds[0]],
   },
 ];
 
 const groups = [
   {
-    _id: '554466554466',
+    _id: groupIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    registrations: ['012345012345', '987654987654'],
+    registrations: [registrationIds[0], registrationIds[1]],
     eventId: eventIds[0],
     name: 'Together Now',
     projectName: 'Full Schema Projector',
@@ -144,13 +150,13 @@ const venues = [
     addressPostalCode: '12345',
     addressCountry: 'United States',
     phoneNumber: '+1 (234) 567-8910',
-    events: ['000000111111'],
+    events: [eventIds[0], eventIds[1], eventIds[2]],
   },
 ];
 
 const registrations = [
   {
-    _id: '012345012345',
+    _id: registrationIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate,
     userId: userIds[0],
@@ -161,10 +167,10 @@ const registrations = [
     paid: true,
   },
   {
-    _id: '987654987654',
+    _id: registrationIds[1],
     schemaVersion,
     schemaDate,
-    userId: '222222333333',
+    userId: userIds[1],
     eventId: eventIds[1],
     registrationDate: lastMonth.toDate(),
     registrationType: 'attendee',

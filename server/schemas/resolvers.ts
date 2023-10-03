@@ -7,16 +7,9 @@ import {
   Venue,
   Event,
   Group,
-  // Phone,
-  // Address,
   schemaVersion,
   schemaDate,
 } from '../models';
-
-
-// import stripe from 'stripe'
-// const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
-// import ObjectId from 'mongoose'
 
 const resolvers = {
   Query: {
@@ -56,9 +49,9 @@ const resolvers = {
     },
   },
   Mutation: {
-    addEvent: async (_: any, args: any, context: any) => {
-      
-    }, 
+    // addEvent: async (_: any, args: any, context: any) => {
+
+    // }, 
     addUser: async (_: any, args: any) => {
       try {
         const user = await User.create({...args, schemaVersion, schemaDate});
