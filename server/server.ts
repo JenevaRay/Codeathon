@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import cors from 'cors';
 import Express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
@@ -12,8 +13,13 @@ import { db } from './config/connection';
 import Stripe from 'stripe';
 
 const app = Express();
+const PORT = process.env.PORT || 3001;
 
 // Stripe payment info inspired by https://github.com/stripe-samples/accept-a-payment
+
+if (process.env.NODE_ENV !== 'production') {
+  app.use(cors())
+}
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error("Must have STRIPE SECRET KEY")
@@ -43,24 +49,52 @@ app.use(
   }
 )
 
+app.use(Express.urlencoded({ extended: false }));
+app.use(Express.json());
+
+app.use('/images', Express.static(path.join(__dirname, '../client/images')));
+
 app.get("/config", (_: Express.Request, res: Express.Response): void => {
+  console.log("PK fetched!")
   res.send({
     publishableKey: process.env.STRIPE_PUBLISHABLE_KEY
   })
 })
 
-app.get("/create-payment-intent", async (_: Express.Request, res: Express.Response): Promise<void> => {
+app.post("/create-payment-intent", async (req: Express.Request, res: Express.Response): Promise<void> => {
+  const { currency, paymentMethodType, paymentMethodOptions }: { currency: string, paymentMethodType: string, paymentMethodOptions?: object } = req.body
+
   const params: Stripe.PaymentIntentCreateParams = {
     amount: 1999,
-    currency: 'USD',
-    automatic_payment_methods: {
-      enabled: true
-    }
+    currency,
+    payment_method_types: paymentMethodType === 'link' ? ['link', 'card'] : [paymentMethodType]
   }
-
+  if (paymentMethodType === 'accs_debit') {
+    params.payment_method_options = {
+      acss_debit: {
+        mandate_options: {
+          payment_schedule: 'sporadic',
+          transaction_type: 'personal'
+        }
+      }
+    }
+  } else if (paymentMethodType === 'customer_balance') {
+    params.payment_method_data = {
+      type: 'customer_balance'
+    } as any
+    params.confirm = true
+    params.customer = req.body.customerId || await stripe.customers.create().then(data=>data.id)
+  }
+  if (paymentMethodOptions) { 
+    params.payment_method_options = paymentMethodOptions
+  }
+  
   try {
     const paymentIntent: Stripe.PaymentIntent = await stripe.paymentIntents.create(params)
-    res.send({ clientSecret: paymentIntent.client_secret })
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+      nextAction: paymentIntent.next_action
+    })
   } catch (e) {
     res.status(400).send({
       error: {
@@ -70,14 +104,29 @@ app.get("/create-payment-intent", async (_: Express.Request, res: Express.Respon
   }
 })
 
+app.get('/payment/next', async (req, res) => {
+  const paymentIntent : any = req.query.payment_intent
+  const intent = await stripe.paymentIntents.retrieve(
+    paymentIntent,
+    {
+      expand: ['payment_method']
+    }
+  )
+  res.redirect(`/success?payment_intent_client_secret=${intent.client_secret}`)
+})
+
+// app.get('/success', async (req, res) => {
+//   // send file for payment success
+// })
+
 app.post("/webhook", bodyParser.raw({ type: "application/json" }), 
   async (req: Express.Request, res: Express.Response): Promise<void> => {
     let event: Stripe.Event
-    const headers = req.headers["stripe-signature"]
+    
     try {
       event = stripe.webhooks.constructEvent(
         req.body,
-        headers || '',
+        req.headers["stripe-signature"] || '',
         process.env.STRIPE_WEBHOOK_SECRET || ''
       )
     } catch (err) {
@@ -103,17 +152,11 @@ app.post("/webhook", bodyParser.raw({ type: "application/json" }),
   }
 )
 
-const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   // context: authMiddleware
 });
-
-app.use(Express.urlencoded({ extended: false }));
-app.use(Express.json());
-
-app.use('/images', Express.static(path.join(__dirname, '../client/images')));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(Express.static(path.join(__dirname, '../client/build')));
