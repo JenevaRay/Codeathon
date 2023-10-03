@@ -1,4 +1,4 @@
-import DashboardC from '../components/DashboardC'
+import DashboardC from '../components/DashboardC';
 
 const Dashboard = () => {
   return (

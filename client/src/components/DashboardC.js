@@ -15,7 +15,7 @@ const strToDayJS = function (unixEpochStr) {
   return dayjs(new Date(Number(unixEpochStr)));
 };
 
-let unpaidRegistrationsById = {}
+let unpaidRegistrationsById = {};
 let totalCost = 0;
 
 const NewEventForm = () => {
@@ -77,7 +77,7 @@ const NewEventForm = () => {
   };
   // FIRST we display a form for the venue info
   // THEN we display a form for the event info
-  totalCost = Object.values(unpaidRegistrationsById).reduce((a, b) => a + b, 0)
+  totalCost = Object.values(unpaidRegistrationsById).reduce((a, b) => a + b, 0);
   return (
     <div className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
       {newEventMode === '' ? (
@@ -89,7 +89,13 @@ const NewEventForm = () => {
             onClick={() => {
               window.location.assign('/checkout');
             }}>
-            Pay All Reservations { ['$', String(totalCost).slice(0, -2), '.', String(totalCost).slice(2)]}
+            Pay All Reservations{' '}
+            {[
+              '$',
+              String(totalCost).slice(0, -2),
+              '.',
+              String(totalCost).slice(2),
+            ]}
           </Button>
 
           <Button
@@ -378,7 +384,6 @@ const DashboardC = () => {
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
-  
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const isOrganizer = event.organizerUserId._id === profile.data._id;
@@ -392,7 +397,7 @@ const DashboardC = () => {
         : 'EXPIRED';
     const costStr = String(event.feeRegistration + event.feeVenue);
     const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-    let registrations = ''
+    let registrations = '';
     if (expiry === 'FUTURE') {
       registrations = event.registrations.map((registration) => {
         const button = '';
@@ -401,9 +406,17 @@ const DashboardC = () => {
             return <Button disabled={true}>HOST</Button>;
           case 'attendee':
             if (expiry === 'FUTURE') {
-              unpaidRegistrationsById[registration._id] = event.feeRegistration + event.feeVenue
+              unpaidRegistrationsById[registration._id] =
+                event.feeRegistration + event.feeVenue;
             }
-            return <Button onClick={()=>{window.location.assign('/checkout')}}>Not Yet Confirmed {cost}</Button>;
+            return (
+              <Button
+                onClick={() => {
+                  window.location.assign('/checkout');
+                }}>
+                Not Yet Confirmed {cost}
+              </Button>
+            );
           default:
             console.log(registration.role);
         }
@@ -418,10 +431,14 @@ const DashboardC = () => {
           {event.name}
         </h5>
         <p className="text-base leading-loose text-zinc-800">
-          { isOrganizer ? 
-             'YOU ARE HOST' : (<><strong>HOST:</strong>{event.organizerUserId.nameFirst}{' '}
-             {event.organizerUserId.nameLast}</>)
-          }
+          {isOrganizer ? (
+            'YOU ARE HOST'
+          ) : (
+            <>
+              <strong>HOST:</strong>
+              {event.organizerUserId.nameFirst} {event.organizerUserId.nameLast}
+            </>
+          )}
           <br />
           <strong>DATE:</strong>{' '}
           {strToDayJS(event.dateStart).format('MM/DD/YYYY [@] h:mma')} -{' '}

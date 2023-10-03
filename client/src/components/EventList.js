@@ -5,11 +5,11 @@ import dayjs from 'dayjs';
 
 import { ADD_REGISTRATION_TO_CART } from '../utils/actions';
 import { ADD_REGISTRATION } from '../utils/mutations';
-import { QUERY_EVENTS } from '../utils/queries'
+import { QUERY_EVENTS } from '../utils/queries';
 
 import { useStoreContext, StoreProvider } from '../utils/GlobalState';
 
-import Auth from '../utils/Auth'
+import Auth from '../utils/Auth';
 
 import Button from './ui/Button';
 
