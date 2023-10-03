@@ -4,8 +4,6 @@ import { Venue } from './Venue';
 import { Registration } from './Registration';
 import { Event } from './Event';
 import { Group } from './Group';
-// import { Address } from './Address';
-// import { Phone } from './Phone';
 import dayjs from 'dayjs';
 import { Stripe } from 'stripe'; // Import Stripe library
 import { Request, Response } from 'express';
@@ -47,7 +45,6 @@ async function handlePayment(req: Request, res: Response) {
   }
 }
 
-
 // Export all models plus the schema version and schema date
 export {
   User,
@@ -55,9 +52,7 @@ export {
   Registration,
   Event,
   Group,
-  // Address,
-  // Phone,
   schemaVersion,
   schemaDate,
-  handlePayment
+  handlePayment,
 };

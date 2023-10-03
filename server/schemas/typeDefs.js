@@ -23,26 +23,6 @@ const typeDefs = (0, apollo_server_express_1.gql) `
     registrations: [Registration]
   }
 
-  type Address {
-    _id: ID
-    streetAddress: String
-    extendedAddress: String
-    country: String
-    state: String
-    county: String
-    city: String
-    postalCode: String
-    type: String
-    isUserPrimary: Boolean
-  }
-
-  type Phone {
-    _id: ID
-    number: String
-    type: String
-    isUserPrimary: Boolean
-  }
-
   type Registration {
     _id: ID
     userId: User
@@ -53,16 +33,17 @@ const typeDefs = (0, apollo_server_express_1.gql) `
 
   type Event {
     _id: ID
+    schemaVersion: String
+    schemaDate: String
     name: String
     dateStart: String
     dateEnd: String
-    registrations: [Registration]
     dateCutoff: String
     feeRegistration: Int
     feeVenue: Int
-    venues: [Venue]
-    registrationPaymentRequiredDate: String
     organizerUserId: User
+    venues: [Venue]
+    registrations: [Registration]
     groups: [Group]
   }
 
@@ -78,7 +59,7 @@ const typeDefs = (0, apollo_server_express_1.gql) `
   type Venue {
     _id: ID
     schemaVersion: String
-    schemaDate: String    
+    schemaDate: String
     name: String
     addressStreet: String
     addressExtended: String
@@ -111,7 +92,18 @@ const typeDefs = (0, apollo_server_express_1.gql) `
       userId: String!
       type: String
     ): Registration
-    addUser(emailAddress: String!, password: String!, nameLast: String!, nameFirst: String!): Auth
+    addEvent(
+      name: String!
+      dateStart: String!
+      dateEnd: String!
+      venueId: String!
+    ): Event
+    addUser(
+      emailAddress: String!
+      password: String!
+      nameLast: String!
+      nameFirst: String!
+    ): Auth
     myEvents(organizerUserId: String!): [Event]
   }
 `;

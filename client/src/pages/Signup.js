@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
-import { Auth } from '../utils/';
+
+import Auth from '../utils/Auth'
+
+import { ADD_USER } from '../utils/mutations';
 
 import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
-import { ADD_USER } from '../utils/mutations';
+
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,21 +20,25 @@ const Signup = () => {
     loading: false,
   });
 
-  const [addUser] = useMutation(ADD_USER)
+  const [addUser] = useMutation(ADD_USER);
   // const [addAddress] = useMutation(ADD_ADDRESS)
   // const [addPhone] = useMutation(ADD_PHONE)
 
   const handleChange = (e) => {
-    if (e.target.name === 'passwordVerif' && formData.password !== e.target.value) {
-      setFormData({...formData,
+    if (
+      e.target.name === 'passwordVerif' &&
+      formData.password !== e.target.value
+    ) {
+      setFormData({
+        ...formData,
         [e.target.name]: e.target.value,
-        submitError: "Passwords do not match"
-      })
+        submitError: 'Passwords do not match',
+      });
     } else {
       setFormData({
         ...formData,
         [e.target.name]: e.target.value,
-        submitError: ''
+        submitError: '',
       });
     }
   };
@@ -49,7 +56,7 @@ const Signup = () => {
         loading: true,
       });
       const mutationResponse = await addUser({
-       variables: {...formData},
+        variables: { ...formData },
       });
       const token = mutationResponse.data.addUser.token;
       Auth.login(token);

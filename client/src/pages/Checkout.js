@@ -2,7 +2,10 @@ import { useState } from 'react';
 import { useStoreContext, States} from '../utils/';
 import dayjs from 'dayjs'
 
-import Button from '../components/ui/Button'
+import { useStoreContext } from '../utils/GlobalState';
+import { States } from '../utils/constants';
+
+import Button from '../components/ui/Button';
 
 const Checkout = () => {
     const [checked, setChecked] = useState(false);
@@ -10,6 +13,7 @@ const Checkout = () => {
     const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
     let total = 28 // for example
     let itemizedTotal = `$${total.toString()}.00`
+    // original code rendered by itemizedTotal = ['$',String(itemizedTotal).slice(0, -2),'.',String(itemizedTotal).slice(-2),]
     let profile
     let query_info
       const formatReservations = () => {
@@ -40,25 +44,26 @@ const Checkout = () => {
                     <p className="mt-auto text-lg font-bold">{cost}</p>
                   </div>
                 </div>
-              )})  
-            return registrations
-          } else {
-            return ''
-          }
-        
-        } else {
-          console.log("TODO")
-          return ''
-        }
+              </div>
+            );
+          });
+        return registrations;
+      } else {
+        return '';
       }
-
-    const handleChange = () => {
-      setChecked(!checked);  
+    } else {
+      console.log('TODO');
+      return '';
     }
+  };
 
-    const handleSubmit = () => {
-      console.log('Submitting order for checkout')
-    }
+  const handleChange = () => {
+    setChecked(!checked);
+  };
+
+  const handleSubmit = () => {
+    console.log('Submitting order for checkout');
+  };
 
   return (
     <>
@@ -325,7 +330,6 @@ const Checkout = () => {
         </div>
     </>
   );
-}
-
+};
 
 export default Checkout;

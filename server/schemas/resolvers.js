@@ -13,9 +13,6 @@ exports.resolvers = void 0;
 const apollo_server_express_1 = require("apollo-server-express");
 const auth_1 = require("../utils/auth");
 const models_1 = require("../models");
-// import stripe from 'stripe'
-// const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
-// import ObjectId from 'mongoose'
 const resolvers = {
     Query: {
         users: () => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,12 +25,11 @@ const resolvers = {
             return yield models_1.Venue.find();
         }),
         events: () => __awaiter(void 0, void 0, void 0, function* () {
-            return yield models_1.Event.find()
-                .populate([
+            return yield models_1.Event.find().populate([
                 { path: 'organizerUserId', model: models_1.User },
                 { path: 'registrations', model: models_1.Registration },
                 { path: 'venues', model: models_1.Venue },
-                { path: 'groups', model: models_1.Group }
+                { path: 'groups', model: models_1.Group },
             ]);
         }),
         groups: () => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,6 +50,8 @@ const resolvers = {
         }),
     },
     Mutation: {
+        // addEvent: async (_: any, args: any, context: any) => {
+        // },
         addUser: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const user = yield models_1.User.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
@@ -99,14 +97,14 @@ const resolvers = {
                 }, { new: true });
                 console.log(event);
                 const user = yield models_1.User.findByIdAndUpdate(userId, {
-                    $push: { registrations: registration._id }
+                    $push: { registrations: registration._id },
                 });
                 console.log(user);
                 if (event && user && registration) {
                     return registration;
                 }
                 else {
-                    return "ERROR";
+                    return 'ERROR';
                 }
             }
         }),

@@ -1,25 +1,42 @@
 import { gql } from '@apollo/client';
 
 const QUERY_EVENTS = gql`
-query Events {
-  events {
-    _id
-    dateCutoff
-    dateEnd
-    dateStart
-    feeRegistration
-    feeVenue
-    name
-    registrationPaymentRequiredDate
-    groups {
+  query Events {
+    events {
       _id
+      dateCutoff
+      dateEnd
+      dateStart
+      feeRegistration
+      feeVenue
       name
-      projectName
-      projectDescription
-    }
-    registrations {
-      _id
-      userId {
+      groups {
+        _id
+        name
+        projectName
+        projectDescription
+      }
+      registrations {
+        _id
+        userId {
+          _id
+          emailAddress
+          nameLast
+          nameFirst
+          nameMiddle
+          addressStreet
+          addressExtended
+          addressCity
+          addressState
+          addressPostalCode
+          addressCountry
+          phoneNumber
+          phoneType
+        }
+        role
+        paid
+      }
+      organizerUserId {
         _id
         emailAddress
         nameLast
@@ -34,38 +51,21 @@ query Events {
         phoneNumber
         phoneType
       }
-      role
-      paid
-    }
-    organizerUserId {
-      _id
-      emailAddress
-      nameLast
-      nameFirst
-      nameMiddle
-      addressStreet
-      addressExtended
-      addressCity
-      addressState
-      addressPostalCode
-      addressCountry
-      phoneNumber
-      phoneType
-    }
-    venues {
-      _id
-      name
-      addressStreet
-      addressExtended
-      addressCity
-      addressState
-      addressPostalCode
-      addressCountry
-      phoneNumber
-      website
+      venues {
+        _id
+        name
+        addressStreet
+        addressExtended
+        addressCity
+        addressState
+        addressPostalCode
+        addressCountry
+        phoneNumber
+        website
+      }
     }
   }
-}`
+`;
 
 // const QUERY_EVENTS = gql`
 //   query Events {
@@ -160,7 +160,8 @@ const QUERY_REGISTRATIONS = gql`
         _id
       }
     }
-  }`;
+  }
+`;
 
 const QUERY_VENUES = gql`
   query Venues {
