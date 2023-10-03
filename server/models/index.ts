@@ -4,8 +4,6 @@ import { Venue } from './Venue';
 import { Registration } from './Registration';
 import { Event } from './Event';
 import { Group } from './Group';
-// import { Address } from './Address';
-// import { Phone } from './Phone';
 import dayjs from 'dayjs';
 import { Stripe } from 'stripe'; // Import Stripe library
 import { Request, Response } from 'express';
@@ -54,8 +52,6 @@ export {
   Registration,
   Event,
   Group,
-  // Address,
-  // Phone,
   schemaVersion,
   schemaDate,
   handlePayment,
