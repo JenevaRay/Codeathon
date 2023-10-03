@@ -1,22 +1,18 @@
-import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { useContext, useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
+import { PaymentElement, CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
+import React, { useEffect } from "react";
 
 import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
 
-
-const Checkout = () => {
-  const stripePromise = loadStripe(
-    'pk_test_51NsbiVI8fwprByGXBlusUK1tdXtpnvnrHTggpoweDmVgEAigbLMOhupqLWZgVv4IEjICMyfRBDKJv2OSc2DCcBSH003DL7HRgO',
-  );
-
-  // const registrations = useContext(StoreContext)
+function StripeCheckout() {
+  
+  const query_info = useQuery(QUERY_REGISTRATIONS);
   const [state, dispatch] = useStoreContext();
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-  const query_info = useQuery(QUERY_REGISTRATIONS);
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
   let itemizedTotal = 0 // to be incremented by formatReservations
   const formatReservations = ()=>{
@@ -26,7 +22,6 @@ const Checkout = () => {
       const {loading, data} = query_info
       // console.log(loading)
       // console.log(data)
-  
       if (!loading && data) {
         // console.log(data)
         const registrations = data.registrations
@@ -58,13 +53,47 @@ const Checkout = () => {
       return ''
     }
   }
-    // console.log(query_info)
-  
-  console.log(state)
+
   const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
+
+   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    let itemizedTotal = 0;
+  
   };
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  // Use Stripe methods to create a payment method
+  // and handle the payment flow here.
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not loaded yet.
+      return;
+    }
+
+    // Create a payment method using CardElement
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
+
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(paymentMethod);
+
+      // Send the paymentMethod.id or other relevant data to your server
+      // for server-side processing (e.g., creating a charge, saving the payment method).
+    }
+   
+
+  };
+
   return (
     <>
       <div className="flex flex-col items-center justify-between pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -217,6 +246,24 @@ const Checkout = () => {
                 className="mb-2 mt-4 block text-sm font-medium">
                 Card Details
               </label>
+              <div className="w-full">
+              <CardElement
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#32325d',
+                      '::placeholder': {
+                        color: '#aab7c4',
+                      },
+                    },
+                    invalid: {
+                      color: '#fa755a',
+                    },
+                  },
+                }}
+              />
+            </div>
               <div className="flex">
                 <div className="relative w-7/12 flex-shrink-0">
                   <input
@@ -314,12 +361,15 @@ const Checkout = () => {
               </div>
             </div>
             <Button
+            // Pass totalPrice to handlePayment
+              onClick={() => Checkout(totalPrice)} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
               bgColor="bg-zinc-900"
               hoverColor="hover:bg-zinc-900/90"
-              width="w-full">
+              width="w-full"
+              onSubmit={Checkout}>
               Place Order
             </Button>
           </div>
@@ -327,7 +377,44 @@ const Checkout = () => {
       </div>
     </>
   );
-};
+//   const ProductDisplay = () => (
+//     <section>
+//       <div className="product">
+//         <img
+//           src="https://i.imgur.com/EHyR2nP.png"
+//           alt="The cover of Stubborn Attachments"
+//         />
+//         <div className="description">
+//         <h3>Stubborn Attachments</h3>
+//         <h5>$20.00</h5>
+//         </div>
+//       </div>
+//       <form action="/create-checkout-session" method="POST">
+//       <button type="submit">
+//         Checkout
+//       </button>
+//     </form>
+//   </section>
+//   )
+// const Message = ({ message }) => (
+//   <section>
+//     <p>{message}</p>
+//   </section>
+// );
+}
+const Checkout = () => {
+  // we have to wrap the whole checkout function in the Elements provider
+  const stripePromise = loadStripe('your-publishable-key-here');
+  const options = {
+    clientSecret: "your-client-secret/token-from-the-server-here"
+  }
+  
+  return (
+    <Elements stripe={stripePromise}>
+      <StripeCheckout />
+    </Elements>
+  )
+}
 
 export default Checkout;
 

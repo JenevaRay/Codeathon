@@ -87,7 +87,7 @@ const Signup = () => {
               <div>
                 <label
                   htmlFor="nameFirst"
-                  className="mb-2 block text-sm font-medium text-gray-900">
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   First Name
                 </label>
                 <input
@@ -112,7 +112,7 @@ const Signup = () => {
               <div>
                 <label
                   htmlFor="nameLast"
-                  className="mb-2 block text-sm font-medium text-gray-900">
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   Last Name
                 </label>
                 <input
@@ -137,7 +137,7 @@ const Signup = () => {
               <div>
                 <label
                   htmlFor="emailAddress"
-                  className="mb-2 block text-sm font-medium text-gray-900">
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   Email
                 </label>
                 <input

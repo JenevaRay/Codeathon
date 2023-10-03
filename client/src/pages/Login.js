@@ -71,7 +71,7 @@ const Login = () => {
               <div>
                 <label
                   htmlFor="emailAddress"
-                  className="mb-2 block text-sm font-medium text-gray-900">
+                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
                   EMAIL
                 </label>
                 <input
