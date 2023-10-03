@@ -27,7 +27,7 @@ exports.signToken = void 0;
 const dotenv = __importStar(require("dotenv"));
 const jwt = __importStar(require("jsonwebtoken"));
 dotenv.config();
-const secret = process.env.SECRET_KEY || 'thereisnopassword';
+const secret = process.env.SECRET_KEY || "thereisnopassword";
 const expiration = '24h';
 const signToken = function ({ _id, emailAddress, nameLast, nameFirst, }) {
     const payload = {

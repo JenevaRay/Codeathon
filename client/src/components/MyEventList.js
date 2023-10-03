@@ -440,7 +440,7 @@ const MyEventList = () => {
         <p>&nbsp;</p>
         {/* Future: the Manage button should allow edits to the Event posting. */}
         {/* Future: the Volunteer button should allow someone to confirm for $0. */}
-        {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button>}
+        {/* {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button> } */}
 
         {reservations.length > 0 ? (
           <>
