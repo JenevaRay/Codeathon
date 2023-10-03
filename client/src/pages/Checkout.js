@@ -5,16 +5,6 @@ import { CardElement, useStripe, useElements, Elements } from '@stripe/react-str
 import dayjs from 'dayjs'
 import React from "react";
 
-import Button from '../components/ui/Button';
-import { useQuery } from '@apollo/client';
-
-function StripeCheckout() {
-  
-  const query_info = useQuery(QUERY_REGISTRATIONS);
-  const [state, dispatch] = useStoreContext();
-  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-  let itemizedTotal = 0 // to be incremented by formatReservations
   const formatReservations = ()=>{
     if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
       // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
@@ -48,6 +38,7 @@ function StripeCheckout() {
       } else {
         return ''
       }
+    
     } else {
       console.log("TODO")
       return ''
@@ -61,38 +52,7 @@ function StripeCheckout() {
    const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
     let itemizedTotal = 0;
   
-  };
-
-  const stripe = useStripe();
-  const elements = useElements();
-
-  // Use Stripe methods to create a payment method
-  // and handle the payment flow here.
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js has not loaded yet.
-      return;
-    }
-
-    // Create a payment method using CardElement
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    });
-
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(paymentMethod);
-
-      // Send the paymentMethod.id or other relevant data to your server
-      // for server-side processing (e.g., creating a charge, saving the payment method).
-    }
-   
-
-  };
+  
 
   return (
     <>
@@ -401,21 +361,8 @@ function StripeCheckout() {
 //     <p>{message}</p>
 //   </section>
 // );
-}
-const Checkout = () => {
-  // we have to wrap the whole checkout function in the Elements provider
-  const stripePromise = loadStripe('your-publishable-key-here');
-  const options = {
-    clientSecret: "your-client-secret/token-from-the-server-here"
-  }
-  
-  return (
-    <Elements stripe={stripePromise}>
-      <StripeCheckout />
-    </Elements>
-  )
-}
 
+}
 export default Checkout;
 
 // function RegistrationList() {
