@@ -3,7 +3,7 @@ import * as jwt from 'jsonwebtoken';
 
 dotenv.config();
 
-const secret = process.env.SECRET_KEY || "thereisnopassword";
+const secret = process.env.SECRET_KEY || 'thereisnopassword';
 const expiration = '24h';
 
 const signToken = function ({

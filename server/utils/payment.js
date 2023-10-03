@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // async function handlePayment() {
 // // paymentMethodId sent from the client
 // const paymentMethodId = 'your-payment-method-id';

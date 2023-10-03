@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useState } from 'react';
+import { useStripe, useElements } from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const OxxoForm = () => {
   const stripe = useStripe();
@@ -21,7 +21,7 @@ const OxxoForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -32,7 +32,7 @@ const OxxoForm = () => {
           paymentMethodType: 'oxxo',
           currency: 'mxn',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -42,17 +42,15 @@ const OxxoForm = () => {
 
     addMessage('Client secret returned');
 
-    const {error: stripeError, paymentIntent} = await stripe.confirmOxxoPayment(
-      clientSecret,
-      {
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmOxxoPayment(clientSecret, {
         payment_method: {
           billing_details: {
             name,
             email,
           },
         },
-      }
-    );
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -72,9 +70,8 @@ const OxxoForm = () => {
     // intent will succeed after 3 seconds. We set this timeout
     // to refetch the payment intent.
     const i = setInterval(async () => {
-      const {error: e, paymentIntent} = await stripe.retrievePaymentIntent(
-        clientSecret
-      );
+      const { error: e, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
       if (paymentIntent.status === 'succeeded') {
         clearInterval(i);
@@ -89,7 +86,9 @@ const OxxoForm = () => {
     <>
       <h1>OXXO</h1>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -112,7 +111,14 @@ const OxxoForm = () => {
 
       <StatusMessages messages={messages} />
 
-      <p> <a href="https://youtu.be/zmNMMBbYFf0" target="_blank">Watch a demo walkthrough</a> </p>
+      <p>
+        {' '}
+        <a
+          href="https://youtu.be/zmNMMBbYFf0"
+          target="_blank">
+          Watch a demo walkthrough
+        </a>{' '}
+      </p>
     </>
   );
 };

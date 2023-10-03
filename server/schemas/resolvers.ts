@@ -13,7 +13,6 @@ import {
   schemaDate,
 } from '../models';
 
-
 // import stripe from 'stripe'
 // const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
 // import ObjectId from 'mongoose'
@@ -30,13 +29,12 @@ const resolvers = {
       return await Venue.find();
     },
     events: async () => {
-      return await Event.find()
-        .populate([
-          { path: 'organizerUserId', model: User },
-          { path: 'registrations', model: Registration },
-          { path: 'venues', model: Venue },
-          { path: 'groups', model: Group }
-        ]);
+      return await Event.find().populate([
+        { path: 'organizerUserId', model: User },
+        { path: 'registrations', model: Registration },
+        { path: 'venues', model: Venue },
+        { path: 'groups', model: Group },
+      ]);
     },
     groups: async () => {
       return await Group.find().populate([
@@ -58,12 +56,12 @@ const resolvers = {
   Mutation: {
     addUser: async (_: any, args: any) => {
       try {
-        const user = await User.create({...args, schemaVersion, schemaDate});
+        const user = await User.create({ ...args, schemaVersion, schemaDate });
         const token = signToken(user);
-        return { token, user }
+        return { token, user };
       } catch (e) {
-        console.log(e)
-        return e
+        console.log(e);
+        return e;
       }
     },
     addRegistration: async (_: any, args: any, context: any) => {
@@ -94,18 +92,22 @@ const resolvers = {
           paid,
         });
         // const event = await Event.findById(eventId)
-        const event = await Event.findByIdAndUpdate(eventId, {
-          $push: { registrations: registration._id },
-        }, {new: true});
-        console.log(event)
+        const event = await Event.findByIdAndUpdate(
+          eventId,
+          {
+            $push: { registrations: registration._id },
+          },
+          { new: true },
+        );
+        console.log(event);
         const user = await User.findByIdAndUpdate(userId, {
-          $push: { registrations: registration._id}
-        })
-        console.log(user)
+          $push: { registrations: registration._id },
+        });
+        console.log(user);
         if (event && user && registration) {
           return registration;
         } else {
-          return "ERROR"
+          return 'ERROR';
         }
       }
     },
@@ -119,42 +121,42 @@ const resolvers = {
     // },
     myEvents: async (_: any, args: any) => {
       // console.log(args)
-      const { organizerUserId } = args
-        const result = await Event.find({organizerUserId})
-          .populate([
-            {
-              path: 'organizerUserId',
-              // populate: [
-              //   {
-              //     path: 'phoneNumbers',
-              //     model: Phone,
-              //   },
-              // ],
-            },
-          ])
-          .populate({ path: 'registrations', model: Registration })
-          .populate({
-            path: 'venues',
-            model: Venue,
+      const { organizerUserId } = args;
+      const result = await Event.find({ organizerUserId })
+        .populate([
+          {
+            path: 'organizerUserId',
             // populate: [
-            //   // { path: 'addressId', model: Address },
-            //   // { path: 'phoneId', model: Phone },
-            //   { path: 'hostId', model: User },
+            //   {
+            //     path: 'phoneNumbers',
+            //     model: Phone,
+            //   },
             // ],
-          })
-          .populate({ path: 'groups', model: Group });
-      return result
+          },
+        ])
+        .populate({ path: 'registrations', model: Registration })
+        .populate({
+          path: 'venues',
+          model: Venue,
+          // populate: [
+          //   // { path: 'addressId', model: Address },
+          //   // { path: 'phoneId', model: Phone },
+          //   { path: 'hostId', model: User },
+          // ],
+        })
+        .populate({ path: 'groups', model: Group });
+      return result;
     },
     login: async (_: any, props: any) => {
       const emailAddress: string = props.emailAddress;
       const password: string = props.password;
       const user = await User.findOne({ emailAddress });
-      
+
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
       }
       const correctPw = await user.isCorrectPassword(password);
-      
+
       if (!correctPw) {
         throw new AuthenticationError('Incorrect credentials');
       }
@@ -167,7 +169,7 @@ const resolvers = {
       };
 
       const token = signToken(simplifiedUser);
-      
+
       return { token, user };
     },
   },

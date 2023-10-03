@@ -22,17 +22,13 @@ const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
 
-const usersIds = [
-  new mongoose.Types.ObjectId(),
-  new mongoose.Types.ObjectId(),
-];
+const usersIds = [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()];
 
-const venueIds = [
-  new mongoose.Types.ObjectId(),
-];
+const venueIds = [new mongoose.Types.ObjectId()];
 
 const users = [
-  { // Seed a user with only the bare minimum fields
+  {
+    // Seed a user with only the bare minimum fields
     _id: usersIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
@@ -42,7 +38,8 @@ const users = [
     nameFirst: 'Dave',
     registrations: ['012345012345'],
   },
-  { // Seed a user with all available fields
+  {
+    // Seed a user with all available fields
     _id: usersIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
@@ -164,7 +161,8 @@ const groups = [
 // ];
 
 const venues = [
-  {  // Seed a venue with all available fields
+  {
+    // Seed a venue with all available fields
     _id: venueIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),

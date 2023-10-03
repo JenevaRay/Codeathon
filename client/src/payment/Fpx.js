@@ -1,7 +1,11 @@
-import React, {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
-import {FpxBankElement, useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+  FpxBankElement,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const FpxForm = () => {
   const stripe = useStripe();
@@ -20,7 +24,7 @@ const FpxForm = () => {
       return;
     }
 
-    let {error: backendError, clientSecret} = await fetch(
+    let { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -31,7 +35,7 @@ const FpxForm = () => {
           paymentMethodType: 'fpx',
           currency: 'myr',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -41,14 +45,14 @@ const FpxForm = () => {
 
     addMessage('Client secret returned');
 
-    let {error: stripeError, paymentIntent} = await stripe.confirmFpxPayment(
+    let { error: stripeError, paymentIntent } = await stripe.confirmFpxPayment(
       clientSecret,
       {
         payment_method: {
           fpx: elements.getElement(FpxBankElement),
         },
         return_url: `${window.location.origin}/fpx?return=true`,
-      }
+      },
     );
 
     if (stripeError) {
@@ -69,8 +73,10 @@ const FpxForm = () => {
     <>
       <h1>FPX</h1>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
-        <FpxBankElement options={{accountHolderType: 'individual'}} />
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
+        <FpxBankElement options={{ accountHolderType: 'individual' }} />
         <button type="submit">Pay</button>
       </form>
 
@@ -93,9 +99,8 @@ const FpxReturn = () => {
       return;
     }
     const fetchPaymentIntent = async () => {
-      const {error, paymentIntent} = await stripe.retrievePaymentIntent(
-        clientSecret
-      );
+      const { error, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (error) {
         addMessage(error.message);
       }

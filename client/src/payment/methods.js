@@ -22,12 +22,28 @@ import Sofort from './Sofort';
 import UsBankAccountDebit from './UsBankAccountDebit';
 import WeChatPay from './WeChatPay';
 
-export { AcssDebit, AfterpayClearpay, Alipay, 
-    ApplePay, Bancontact, BecsDebit, 
-    Boleto, Card, Eps, 
-    Fpx, Giropay, GooglePay, 
-    GrabPay, Ideal, JPBankTransfer, 
-    Klarna, Konbini, Oxxo, 
-    P24, SepaDebit, Sofort, 
-    UsBankAccountDebit, WeChatPay
-}
+export {
+  AcssDebit,
+  AfterpayClearpay,
+  Alipay,
+  ApplePay,
+  Bancontact,
+  BecsDebit,
+  Boleto,
+  Card,
+  Eps,
+  Fpx,
+  Giropay,
+  GooglePay,
+  GrabPay,
+  Ideal,
+  JPBankTransfer,
+  Klarna,
+  Konbini,
+  Oxxo,
+  P24,
+  SepaDebit,
+  Sofort,
+  UsBankAccountDebit,
+  WeChatPay,
+};

@@ -1,8 +1,5 @@
-import React, {useState} from 'react';
-import {
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
+import React, { useState } from 'react';
+import { useStripe, useElements } from '@stripe/react-stripe-js';
 import StatusMessages from './StatusMessages';
 
 const AcssDebitForm = () => {
@@ -28,7 +25,7 @@ const AcssDebitForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -39,7 +36,7 @@ const AcssDebitForm = () => {
           paymentMethodType: 'acss_debit',
           currency: 'cad',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -49,17 +46,15 @@ const AcssDebitForm = () => {
 
     addMessage('Client secret returned');
 
-    const {
-      error: stripeError,
-      paymentIntent,
-    } = await stripe.confirmAcssDebitPayment(clientSecret, {
-      payment_method: {
-        billing_details: {
-          name,
-          email,
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmAcssDebitPayment(clientSecret, {
+        payment_method: {
+          billing_details: {
+            name,
+            email,
+          },
         },
-      },
-    });
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -82,14 +77,26 @@ const AcssDebitForm = () => {
       <p>
         <h4>Try these test email addresses:</h4>
         <dl>
-          <dt><strong>Immediately attempt</strong></dt>
-          <dd><code>{`{any_prefix}+skip_waiting@{any_domain}`}</code></dd>
-          <dt><strong>Skip the mandate delay and receive the micro-deposit verification</strong></dt>
-          <dd><code>{`{any_prefix}+skip_waiting+test_email@{any_domain}`}</code></dd>
+          <dt>
+            <strong>Immediately attempt</strong>
+          </dt>
+          <dd>
+            <code>{`{any_prefix}+skip_waiting@{any_domain}`}</code>
+          </dd>
+          <dt>
+            <strong>
+              Skip the mandate delay and receive the micro-deposit verification
+            </strong>
+          </dt>
+          <dd>
+            <code>{`{any_prefix}+skip_waiting+test_email@{any_domain}`}</code>
+          </dd>
         </dl>
       </p>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -109,12 +116,21 @@ const AcssDebitForm = () => {
 
         <button type="submit">Pay</button>
 
-        <div id="error-message" role="alert"></div>
+        <div
+          id="error-message"
+          role="alert"></div>
       </form>
 
       <StatusMessages messages={messages} />
 
-      <p> <a href="https://youtu.be/EwH4B3M0-bk" target="_blank">Watch a demo walkthrough</a> </p>
+      <p>
+        {' '}
+        <a
+          href="https://youtu.be/EwH4B3M0-bk"
+          target="_blank">
+          Watch a demo walkthrough
+        </a>{' '}
+      </p>
     </>
   );
 };

@@ -32,76 +32,72 @@ const buttonStyle = {
 };
 
 function AddEvent() {
-//   let profile
-//   if (Auth.loggedIn()) {
-//     profile = Auth.getProfile()
-//   }
-//   const query_info = useQuery(QUERY_EVENTS);
-//   const [state, dispatch] = useStoreContext();
-//   const [MyEvents, mutation_info] = useMutation(MY_EVENTS)
-//   const { data, loading, error } = mutation_info;
+  //   let profile
+  //   if (Auth.loggedIn()) {
+  //     profile = Auth.getProfile()
+  //   }
+  //   const query_info = useQuery(QUERY_EVENTS);
+  //   const [state, dispatch] = useStoreContext();
+  //   const [MyEvents, mutation_info] = useMutation(MY_EVENTS)
+  //   const { data, loading, error } = mutation_info;
 
-//   const getMyEvents = async ()=>{
-//     if (profile.data) {
-//         const data = profile.data
-//         if (data._id) {
-//             const userId = data._id
-//             try {
-//                 const mutationResponse = await MyEvents({
-//                     variables: {organizerUserId: userId}
-//                 })
-//                 console.log(mutationResponse)
-//             } catch (e) {
-//               console.log(e)
-//             }
-//         }
-//     }
-//   }
+  //   const getMyEvents = async ()=>{
+  //     if (profile.data) {
+  //         const data = profile.data
+  //         if (data._id) {
+  //             const userId = data._id
+  //             try {
+  //                 const mutationResponse = await MyEvents({
+  //                     variables: {organizerUserId: userId}
+  //                 })
+  //                 console.log(mutationResponse)
+  //             } catch (e) {
+  //               console.log(e)
+  //             }
+  //         }
+  //     }
+  //   }
 
-//   if (query_info.loading) return 'Loading...';
-//   if (query_info.error) return `Error! ${query_info.error.message}`;
+  //   if (query_info.loading) return 'Loading...';
+  //   if (query_info.error) return `Error! ${query_info.error.message}`;
 
-//   const strToDayJS = function (unixEpochStr) {
-//     return dayjs(new Date(Number(unixEpochStr)));
-//   };
+  //   const strToDayJS = function (unixEpochStr) {
+  //     return dayjs(new Date(Number(unixEpochStr)));
+  //   };
 
-//   const events = query_info.data.events.map((event) => {
-//     // registrations must be submitted before event.dateCutoff
-//     const expiry =
-//       strToDayJS(event.dateStart) > dayjs(Date.now())
-//         ? 'FUTURE'
-//         : strToDayJS(event.dateEnd) > dayjs(Date.now())
-//         ? 'CURRENT'
-//         : strToDayJS(event.dateCutoff) < dayjs(Date.now())
-//         ? 'OVERDUE'
-//         : 'EXPIRED';
-//     const costStr = String(event.feeRegistration + event.feeVenue);
-//     const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-//       return (
-//         <li
-//           key={event._id}
-//           style={eventItemStyle}>
-//           <p>
-//             <h2>{expiry}</h2>
-//             <em>{event.name}</em> hosted by {event.organizerUserId.nameFirst}{' '}
-//             {event.organizerUserId.nameLast}
-//           </p>
-//           <p>
-//             {strToDayJS(event.dateStart).format('MM/DD/YY [at] HH:mm')} - to -{' '}
-//             {strToDayJS(event.dateEnd).format('MM/DD/YY [at] HH:mm')}
-//           </p>
-//           <p>Registrations: {event.registrations.length}</p>
-//           {console.log(event)}
-//           <p>&nbsp;</p>
-//         </li>
-//       );
-//   });
+  //   const events = query_info.data.events.map((event) => {
+  //     // registrations must be submitted before event.dateCutoff
+  //     const expiry =
+  //       strToDayJS(event.dateStart) > dayjs(Date.now())
+  //         ? 'FUTURE'
+  //         : strToDayJS(event.dateEnd) > dayjs(Date.now())
+  //         ? 'CURRENT'
+  //         : strToDayJS(event.dateCutoff) < dayjs(Date.now())
+  //         ? 'OVERDUE'
+  //         : 'EXPIRED';
+  //     const costStr = String(event.feeRegistration + event.feeVenue);
+  //     const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+  //       return (
+  //         <li
+  //           key={event._id}
+  //           style={eventItemStyle}>
+  //           <p>
+  //             <h2>{expiry}</h2>
+  //             <em>{event.name}</em> hosted by {event.organizerUserId.nameFirst}{' '}
+  //             {event.organizerUserId.nameLast}
+  //           </p>
+  //           <p>
+  //             {strToDayJS(event.dateStart).format('MM/DD/YY [at] HH:mm')} - to -{' '}
+  //             {strToDayJS(event.dateEnd).format('MM/DD/YY [at] HH:mm')}
+  //           </p>
+  //           <p>Registrations: {event.registrations.length}</p>
+  //           {console.log(event)}
+  //           <p>&nbsp;</p>
+  //         </li>
+  //       );
+  //   });
 
-  return (
-    <div style={containerStyle}>
-        ADD EVENT FORM
-    </div>
-  );
+  return <div style={containerStyle}>ADD EVENT FORM</div>;
 }
 
 export default AddEvent;
