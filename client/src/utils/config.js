@@ -7,7 +7,7 @@ import { createHttpLink } from '@apollo/client';
 // it's temporary, when we deploy this will point to the API server.
 
 const httpLink = createHttpLink({
-  uri: 'http://192.168.56.102:3001/graphql'
+  uri: 'http://localhost:3001/graphql'
   // uri: 'https://codeathon-server-a60585dbdc98.herokuapp.com/graphql',
 });
 

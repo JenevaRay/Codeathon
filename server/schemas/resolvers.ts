@@ -56,6 +56,9 @@ const resolvers = {
     },
   },
   Mutation: {
+    addEvent: async (_: any, args: any, context: any) => {
+      
+    }, 
     addUser: async (_: any, args: any) => {
       try {
         const user = await User.create({...args, schemaVersion, schemaDate});

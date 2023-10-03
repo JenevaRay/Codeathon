@@ -11,8 +11,6 @@ import {
   Group,
   Venue,
   Registration,
-  // Address,
-  // Phone,
 } from '../models/index';
 
 // Seed dynamic dates and times based upon the current date and time using Day.js
@@ -22,7 +20,13 @@ const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
 
-const usersIds = [
+const eventIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const userIds = [
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
 ];
@@ -33,7 +37,7 @@ const venueIds = [
 
 const users = [
   { // Seed a user with only the bare minimum fields
-    _id: usersIds[0],
+    _id: userIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'davesmith@acme.net',
@@ -43,7 +47,7 @@ const users = [
     registrations: ['012345012345'],
   },
   { // Seed a user with all available fields
-    _id: usersIds[1],
+    _id: userIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'lastfirst@lifo.org',
@@ -65,7 +69,7 @@ const users = [
 
 const events = [
   {
-    _id: '999988887777',
+    _id: eventIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventNowNoRegistrations',
@@ -74,14 +78,14 @@ const events = [
     registrations: [],
     registrationCutoffDate: now.toDate(),
     registrationPaymentRequiredDate: now.toDate(),
-    organizerUserId: usersIds[0],
+    organizerUserId: userIds[0],
     feeRegistration: 1299,
     feeVenue: 1000,
     venues: [venueIds[0]],
     groups: [],
   },
   {
-    _id: '888877776666',
+    _id: eventIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventExpired',
@@ -90,14 +94,14 @@ const events = [
     registrations: ['012345012345', '987654987654'],
     registrationCutoffDate: lastMonth.toDate(),
     registrationPaymentRequiredDate: lastMonth.toDate(),
-    organizerUserId: usersIds[0],
+    organizerUserId: userIds[0],
     feeRegistration: 1299,
     feeVenue: 1000,
     venues: [venueIds[0]],
     groups: ['554466554466'],
   },
   {
-    _id: '777766665555',
+    _id: eventIds[2],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     name: 'EventFutureAcceptingRegistrations',
@@ -106,7 +110,7 @@ const events = [
     registrations: [],
     registrationCutoffDate: nextWeek.toDate(),
     registrationPaymentRequiredDate: nextMonth.toDate(),
-    organizerUserId: usersIds[0],
+    organizerUserId: userIds[0],
     feeRegistration: 1399,
     feeVenue: 1000,
     venues: [venueIds[0]],
@@ -120,48 +124,12 @@ const groups = [
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     registrations: ['012345012345', '987654987654'],
-    eventId: '999988887777',
+    eventId: eventIds[0],
     name: 'Together Now',
     projectName: 'Full Schema Projector',
     projectDescription: 'Laid out to see',
   },
 ];
-
-// const addresses = [
-//   {
-//     _id: '224466224466',
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     streetAddress: '123 Sesame Street',
-//     extendedAddress: undefined,
-//     country: 'US',
-//     state: 'New York',
-//     county: 'New York',
-//     city: 'Manhattan',
-//     postalCode: '12345',
-//     type: 'venue',
-//     isUserPrimary: false,
-//   },
-// ];
-
-// const phones = [
-//   {
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     type: 'venue',
-//     _id: '111112222233',
-//     number: '+1 234-567-8901',
-//     isUserPrimary: false,
-//   },
-//   {
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     type: 'cell',
-//     _id: '222223333344',
-//     number: '+1 (234) 567-0001',
-//     isUserPrimary: true,
-//   },
-// ];
 
 const venues = [
   {  // Seed a venue with all available fields
@@ -185,8 +153,8 @@ const registrations = [
     _id: '012345012345',
     schemaVersion: schemaVersion,
     schemaDate: schemaDate,
-    userId: usersIds[0],
-    eventId: '888877776666',
+    userId: userIds[0],
+    eventId: eventIds[1],
     registrationDate: lastMonth.toDate(),
     registrationType: 'host',
     // hosts don't pay, or more technically pay $0
@@ -197,7 +165,7 @@ const registrations = [
     schemaVersion,
     schemaDate,
     userId: '222222333333',
-    eventId: '888877776666',
+    eventId: eventIds[1],
     registrationDate: lastMonth.toDate(),
     registrationType: 'attendee',
     paid: true,
@@ -215,14 +183,6 @@ db.once('open', async () => {
   await Event.deleteMany();
   await Event.insertMany(events);
   console.log('Events seeded.');
-
-  // await Address.deleteMany();
-  // await Address.insertMany(addresses);
-  // console.log('Addresses seeded');
-
-  // await Phone.deleteMany();
-  // await Phone.insertMany(phones);
-  // console.log('Phones seeded');
 
   await Group.deleteMany();
   await Group.insertMany(groups);
