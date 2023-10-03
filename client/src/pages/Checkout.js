@@ -6,8 +6,6 @@ import dayjs from 'dayjs'
 import React, { useEffect } from "react"
 import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-import Button from '../components/ui/Button';
 import DeliveryMethod from "./DeliveryMethod";
 import OrderSummary from "./OrderSummary";
 import PaymentDetails from "./PaymentDetails";
@@ -437,19 +435,19 @@ const [checked, setChecked] = useState(false);
 //   </section>
 // );
 }
-const Checkout = () => {
-  // we have to wrap the whole checkout function in the Elements provider
-  const stripePromise = loadStripe('your-publishable-key-here');
-  const options = {
-    clientSecret: "your-client-secret/token-from-the-server-here"
-  }
+// const Checkout = () => {
+//   // we have to wrap the whole checkout function in the Elements provider
+//   const stripePromise = loadStripe('your-publishable-key-here');
+//   const options = {
+//     clientSecret: "your-client-secret/token-from-the-server-here"
+//   }
   
-  return (
-    <Elements stripe={stripePromise}>
-      <StripeCheckout />
-    </Elements>
-  )
-}
+//   return (
+//     <Elements stripe={stripePromise}>
+//       <StripeCheckout />
+//     </Elements>
+//   )
+// }
 
 export default Checkout;
 
