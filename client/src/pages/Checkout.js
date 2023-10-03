@@ -3,12 +3,10 @@ import { useContext, useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
 import { PaymentElement, CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React, { useEffect } from "react"
+import React, { useEffect } from "react";
+
 import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
-import DeliveryMethod from "./DeliveryMethod";
-import OrderSummary from "./OrderSummary";
-import PaymentDetails from "./PaymentDetails";
 
 function StripeCheckout() {
   
@@ -55,41 +53,14 @@ function StripeCheckout() {
       return ''
     }
   }
-}
 
-const stripePromise = loadStripe('your-publishable-key-here');
-
-function Checkout() {
-const [state, dispatch] = useStoreContext();
-const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-const query_info = useQuery(QUERY_REGISTRATIONS);
-const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-const [totalPrice, setTotalPrice] = useState(0);
-const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(null);
-const [checked, setChecked] = useState(false);
-
-  useEffect(() => {
-    let calculatedTotal = calculateTotalPrice();
-    setTotalPrice(calculatedTotal);
-  }, [state.registrations]);
-
-  // Calculate the total price from event
-  const calculateTotalPrice = () => {
-    return state.registrations
-      .filter((registration) => !registration.paid)
-      .reduce(
-        (total, registration) =>
-          total + registration.eventId.feeRegistration + registration.eventId.feeVenue,0);
-  };  
-
-  const handleDeliveryMethodChange = (method) => {
-    setSelectedDeliveryMethod(method);
-  };
-
+  const [checked, setChecked] = useState(false);
   const handleChange = () => {
     setChecked(!checked);
-    const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+
+   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
     let itemizedTotal = 0;
+  
   };
 
   const stripe = useStripe();
@@ -122,6 +93,15 @@ const [checked, setChecked] = useState(false);
    
 
   };
+
+  const calculateTotalPrice = () => {
+    // Calculate the total price based on the itemizedTotal and shipping method
+    const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
+    const totalPrice = itemizedTotal + shippingPrice;
+    return totalPrice.toFixed(2); 
+  };
+
+  const totalPrice = calculateTotalPrice();
 
   return (
     <>
@@ -159,11 +139,7 @@ const [checked, setChecked] = useState(false);
                   type="radio"
                   name="radio"
                   checked={checked ? false : true}
-                  onChange={() => {
-                    handleChange();
-                    handleDeliveryMethodChange();
-                  }}
-                  selectedMethod={selectedDeliveryMethod}
+                  onChange={handleChange}
                 />
                 <span className="absolute right-4 top-1/2 box-content block h-3 w-3 -translate-y-1/2 rounded-full border-8 border-zinc-300 bg-white peer-checked:border-zinc-700"></span>
                 <label
@@ -395,7 +371,7 @@ const [checked, setChecked] = useState(false);
             </div>
             <Button
             // Pass totalPrice to handlePayment
-              onClick={handleSubmit} 
+              onClick={() => Checkout(totalPrice)} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
@@ -435,19 +411,19 @@ const [checked, setChecked] = useState(false);
 //   </section>
 // );
 }
-// const Checkout = () => {
-//   // we have to wrap the whole checkout function in the Elements provider
-//   const stripePromise = loadStripe('your-publishable-key-here');
-//   const options = {
-//     clientSecret: "your-client-secret/token-from-the-server-here"
-//   }
+const Checkout = () => {
+  // we have to wrap the whole checkout function in the Elements provider
+  const stripePromise = loadStripe('your-publishable-key-here');
+  const options = {
+    clientSecret: "your-client-secret/token-from-the-server-here"
+  }
   
-//   return (
-//     <Elements stripe={stripePromise}>
-//       <StripeCheckout />
-//     </Elements>
-//   )
-// }
+  return (
+    <Elements stripe={stripePromise}>
+      <StripeCheckout />
+    </Elements>
+  )
+}
 
 export default Checkout;
 
