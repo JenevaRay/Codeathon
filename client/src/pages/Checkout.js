@@ -1,21 +1,15 @@
 import { useState } from 'react';
 import { useStoreContext, States} from '../utils/';
-import {Elements} from '@stripe/react-stripe-js';
-import { CardElement} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
 import dayjs from 'dayjs'
-import Button from '../components/ui/Button'
 
-const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+import Button from '../components/ui/Button'
 
 const Checkout = () => {
     const [checked, setChecked] = useState(false);
     const [state, dispatch] = useStoreContext()
     const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-    const options = {
-      clientSecret: '{{CLIENT_SECRET}}',
-    };
-    let itemizedTotal
+    let total = 28 // for example
+    let itemizedTotal = `$${total.toString()}.00`
     let profile
     let query_info
       const formatReservations = () => {
@@ -66,13 +60,6 @@ const Checkout = () => {
       console.log('Submitting order for checkout')
     }
 
-    const calculateTotalPrice = () => {
-      // Calculate the total price based on the itemizedTotal and shipping method
-      const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
-      const totalPrice = itemizedTotal + shippingPrice;
-      return totalPrice.toFixed(2); 
-    };
-
   return (
     <>
       <div className="flex flex-col items-center justify-between pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
@@ -101,7 +88,6 @@ const Checkout = () => {
             <p className="mt-16 text-lg font-medium lg:mt-8">
               Delivery Methods
             </p>
-            <Elements stripe={stripePromise} options={options}>
             <form className="mt-5 grid gap-6">
               <div className="relative">
                 <input
@@ -156,7 +142,6 @@ const Checkout = () => {
                 </label>
               </div>
             </form>
-            </Elements>
           </div>
           <div className="px-4 pt-20">
             <p className="text-xl font-medium">Payment Details</p>
@@ -228,22 +213,6 @@ const Checkout = () => {
                 Card Details
               </label>
               <div className="w-full">
-              <CardElement
-                options={{
-                  style: {
-                    base: {
-                      fontSize: '16px',
-                      color: '#32325d',
-                      '::placeholder': {
-                        color: '#aab7c4',
-                      },
-                    },
-                    invalid: {
-                      color: '#fa755a',
-                    },
-                  },
-                }}
-              />
             </div>
               <div className="flex">
                 <div className="relative w-7/12 flex-shrink-0">
@@ -327,7 +296,7 @@ const Checkout = () => {
               <div className="mt-6 border-b border-t py-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Subtotal</p>
-                  <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
+                  <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Shipping</p>
@@ -338,11 +307,10 @@ const Checkout = () => {
               </div>
               <div className="mt-6 flex items-center justify-between">
                 <p className="text-sm font-medium text-zinc-900">Total</p>
-                <p className="font-semibold text-zinc-900">{['$', String(itemizedTotal).slice(0, -2), '.', String(itemizedTotal).slice(-2)]}</p>
+                <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
               </div>
             </div>
             <Button
-            // Pass totalPrice to handlePayment
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
@@ -354,47 +322,10 @@ const Checkout = () => {
             </Button>
           </div>
         </div>
-      </div>
+        </div>
     </>
   );
-//   const ProductDisplay = () => (
-//     <section>
-//       <div className="product">
-//         <img
-//           src="https://i.imgur.com/EHyR2nP.png"
-//           alt="The cover of Stubborn Attachments"
-//         />
-//         <div className="description">
-//         <h3>Stubborn Attachments</h3>
-//         <h5>$20.00</h5>
-//         </div>
-//       </div>
-//       <form action="/create-checkout-session" method="POST">
-//       <button type="submit">
-//         Checkout
-//       </button>
-//     </form>
-//   </section>
-//   )
-// const Message = ({ message }) => (
-//   <section>
-//     <p>{message}</p>
-//   </section>
-// );
 }
 
-const Checkout = () => {
-  // we have to wrap the whole checkout function in the Elements provider
-  
-  const options = {
-    clientSecret: "your-client-secret/token-from-the-server-here"
-  }
-  
-  return (
-    // <Elements stripe={stripePromise}>
-      <StripeCheckout />
-    // </Elements>
-  )
-}
 
 export default Checkout;
