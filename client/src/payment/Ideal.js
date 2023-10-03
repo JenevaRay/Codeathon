@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react';
-import {useLocation} from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
   IdealBankElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const IdealForm = () => {
   const stripe = useStripe();
@@ -24,7 +24,7 @@ const IdealForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -35,7 +35,7 @@ const IdealForm = () => {
           paymentMethodType: 'ideal',
           currency: 'eur',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -45,18 +45,16 @@ const IdealForm = () => {
 
     addMessage('Client secret returned');
 
-    const {
-      error: stripeError,
-      paymentIntent,
-    } = await stripe.confirmIdealPayment(clientSecret, {
-      payment_method: {
-        ideal: elements.getElement(IdealBankElement),
-        billing_details: {
-          name: 'Jenny Rosen',
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmIdealPayment(clientSecret, {
+        payment_method: {
+          ideal: elements.getElement(IdealBankElement),
+          billing_details: {
+            name: 'Jenny Rosen',
+          },
         },
-      },
-      return_url: `${window.location.origin}/ideal?return=true`,
-    });
+        return_url: `${window.location.origin}/ideal?return=true`,
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -75,7 +73,9 @@ const IdealForm = () => {
   return (
     <>
       <h1>iDEAL</h1>
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="ideal-bank-element">iDEAL Bank</label>
         <IdealBankElement id="ideal-bank-element" />
 
@@ -100,10 +100,8 @@ const IdealReturn = () => {
       return;
     }
     const fetchPaymentIntent = async () => {
-      const {
-        error,
-        paymentIntent,
-      } = await stripe.retrievePaymentIntent(clientSecret);
+      const { error, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (error) {
         addMessage(error.message);
       }

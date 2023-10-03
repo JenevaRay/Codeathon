@@ -4,10 +4,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import { Model, Schema, model, Document } from 'mongoose';
 
 // Import the overall schema version and schema date from the index.ts file
-import {
-  schemaVersion,
-  schemaDate,
-} from './index';
+import { schemaVersion, schemaDate } from './index';
 
 dotenv.config();
 

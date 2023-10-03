@@ -7,4 +7,13 @@ import RegistrationList from './RegistrationList';
 import AddEvent from './AddEvent';
 import MyEventList from './MyEventList';
 
-export { EventList, RegistrationList, Footer, Hero, Layout, Navbar, AddEvent, MyEventList };
+export {
+  EventList,
+  RegistrationList,
+  Footer,
+  Hero,
+  Layout,
+  Navbar,
+  AddEvent,
+  MyEventList,
+};

@@ -26,26 +26,20 @@ const eventIds = [
   new mongoose.Types.ObjectId(),
 ];
 
-const groupIds = [
-  new mongoose.Types.ObjectId(),
-]
+const groupIds = [new mongoose.Types.ObjectId()];
 
 const registrationIds = [
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
 ];
 
-const userIds = [
-  new mongoose.Types.ObjectId(),
-  new mongoose.Types.ObjectId(),
-];
+const userIds = [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()];
 
-const venueIds = [
-  new mongoose.Types.ObjectId(),
-];
+const venueIds = [new mongoose.Types.ObjectId()];
 
 const users = [
-  { // Seed a user with only the bare minimum fields
+  {
+    // Seed a user with only the bare minimum fields
     _id: userIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
@@ -55,7 +49,8 @@ const users = [
     nameFirst: 'Dave',
     registrations: [registrationIds[0]],
   },
-  { // Seed a user with all available fields
+  {
+    // Seed a user with all available fields
     _id: userIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
@@ -138,7 +133,8 @@ const groups = [
 ];
 
 const venues = [
-  {  // Seed a venue with all available fields
+  {
+    // Seed a venue with all available fields
     _id: venueIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),

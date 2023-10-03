@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
-import {useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useStripe, useElements } from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const BancontactForm = () => {
   const stripe = useStripe();
@@ -21,7 +21,7 @@ const BancontactForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -32,7 +32,7 @@ const BancontactForm = () => {
           paymentMethodType: 'bancontact',
           currency: 'eur',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -42,17 +42,15 @@ const BancontactForm = () => {
 
     addMessage('Client secret returned');
 
-    const {
-      error: stripeError,
-      paymentIntent,
-    } = await stripe.confirmBancontactPayment(clientSecret, {
-      payment_method: {
-        billing_details: {
-          name,
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmBancontactPayment(clientSecret, {
+        payment_method: {
+          billing_details: {
+            name,
+          },
         },
-      },
-      return_url: `${window.location.origin}/bancontact?return=true`,
-    });
+        return_url: `${window.location.origin}/bancontact?return=true`,
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -72,7 +70,9 @@ const BancontactForm = () => {
     <>
       <h1>Bancontact</h1>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -104,10 +104,8 @@ const BancontactReturn = () => {
       return;
     }
     const fetchPaymentIntent = async () => {
-      const {
-        error: stripeError,
-        paymentIntent,
-      } = await stripe.retrievePaymentIntent(clientSecret);
+      const { error: stripeError, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (stripeError) {
         addMessage(stripeError.message);
       }

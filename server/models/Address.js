@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 // import mongoose, { Schema } from 'mongoose';
 // // Import the overall schema version and schema date from the index.ts file
 // import { schemaVersion, schemaDate } from './index';

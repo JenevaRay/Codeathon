@@ -47,7 +47,6 @@ async function handlePayment(req: Request, res: Response) {
   }
 }
 
-
 // Export all models plus the schema version and schema date
 export {
   User,
@@ -59,5 +58,5 @@ export {
   // Phone,
   schemaVersion,
   schemaDate,
-  handlePayment
+  handlePayment,
 };

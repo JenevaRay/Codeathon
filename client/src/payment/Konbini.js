@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStripe, useElements } from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const KonbiniForm = () => {
   const stripe = useStripe();
@@ -22,7 +22,7 @@ const KonbiniForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -30,16 +30,16 @@ const KonbiniForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            currency: 'jpy',
-            paymentMethodType: 'konbini',
-            paymentMethodOptions: {
-              konbini: {
-                product_description: 'Tシャツ',
-                expires_after_days: 3,
-              },
+          currency: 'jpy',
+          paymentMethodType: 'konbini',
+          paymentMethodOptions: {
+            konbini: {
+              product_description: 'Tシャツ',
+              expires_after_days: 3,
             },
+          },
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -49,9 +49,8 @@ const KonbiniForm = () => {
 
     addMessage('Client secret returned');
 
-    const {error: stripeError, paymentIntent} = await stripe.confirmKonbiniPayment(
-      clientSecret,
-      {
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmKonbiniPayment(clientSecret, {
         payment_method: {
           billing_details: {
             name,
@@ -63,8 +62,7 @@ const KonbiniForm = () => {
             confirmation_number: phoneNumber,
           },
         },
-      }
-    );
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -83,9 +81,8 @@ const KonbiniForm = () => {
     // intent will succeed after 3 seconds. We set this timeout
     // to refetch the payment intent.
     const i = setInterval(async () => {
-      const { error, paymentIntent } = await stripe.retrievePaymentIntent(
-        clientSecret
-      );
+      const { error, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (error) {
         addMessage(`Error: ${JSON.stringify(error, null, 2)}`);
         clearInterval(i);
@@ -104,32 +101,58 @@ const KonbiniForm = () => {
 
       <div>
         <ul>
-            <li>Email: <code>{`{any_prefix}@{any_domain}`}</code><small>(Example: hanako@test.com)</small></li>
-            <li>Phone Number: <code>11111111110</code></li>
-            <li>Simulates a Konbini payment which succeeds after 3 minutes and the payment_intent.succeeded webhook arrives after that.</li>
+          <li>
+            Email: <code>{`{any_prefix}@{any_domain}`}</code>
+            <small>(Example: hanako@test.com)</small>
+          </li>
+          <li>
+            Phone Number: <code>11111111110</code>
+          </li>
+          <li>
+            Simulates a Konbini payment which succeeds after 3 minutes and the
+            payment_intent.succeeded webhook arrives after that.
+          </li>
         </ul>
         <ul>
-            <li>Email: <code>{`{any_prefix}succeed_immediately@{any_domain}`}</code><small>(Example: succeed_immediately@test.com)</small></li>
-            <li>Phone Number: <code>22222222220</code></li>
-            <li>Simulates a Konbini payment which succeeds immediately and the payment_intent.succeeded webhook arrives after that.</li>
+          <li>
+            Email: <code>{`{any_prefix}succeed_immediately@{any_domain}`}</code>
+            <small>(Example: succeed_immediately@test.com)</small>
+          </li>
+          <li>
+            Phone Number: <code>22222222220</code>
+          </li>
+          <li>
+            Simulates a Konbini payment which succeeds immediately and the
+            payment_intent.succeeded webhook arrives after that.
+          </li>
         </ul>
       </div>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label>
-            <span>Name</span>
-            <input value={name} onChange={e => setName(e.target.value)} />
+          <span>Name</span>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </label>
         <label>
-            <span>Email</span>
-            <input value={email} onChange={e => setEmail(e.target.value)} />
+          <span>Email</span>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </label>
         <label>
-            <span>Phone Number</span>
-            <input value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
+          <span>Phone Number</span>
+          <input
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
         </label>
 
-        
         <button type="submit">Pay</button>
       </form>
       <StatusMessages messages={messages} />
