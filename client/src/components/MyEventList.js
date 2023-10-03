@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import dayjs from 'dayjs';
-import { ADD_REGISTRATION } from '../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_EVENTS, Auth, StoreProvider } from '../utils/';
+import dayjs from 'dayjs';
+
+import { ADD_REGISTRATION } from '../utils/mutations';
+import { QUERY_EVENTS } from '../utils/queries';
+
+import Auth from '../utils/Auth';
+
+import { useStoreContext, StoreProvider } from '../utils/GlobalState';
 
 import Button from './ui/Button';
 
@@ -10,8 +15,10 @@ const strToDayJS = function (unixEpochStr) {
   return dayjs(new Date(Number(unixEpochStr)));
 };
 
+let totalCost = 0;
+
 const NewEventForm = () => {
-  const [submitError, setSubmitError] = useState('');
+  // const [submitError, setSubmitError] = useState('');
   const [newEventMode, setNewEventMode] = useState('');
   const [eventState, setEventState] = useState({
     name: '',
@@ -81,7 +88,7 @@ const NewEventForm = () => {
             onClick={() => {
               setNewEventMode('VENUE');
             }}>
-            Pay All Reservations {}
+            Pay All Reservations { ['$', String(totalCost).slice(0, -2), '.', String(totalCost).slice(2)]}
           </Button>
 
           <Button
@@ -364,13 +371,13 @@ const MyEventList = () => {
   if (!profile) {
     return 'Not Logged In';
   }
-  let totalCost = 0;
+
   // Handles the checkout process
 
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
-  console.log(totalCost);
+  
   const events = query_info.data.events.map((event) => {
     // registrations must be submitted before event.dateCutoff
     const isOrganizer = event.organizerUserId._id === profile.data._id;
@@ -390,12 +397,15 @@ const MyEventList = () => {
         case 'host':
           return <Button disabled={true}>HOST</Button>;
         case 'attendee':
-          return <Button>Confirm {cost.join('')}</Button>;
+          if (expiry === 'FUTURE')
+          totalCost += event.feeRegistration + event.feeVenue
+          return <Button>Not Yet Confirmed</Button>;
         default:
           console.log(registration.role);
       }
       return button;
     });
+    console.log(totalCost)
     return (
       <div
         key={event._id}
@@ -404,8 +414,10 @@ const MyEventList = () => {
           {event.name}
         </h5>
         <p className="text-base leading-loose text-zinc-800">
-          <strong>HOST:</strong> {event.organizerUserId.nameFirst}{' '}
-          {event.organizerUserId.nameLast}
+          { isOrganizer ? 
+             'YOU ARE HOST' : (<><strong>HOST:</strong>{event.organizerUserId.nameFirst}{' '}
+             {event.organizerUserId.nameLast}</>)
+          }
           <br />
           <strong>DATE:</strong>{' '}
           {strToDayJS(event.dateStart).format('MM/DD/YYYY [@] h:mma')} -{' '}
@@ -425,7 +437,6 @@ const MyEventList = () => {
             Attend {cost}
           </Button>
         ) : (
-          // </Elements>
           <Button
             value={event._id}
             margin="mt-4"
@@ -454,7 +465,7 @@ const MyEventList = () => {
       </div>
     );
   });
-
+  console.log(totalCost);
   return (
     <StoreProvider value={[state, dispatch]}>
       <div className="mt-16 flex flex-wrap items-center justify-center">

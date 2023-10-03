@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 import Button from '../components/ui/Button';
-import { Auth } from '../utils';
+
+import Auth from '../utils/Auth'
+
 import {
   svgPathVariant1,
   svgPathVariant2,
@@ -13,7 +15,7 @@ import {
   fifthVariant,
   sixthVariant,
   seventhVariant,
-} from '../utils';
+} from '../utils/constants';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);

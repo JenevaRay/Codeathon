@@ -10,7 +10,6 @@ const QUERY_EVENTS = gql`
       feeRegistration
       feeVenue
       name
-      registrationPaymentRequiredDate
       groups {
         _id
         name
