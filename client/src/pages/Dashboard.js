@@ -1,4 +1,4 @@
-import { MyEventList } from '../components';
+import MyEventList from '../components/MyEventList'
 
 const Dashboard = () => {
   return (

@@ -1,7 +1,9 @@
-import { /* useStoreContext,*/ QUERY_REGISTRATIONS, Auth } from '../utils/';
-// import { ADD_REGISTRATION } from '../utils/mutations';
-import { useQuery /*, useMutation*/ } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import dayjs from 'dayjs';
+
+import Auth from '../utils/Auth'
+
+import { QUERY_REGISTRATIONS } from '../utils/queries';
 
 import Button from './ui/Button';
 
