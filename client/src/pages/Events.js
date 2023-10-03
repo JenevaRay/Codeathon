@@ -1,4 +1,4 @@
-import { EventList } from '../components';
+import EventList from '../components/EventList'
 
 const Events = () => {
   return <EventList />;

@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import dayjs from 'dayjs';
-import { ADD_REGISTRATION } from '../utils/mutations';
 import { useMutation, useQuery } from '@apollo/client';
-import { useStoreContext, QUERY_EVENTS, Auth, StoreProvider } from '../utils/';
+import dayjs from 'dayjs';
+
+import { ADD_REGISTRATION } from '../utils/mutations';
+import { QUERY_EVENTS } from '../utils/queries';
+
+import Auth from '../utils/Auth';
+
+import { useStoreContext, StoreProvider } from '../utils/GlobalState';
 
 import Button from './ui/Button';
 
@@ -11,7 +16,7 @@ const strToDayJS = function (unixEpochStr) {
 };
 
 const NewEventForm = () => {
-  const [submitError, setSubmitError] = useState('');
+  // const [submitError, setSubmitError] = useState('');
   const [newEventMode, setNewEventMode] = useState('');
   const [eventState, setEventState] = useState({
     name: '',
@@ -425,7 +430,6 @@ const MyEventList = () => {
             Attend {cost}
           </Button>
         ) : (
-          // </Elements>
           <Button
             value={event._id}
             margin="mt-4"

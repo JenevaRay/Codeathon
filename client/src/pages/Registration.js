@@ -1,8 +1,9 @@
 import React from 'react';
-import { RegistrationList } from '../components';
 
-const Events = () => {
+import RegistrationList from '../components/RegistrationList'
+
+const Registration = () => {
   return <RegistrationList />;
 };
 
-export default Events;
+export default Registration;

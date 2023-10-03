@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { useStoreContext, States } from '../utils/';
 import { CardElement } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs';
+
+import { useStoreContext } from '../utils/GlobalState';
+import { States } from '../utils/constants';
 
 import Button from '../components/ui/Button';
 
@@ -24,10 +26,7 @@ const Checkout = () => {
       // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
       // TODO: which is, right now, all the time...
       const { loading, data } = query_info;
-      // console.log(loading)
-      // console.log(data)
       if (!loading && data) {
-        // console.log(data)
         const registrations = data.registrations
           .filter((registration) => !registration.paid)
           .map((registration) => {
@@ -366,7 +365,6 @@ const Checkout = () => {
               </div>
             </div>
             <Button
-              // Pass totalPrice to handlePayment
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
@@ -381,38 +379,6 @@ const Checkout = () => {
       </div>
     </>
   );
-  //   const ProductDisplay = () => (
-  //     <section>
-  //       <div className="product">
-  //         <img
-  //           src="https://i.imgur.com/EHyR2nP.png"
-  //           alt="The cover of Stubborn Attachments"
-  //         />
-  //         <div className="description">
-  //         <h3>Stubborn Attachments</h3>
-  //         <h5>$20.00</h5>
-  //         </div>
-  //       </div>
-  //       <form action="/create-checkout-session" method="POST">
-  //       <button type="submit">
-  //         Checkout
-  //       </button>
-  //     </form>
-  //   </section>
-  //   )
-  // const Message = ({ message }) => (
-  //   <section>
-  //     <p>{message}</p>
-  //   </section>
-  // );
-
-  // we have to wrap the whole checkout function in the Elements provider
-
-  // return (
-  //   // <Elements stripe={stripePromise}>
-  //     <StripeCheckout />
-  //   // </Elements>
-  // )
 };
 
 export default Checkout;
