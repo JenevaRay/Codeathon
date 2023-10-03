@@ -1,15 +1,11 @@
-
 import { MyEventList } from '../components';
-
 
 const Dashboard = () => {
   return (
     <div>
-        <MyEventList />
+      <MyEventList />
     </div>
   );
 };
 
 export default Dashboard;
-
-

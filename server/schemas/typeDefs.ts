@@ -59,7 +59,7 @@ const typeDefs: DocumentNode = gql`
   type Venue {
     _id: ID
     schemaVersion: String
-    schemaDate: String    
+    schemaDate: String
     name: String
     addressStreet: String
     addressExtended: String
@@ -93,15 +93,15 @@ const typeDefs: DocumentNode = gql`
       type: String
     ): Registration
     addEvent(
-      name: String!,
-      dateStart: String!,
-      dateEnd: String!,
+      name: String!
+      dateStart: String!
+      dateEnd: String!
       venueId: String!
     ): Event
     addUser(
-      emailAddress: String!,
-      password: String!,
-      nameLast: String!,
+      emailAddress: String!
+      password: String!
+      nameLast: String!
       nameFirst: String!
     ): Auth
     myEvents(organizerUserId: String!): [Event]

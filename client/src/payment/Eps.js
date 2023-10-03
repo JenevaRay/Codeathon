@@ -1,7 +1,11 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
-import {EpsBankElement, useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import {
+  EpsBankElement,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const EpsForm = () => {
   const stripe = useStripe();
@@ -21,16 +25,19 @@ const EpsForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch('/create-payment-intent', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const { error: backendError, clientSecret } = await fetch(
+      '/create-payment-intent',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          paymentMethodType: 'eps',
+          currency: 'eur',
+        }),
       },
-      body: JSON.stringify({
-        paymentMethodType: 'eps',
-        currency: 'eur',
-      }),
-    }).then((r) => r.json());
+    ).then((r) => r.json());
 
     if (backendError) {
       addMessage(backendError.message);
@@ -39,9 +46,8 @@ const EpsForm = () => {
 
     addMessage('Client secret returned');
 
-    const {error: stripeError, paymentIntent} = await stripe.confirmEpsPayment(
-      clientSecret,
-      {
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmEpsPayment(clientSecret, {
         payment_method: {
           eps: elements.getElement(EpsBankElement),
           billing_details: {
@@ -49,8 +55,7 @@ const EpsForm = () => {
           },
         },
         return_url: `${window.location.origin}/eps?return=true`,
-      }
-    );
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -70,7 +75,9 @@ const EpsForm = () => {
     <>
       <h1>EPS</h1>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -101,10 +108,8 @@ const EpsReturn = () => {
       return;
     }
     const fetchPaymentIntent = async () => {
-      const {
-        error: stripeError,
-        paymentIntent,
-      } = await stripe.retrievePaymentIntent(clientSecret);
+      const { error: stripeError, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (stripeError) {
         addMessage(stripeError.message);
       }

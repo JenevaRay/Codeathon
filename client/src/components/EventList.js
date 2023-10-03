@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react'
+import { useReducer, useState } from 'react';
 import dayjs from 'dayjs';
 import { ADD_REGISTRATION_TO_CART } from '../utils/actions';
 import { ADD_REGISTRATION } from '../utils/mutations';
@@ -23,7 +23,7 @@ const EventList = () => {
 
   const registerForEvent = async (eventId) => {
     // calling this throws an ApolloError, is this cacheing at work?
-    const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
+    const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
     if (profile.data) {
       if (profile.data._id) {
         const userId = profile.data._id;
@@ -31,17 +31,16 @@ const EventList = () => {
           const mutationResponse = await register({
             variables: { eventId, userId },
           });
-          const { data } = mutationResponse
+          const { data } = mutationResponse;
           // console.log(mutationResponse)
           if (data) {
             dispatch({
               type: ADD_REGISTRATION_TO_CART,
-              payload: data.addRegistration._id
-            })
+              payload: data.addRegistration._id,
+            });
           }
           // turn this off when improving this function...
-          window.location.assign('/checkout')
-          
+          window.location.assign('/checkout');
         } catch (e) {
           console.log(e);
         }
@@ -64,7 +63,7 @@ const EventList = () => {
       },
       body: JSON.stringify({
         eventId,
-        cost: 75.00
+        cost: 75.0,
       }),
     }).then((res) => res.json());
 
@@ -134,21 +133,21 @@ const EventList = () => {
 
             {expiry === 'FUTURE' ? (
               // <Elements stripe={stripePromise}>
-                <Button
-                  value={event._id}
-                  margin="mt-4"
-                  width="w-full"
-                  padding="py-2"
-                  onClick={(e) => {
-                    // window.location.assign('/checkout')
-                    registerForEvent(event._id)
-                    // handleCheckout(event._id, cost);
-                    // console.log(event);
-                  }}>
-                  Register {cost}
-                </Button>
-              // </Elements>
+              <Button
+                value={event._id}
+                margin="mt-4"
+                width="w-full"
+                padding="py-2"
+                onClick={(e) => {
+                  // window.location.assign('/checkout')
+                  registerForEvent(event._id);
+                  // handleCheckout(event._id, cost);
+                  // console.log(event);
+                }}>
+                Register {cost}
+              </Button>
             ) : (
+              // </Elements>
               <Button
                 value={event._id}
                 margin="mt-4"

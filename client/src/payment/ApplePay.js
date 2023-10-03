@@ -1,6 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {PaymentRequestButtonElement, useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useEffect, useState } from 'react';
+import {
+  PaymentRequestButtonElement,
+  useStripe,
+  useElements,
+} from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const ApplePay = () => {
   const stripe = useStripe();
@@ -25,14 +29,14 @@ const ApplePay = () => {
     });
 
     // Check the availability of the Payment Request API.
-    pr.canMakePayment().then(result => {
+    pr.canMakePayment().then((result) => {
       if (result) {
         setPaymentRequest(pr);
       }
     });
 
     pr.on('paymentmethod', async (e) => {
-      const {error: backendError, clientSecret} = await fetch(
+      const { error: backendError, clientSecret } = await fetch(
         '/create-payment-intent',
         {
           method: 'POST',
@@ -43,7 +47,7 @@ const ApplePay = () => {
             paymentMethodType: 'card',
             currency: 'usd',
           }),
-        }
+        },
       ).then((r) => r.json());
 
       if (backendError) {
@@ -53,12 +57,14 @@ const ApplePay = () => {
 
       addMessage('Client secret returned');
 
-      const {
-        error: stripeError,
-        paymentIntent,
-      } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: e.paymentMethod.id,
-      }, { handleActions: false });
+      const { error: stripeError, paymentIntent } =
+        await stripe.confirmCardPayment(
+          clientSecret,
+          {
+            payment_method: e.paymentMethod.id,
+          },
+          { handleActions: false },
+        );
 
       if (stripeError) {
         // Show error to your customer (e.g., insufficient funds)
@@ -82,19 +88,57 @@ const ApplePay = () => {
       <p>
         Before you start, you need to:
         <ul>
-          <li><a href="https://stripe.com/docs/stripe-js/elements/payment-request-button#html-js-testing" target="_blank">Add a payment method to your browser.</a> For example, add a card to your Wallet for Safari.</li>
-          <li>Serve your application over HTTPS. This is a requirement both in development and in production. One way to get up and running is to use a service like <a href="https://ngrok.com/" target="_blank" rel="noopener noreferrer">ngrok</a>.</li>
-          <li><a href="https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay" target="_blank">Verify your domain with Apple Pay</a>, both in development and production.</li>
+          <li>
+            <a
+              href="https://stripe.com/docs/stripe-js/elements/payment-request-button#html-js-testing"
+              target="_blank">
+              Add a payment method to your browser.
+            </a>{' '}
+            For example, add a card to your Wallet for Safari.
+          </li>
+          <li>
+            Serve your application over HTTPS. This is a requirement both in
+            development and in production. One way to get up and running is to
+            use a service like{' '}
+            <a
+              href="https://ngrok.com/"
+              target="_blank"
+              rel="noopener noreferrer">
+              ngrok
+            </a>
+            .
+          </li>
+          <li>
+            <a
+              href="https://stripe.com/docs/stripe-js/elements/payment-request-button#verifying-your-domain-with-apple-pay"
+              target="_blank">
+              Verify your domain with Apple Pay
+            </a>
+            , both in development and production.
+          </li>
         </ul>
       </p>
 
-      <a href="https://stripe.com/docs/stripe-js/elements/payment-request-button" target="_blank">Stripe Documentation</a>
+      <a
+        href="https://stripe.com/docs/stripe-js/elements/payment-request-button"
+        target="_blank">
+        Stripe Documentation
+      </a>
 
-      {paymentRequest && <PaymentRequestButtonElement options={{paymentRequest}} />}
+      {paymentRequest && (
+        <PaymentRequestButtonElement options={{ paymentRequest }} />
+      )}
 
       <StatusMessages messages={messages} />
 
-      <p> <a href="https://youtu.be/bMCsJfJyQKA" target="_blank">Watch a demo walkthrough</a> </p>
+      <p>
+        {' '}
+        <a
+          href="https://youtu.be/bMCsJfJyQKA"
+          target="_blank">
+          Watch a demo walkthrough
+        </a>{' '}
+      </p>
     </>
   );
 };

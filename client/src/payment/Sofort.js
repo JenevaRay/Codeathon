@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
-import {useStripe, useElements} from '@stripe/react-stripe-js';
-import StatusMessages, {useMessages} from './StatusMessages';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useStripe, useElements } from '@stripe/react-stripe-js';
+import StatusMessages, { useMessages } from './StatusMessages';
 
 const SofortForm = () => {
   const stripe = useStripe();
@@ -22,7 +22,7 @@ const SofortForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -33,7 +33,7 @@ const SofortForm = () => {
           paymentMethodType: 'sofort',
           currency: 'eur',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -43,21 +43,19 @@ const SofortForm = () => {
 
     addMessage('Client secret returned');
 
-    const {
-      error: stripeError,
-      paymentIntent,
-    } = await stripe.confirmSofortPayment(clientSecret, {
-      payment_method: {
-        sofort: {
-          country: 'DE',
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmSofortPayment(clientSecret, {
+        payment_method: {
+          sofort: {
+            country: 'DE',
+          },
+          billing_details: {
+            name,
+            email,
+          },
         },
-        billing_details: {
-          name,
-          email,
-        },
-      },
-      return_url: `${window.location.origin}/sofort?return=true`,
-    });
+        return_url: `${window.location.origin}/sofort?return=true`,
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -77,7 +75,9 @@ const SofortForm = () => {
     <>
       <h1>Sofort</h1>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -118,10 +118,8 @@ const SofortReturn = () => {
       return;
     }
     const fetchPaymentIntent = async () => {
-      const {
-        error: stripeError,
-        paymentIntent,
-      } = await stripe.retrievePaymentIntent(clientSecret);
+      const { error: stripeError, paymentIntent } =
+        await stripe.retrievePaymentIntent(clientSecret);
       if (stripeError) {
         addMessage(stripeError.message);
       }

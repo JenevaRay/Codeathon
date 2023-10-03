@@ -27,7 +27,7 @@ export const ADD_REGISTRATION = gql`
 `;
 
 export const MY_EVENTS = gql`
-mutation MyEvents($organizerUserId: String!) {
+  mutation MyEvents($organizerUserId: String!) {
     myEvents(organizerUserId: $organizerUserId) {
       _id
       name
@@ -58,14 +58,25 @@ mutation MyEvents($organizerUserId: String!) {
       }
     }
   }
-`
+`;
 
 export const ADD_USER = gql`
-mutation Mutation($emailAddress: String!, $password: String!, $nameLast: String!, $nameFirst: String!) {
-  addUser(emailAddress: $emailAddress, password: $password, nameLast: $nameLast, nameFirst: $nameFirst) {
-    token
-    user {
-      _id
+  mutation Mutation(
+    $emailAddress: String!
+    $password: String!
+    $nameLast: String!
+    $nameFirst: String!
+  ) {
+    addUser(
+      emailAddress: $emailAddress
+      password: $password
+      nameLast: $nameLast
+      nameFirst: $nameFirst
+    ) {
+      token
+      user {
+        _id
+      }
     }
   }
-}`
+`;

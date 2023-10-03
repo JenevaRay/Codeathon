@@ -229,8 +229,8 @@ const List = () => {
             <h3>{category}</h3>
             <ul>
               {paymentMethods
-                .filter(({category: c}) => c === category)
-                .map(({name, path}) => {
+                .filter(({ category: c }) => c === category)
+                .map(({ name, path }) => {
                   return (
                     <li key={path}>
                       <a href={path}>{name}</a>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   AuBankAccountElement,
   useStripe,
@@ -29,7 +29,7 @@ const BecsDebitForm = () => {
       return;
     }
 
-    const {error: backendError, clientSecret} = await fetch(
+    const { error: backendError, clientSecret } = await fetch(
       '/create-payment-intent',
       {
         method: 'POST',
@@ -40,7 +40,7 @@ const BecsDebitForm = () => {
           paymentMethodType: 'au_becs_debit',
           currency: 'aud',
         }),
-      }
+      },
     ).then((r) => r.json());
 
     if (backendError) {
@@ -50,18 +50,16 @@ const BecsDebitForm = () => {
 
     addMessage('Client secret returned');
 
-    const {
-      error: stripeError,
-      paymentIntent,
-    } = await stripe.confirmAuBecsDebitPayment(clientSecret, {
-      payment_method: {
-        au_becs_debit: elements.getElement(AuBankAccountElement),
-        billing_details: {
-          name,
-          email,
+    const { error: stripeError, paymentIntent } =
+      await stripe.confirmAuBecsDebitPayment(clientSecret, {
+        payment_method: {
+          au_becs_debit: elements.getElement(AuBankAccountElement),
+          billing_details: {
+            name,
+            email,
+          },
         },
-      },
-    });
+      });
 
     if (stripeError) {
       // Show error to your customer (e.g., insufficient funds)
@@ -82,7 +80,13 @@ const BecsDebitForm = () => {
       <h1>BECS Direct Debit</h1>
 
       <p>
-        <h4>Try a <a href="https://stripe.com/docs/testing#becs-direct-debit-in-australia">test number</a>:</h4>
+        <h4>
+          Try a{' '}
+          <a href="https://stripe.com/docs/testing#becs-direct-debit-in-australia">
+            test number
+          </a>
+          :
+        </h4>
         <div>
           <code>000-000</code> (Test BSB)
         </div>
@@ -94,7 +98,9 @@ const BecsDebitForm = () => {
         </div>
       </p>
 
-      <form id="payment-form" onSubmit={handleSubmit}>
+      <form
+        id="payment-form"
+        onSubmit={handleSubmit}>
         <label htmlFor="name">Name</label>
         <input
           id="name"
@@ -117,7 +123,9 @@ const BecsDebitForm = () => {
 
         <button type="submit">Pay</button>
 
-        <div id="error-message" role="alert"></div>
+        <div
+          id="error-message"
+          role="alert"></div>
 
         <div id="mandate-acceptance">
           By providing your bank account details and confirming this payment,
