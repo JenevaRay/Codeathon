@@ -1,7 +1,9 @@
-"use strict";
+
+
 // async function handlePayment() {
 // // paymentMethodId sent from the client
 // const paymentMethodId = 'your-payment-method-id';
+
 // // Create a payment intent to confirm the payment
 // const paymentIntent = await stripe.paymentIntents.create({
 //   amount: totalPrice * 100, // Amount in cents
@@ -9,6 +11,7 @@
 //   payment_method: paymentMethodId,
 //   confirm: true,
 // });
+
 // // Handle the payment intent status
 // if (paymentIntent.status === 'succeeded') {
 //   // Payment succeeded, you can now fulfill the order
@@ -21,4 +24,3 @@
 // }
 // // Export the function to be used as a route handler
 // export {handlePayment};
-//# sourceMappingURL=payment.js.map

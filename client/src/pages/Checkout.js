@@ -1,98 +1,71 @@
-import { loadStripe } from '@stripe/stripe-js'
-import { useContext, useState } from 'react';
-import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-import { PaymentElement, CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
+import { useState } from 'react';
+import { useStoreContext, States} from '../utils/';
+import { CardElement} from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React, { useEffect } from "react";
 
-import Button from '../components/ui/Button';
-import { useQuery } from '@apollo/client';
+import Button from '../components/ui/Button'
 
-function StripeCheckout() {
-  
-  const query_info = useQuery(QUERY_REGISTRATIONS);
-  const [state, dispatch] = useStoreContext();
-  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined
-  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-  let itemizedTotal = 0 // to be incremented by formatReservations
-  const formatReservations = ()=>{
-    if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
-      // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
-      // TODO: which is, right now, all the time...
-      const {loading, data} = query_info
-      // console.log(loading)
-      // console.log(data)
-      if (!loading && data) {
-        // console.log(data)
-        const registrations = data.registrations
-          .filter((registration)=>!registration.paid)
-          .map((registration)=>{
-            const costStr = String(registration.eventId.feeRegistration + registration.eventId.feeVenue);
-            const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-            itemizedTotal += registration.eventId.feeRegistration + registration.eventId.feeVenue
-            return (
-            <div className="flex flex-col rounded-xl bg-white sm:flex-row">
-              <img
-                className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
-                src="/daypass.png"
-                alt=""
-              />
-              <div className="flex w-full flex-col px-4 py-4">
-                <span className="font-semibold">{registration.eventId.name}</span>
-                <span className="float-right text-zinc-400">{strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}</span>
-                <p className="mt-auto text-lg font-bold">{cost}</p>
-              </div>
-            </div>
-          )})  
-        return registrations
-      } else {
-        return ''
+const Checkout = () => {
+    const [checked, setChecked] = useState(false);
+    const [state, dispatch] = useStoreContext()
+    const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    let itemizedTotal
+    let profile
+    let query_info
+      const formatReservations = () => {
+        if (state && state.registrations && !state.registrations.length && profile && profile.data && profile.data._id) {
+          // for when the client falls out of sync with the server...  (because empty registrations) and the user is logged in.
+          // TODO: which is, right now, all the time...
+          const {loading, data} = query_info
+          // console.log(loading)
+          // console.log(data)
+          if (!loading && data) {
+            // console.log(data)
+            const registrations = data.registrations
+              .filter((registration)=>!registration.paid)
+              .map((registration)=>{
+                const costStr = String(registration.eventId.feeRegistration + registration.eventId.feeVenue);
+                const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+                itemizedTotal += registration.eventId.feeRegistration + registration.eventId.feeVenue
+                return (
+                <div className="flex flex-col rounded-xl bg-white sm:flex-row">
+                  <img
+                    className="m-2 h-24 w-28 rounded-xl border object-cover object-center"
+                    src="/daypass.png"
+                    alt=""
+                  />
+                  <div className="flex w-full flex-col px-4 py-4">
+                    <span className="font-semibold">{registration.eventId.name}</span>
+                    <span className="float-right text-zinc-400">{strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}</span>
+                    <p className="mt-auto text-lg font-bold">{cost}</p>
+                  </div>
+                </div>
+              )})  
+            return registrations
+          } else {
+            return ''
+          }
+        
+        } else {
+          console.log("TODO")
+          return ''
+        }
       }
-    } else {
-      console.log("TODO")
-      return ''
-    }
-  }
 
-  const [checked, setChecked] = useState(false);
-  const handleChange = () => {
-    setChecked(!checked);
-
-   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-    let itemizedTotal = 0;
-  
-  };
-
-  const stripe = useStripe();
-  const elements = useElements();
-
-  // Use Stripe methods to create a payment method
-  // and handle the payment flow here.
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!stripe || !elements) {
-      // Stripe.js has not loaded yet.
-      return;
+    const handleChange = () => {
+      setChecked(!checked);  
     }
 
-    // Create a payment method using CardElement
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: elements.getElement(CardElement),
-    });
-
-    if (error) {
-      console.error(error);
-    } else {
-      console.log(paymentMethod);
-
-      // Send the paymentMethod.id or other relevant data to your server
-      // for server-side processing (e.g., creating a charge, saving the payment method).
+    const handleSubmit = () => {
+      console.log('Submitting order for checkout')
     }
-   
 
-  };
+    const calculateTotalPrice = () => {
+      // Calculate the total price based on the itemizedTotal and shipping method
+      const shippingPrice = checked ? 0 : 0; // Adjust shipping price as needed
+      const totalPrice = itemizedTotal + shippingPrice;
+      return totalPrice.toFixed(2); 
+    };
 
   return (
     <>
@@ -362,14 +335,13 @@ function StripeCheckout() {
             </div>
             <Button
             // Pass totalPrice to handlePayment
-              onClick={() => Checkout(totalPrice)} 
               margin="mt-8"
               padding="px-6 py-3"
               borderRadius="rounded-md"
               bgColor="bg-zinc-900"
               hoverColor="hover:bg-zinc-900/90"
               width="w-full"
-              onSubmit={Checkout}>
+              onSubmit={handleSubmit}>
               Place Order
             </Button>
           </div>
@@ -401,53 +373,14 @@ function StripeCheckout() {
 //     <p>{message}</p>
 //   </section>
 // );
-}
-const Checkout = () => {
+
   // we have to wrap the whole checkout function in the Elements provider
-  const stripePromise = loadStripe('your-publishable-key-here');
-  const options = {
-    clientSecret: "your-client-secret/token-from-the-server-here"
-  }
   
-  return (
-    <Elements stripe={stripePromise}>
-      <StripeCheckout />
-    </Elements>
-  )
+  // return (
+  //   // <Elements stripe={stripePromise}>
+  //     <StripeCheckout />
+  //   // </Elements>
+  // )
 }
 
 export default Checkout;
-
-// function RegistrationList() {
-//   const [state, dispatch] = useStoreContext();
-
-//   const { currentEvent } = state;
-
-//   const registrations = data.registrations.filter((registration)=>registration.userId._id === profile.data._id).map((registration) => (
-
-//     <div key={registration._id} className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
-
-//       <p className="text-base leading-loose text-zinc-800">
-//         Event starts at {strToDayJS(registration.eventId.dateStart).format('MM/DD/YYYY [@] h:mma')}
-//       </p>
-//       <p className="text-base leading-loose text-zinc-800">
-//         Event ends at {strToDayJS(registration.eventId.dateEnd).format('MM/DD/YYYY [@] h:mma')}
-//       </p>
-//       {/* <p>This registration is {registration.paid ? 'paid' : 'not paid'}</p> */}
-//       {registration.paid ?
-//         <Button value={registration._id} margin="mt-4" width="w-full" padding="py-2">
-//           {registration.role === 'host'? 'HOSTING': 'PAID'}
-//         </Button> :
-//         <Button value={registration._id} margin="mt-4" width="w-full" padding="py-2">
-//           PAY {
-//             ['$', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(0, -2), '.', String(registration.eventId.feeRegistration + registration.eventId.feeVenue).slice(2)]
-//           } as {registration.role === 'attendee'? 'an ' : ''}{registration.role.toUpperCase()}
-//         </Button>
-//         }
-//       {/* <p>You are {registration.role} for this event.</p> */}
-//     </div>
-//   ));
-//   return <div className="mt-16 flex flex-wrap items-center justify-center">{registrations}</div>;
-// }
-
-// // export default RegistrationList;
