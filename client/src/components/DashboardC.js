@@ -15,6 +15,7 @@ const strToDayJS = function (unixEpochStr) {
   return dayjs(new Date(Number(unixEpochStr)));
 };
 
+let unpaidRegistrationsById = {}
 let totalCost = 0;
 
 const NewEventForm = () => {
@@ -52,7 +53,7 @@ const NewEventForm = () => {
       dateStart: eventState.dateStart + 'T' + eventState.timeStart,
       dateEnd: eventState.dateEnd + 'T' + eventState.timeEnd, // this returns an industry standard date time string.  We can also call Date on this.
     };
-    console.log(event);
+    // console.log(event);
     setNewEventMode('');
   };
   const handleVenueFormSubmit = async (e) => {
@@ -74,9 +75,9 @@ const NewEventForm = () => {
       [name]: value,
     });
   };
-  // console.log(venueState)
   // FIRST we display a form for the venue info
   // THEN we display a form for the event info
+  totalCost = Object.values(unpaidRegistrationsById).reduce((a, b) => a + b, 0)
   return (
     <div className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
       {newEventMode === '' ? (
@@ -86,7 +87,7 @@ const NewEventForm = () => {
             width="w-full"
             padding="py-2"
             onClick={() => {
-              setNewEventMode('VENUE');
+              window.location.assign('/checkout');
             }}>
             Pay All Reservations { ['$', String(totalCost).slice(0, -2), '.', String(totalCost).slice(2)]}
           </Button>
@@ -362,7 +363,7 @@ const NewEventForm = () => {
   );
 };
 
-const MyEventList = () => {
+const DashboardC = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
@@ -391,21 +392,24 @@ const MyEventList = () => {
         : 'EXPIRED';
     const costStr = String(event.feeRegistration + event.feeVenue);
     const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
-    const reservations = event.registrations.map((registration) => {
-      const button = '';
-      switch (registration.role) {
-        case 'host':
-          return <Button disabled={true}>HOST</Button>;
-        case 'attendee':
-          if (expiry === 'FUTURE')
-          totalCost += event.feeRegistration + event.feeVenue
-          return <Button>Not Yet Confirmed</Button>;
-        default:
-          console.log(registration.role);
-      }
-      return button;
-    });
-    console.log(totalCost)
+    let registrations = ''
+    if (expiry === 'FUTURE') {
+      registrations = event.registrations.map((registration) => {
+        const button = '';
+        switch (registration.role) {
+          case 'host':
+            return <Button disabled={true}>HOST</Button>;
+          case 'attendee':
+            if (expiry === 'FUTURE') {
+              unpaidRegistrationsById[registration._id] = event.feeRegistration + event.feeVenue
+            }
+            return <Button onClick={()=>{window.location.assign('/checkout')}}>Not Yet Confirmed {cost}</Button>;
+          default:
+            console.log(registration.role);
+        }
+        return button;
+      });
+    }
     return (
       <div
         key={event._id}
@@ -434,7 +438,7 @@ const MyEventList = () => {
             onClick={(e) => {
               register(event._id);
             }}>
-            Attend {cost}
+            New Registration (Attend) for {cost}
           </Button>
         ) : (
           <Button
@@ -448,24 +452,22 @@ const MyEventList = () => {
             Event Expired
           </Button>
         )}
-        <p>&nbsp;</p>
+        {/* <p>&nbsp;</p> */}
         {/* Future: the Manage button should allow edits to the Event posting. */}
         {/* Future: the Volunteer button should allow someone to confirm for $0. */}
-        {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button>}
-
-        {reservations.length > 0 ? (
+        {/* {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button>} */}
+        {registrations.length > 0 ? (
           <>
             <br />
-            <h4>Reservations</h4>
+            <h4>Registrations</h4>
           </>
         ) : (
           ''
         )}
-        {reservations}
+        {registrations}
       </div>
     );
   });
-  console.log(totalCost);
   return (
     <StoreProvider value={[state, dispatch]}>
       <div className="mt-16 flex flex-wrap items-center justify-center">
@@ -476,4 +478,4 @@ const MyEventList = () => {
   );
 };
 
-export default MyEventList;
+export default DashboardC;
