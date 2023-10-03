@@ -1,14 +1,20 @@
 import { useState } from 'react';
 import { useStoreContext, States} from '../utils/';
+import {Elements} from '@stripe/react-stripe-js';
 import { CardElement} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 import dayjs from 'dayjs'
-
 import Button from '../components/ui/Button'
+
+const stripePromise = loadStripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
 
 const Checkout = () => {
     const [checked, setChecked] = useState(false);
     const [state, dispatch] = useStoreContext()
     const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+    const options = {
+      clientSecret: '{{CLIENT_SECRET}}',
+    };
     let itemizedTotal
     let profile
     let query_info
@@ -95,6 +101,7 @@ const Checkout = () => {
             <p className="mt-16 text-lg font-medium lg:mt-8">
               Delivery Methods
             </p>
+            <Elements stripe={stripePromise} options={options}>
             <form className="mt-5 grid gap-6">
               <div className="relative">
                 <input
@@ -149,6 +156,7 @@ const Checkout = () => {
                 </label>
               </div>
             </form>
+            </Elements>
           </div>
           <div className="px-4 pt-20">
             <p className="text-xl font-medium">Payment Details</p>
