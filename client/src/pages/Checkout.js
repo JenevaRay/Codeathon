@@ -1,9 +1,9 @@
 import { loadStripe } from '@stripe/stripe-js'
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useStoreContext, QUERY_REGISTRATIONS, States, Auth } from '../utils/';
-import { PaymentElement, CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
+import { CardElement, useStripe, useElements, Elements } from '@stripe/react-stripe-js';
 import dayjs from 'dayjs'
-import React, { useEffect } from "react";
+import React from "react";
 
 import Button from '../components/ui/Button';
 import { useQuery } from '@apollo/client';
