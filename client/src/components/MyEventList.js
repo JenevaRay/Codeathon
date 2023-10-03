@@ -17,7 +17,9 @@ const NewEventForm = () => {
   const [eventState, setEventState] = useState({
     name: '', 
     dateStart: '', 
+    timeStart: '',
     dateEnd: '', 
+    timeEnd: '',
     dateCutoff: '',
     registrationPaymentRequiredDate: '',
     feeRegistration: '',
@@ -38,8 +40,15 @@ const NewEventForm = () => {
   const handleEventFormSubmit = async (e) => {
     e.preventDefault();
     // validate things here...  right now everything in the event is required.  if everything validates, then submit and change the form mode.
-    console.log(eventState)
-    console.log(venueState)
+    // console.log(eventState)
+    const event = {
+      ...eventState,
+      // dateStart: Math.floor(new Date(eventState.dateStart + "T" + eventState.timeStart).getTime() / 1000), // this returns Unix Timestamp, used internally in our code.
+      dateStart: (eventState.dateStart + "T" + eventState.timeStart),
+      dateEnd: (eventState.dateEnd + "T" + eventState.timeEnd) // this returns an industry standard date time string.  We can also call Date on this.
+    }
+    console.log(event)
+    // console.log(venueState)
     setNewEventMode('')
   }
   const handleVenueFormSubmit = async (e) => {
@@ -53,6 +62,7 @@ const NewEventForm = () => {
       ...eventState,
       [name]: value
     })
+    
   }
   const handleVenueChange = (event) => {
     const { name, value } = event.target;
