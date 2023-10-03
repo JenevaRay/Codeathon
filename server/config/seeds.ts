@@ -11,8 +11,6 @@ import {
   Group,
   Venue,
   Registration,
-  // Address,
-  // Phone,
 } from '../models/index';
 
 // Seed dynamic dates and times based upon the current date and time using Day.js
@@ -22,7 +20,22 @@ const weekAgo = now.subtract(1, 'week');
 const nextWeek = now.add(1, 'week');
 const nextMonth = now.add(1, 'month');
 
-const usersIds = [
+const eventIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const groupIds = [
+  new mongoose.Types.ObjectId(),
+]
+
+const registrationIds = [
+  new mongoose.Types.ObjectId(),
+  new mongoose.Types.ObjectId(),
+];
+
+const userIds = [
   new mongoose.Types.ObjectId(),
   new mongoose.Types.ObjectId(),
 ];
@@ -33,17 +46,17 @@ const venueIds = [
 
 const users = [
   { // Seed a user with only the bare minimum fields
-    _id: usersIds[0],
+    _id: userIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'davesmith@acme.net',
     password: '=^^=NoSuchPassword:3',
     nameLast: 'Smith',
     nameFirst: 'Dave',
-    registrations: ['012345012345'],
+    registrations: [registrationIds[0]],
   },
   { // Seed a user with all available fields
-    _id: usersIds[1],
+    _id: userIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
     emailAddress: 'lastfirst@lifo.org',
@@ -59,109 +72,70 @@ const users = [
     addressCountry: 'United States',
     phoneNumber: '+1 (234) 567-8910',
     phoneType: 'mobile',
-    registrations: ['987654987654'],
+    registrations: [registrationIds[1]],
   },
 ];
 
 const events = [
   {
-    _id: '999988887777',
+    _id: eventIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventNowNoRegistrations',
+    name: 'Current Event No Registrations',
     dateStart: weekAgo.toDate(),
     dateEnd: nextWeek.toDate(),
-    registrations: [],
-    registrationCutoffDate: now.toDate(),
-    registrationPaymentRequiredDate: now.toDate(),
-    organizerUserId: usersIds[0],
+    dateCutoff: now.toDate(),
     feeRegistration: 1299,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
+    registrations: [],
     groups: [],
   },
   {
-    _id: '888877776666',
+    _id: eventIds[1],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventExpired',
+    name: 'Past Event',
     dateStart: lastMonth.toDate(),
     dateEnd: lastMonth.toDate(),
-    registrations: ['012345012345', '987654987654'],
-    registrationCutoffDate: lastMonth.toDate(),
-    registrationPaymentRequiredDate: lastMonth.toDate(),
-    organizerUserId: usersIds[0],
+    dateCutoff: lastMonth.toDate(),
     feeRegistration: 1299,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
-    groups: ['554466554466'],
+    registrations: [registrationIds[0], registrationIds[1]],
+    groups: [groupIds[0]],
   },
   {
-    _id: '777766665555',
+    _id: eventIds[2],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    name: 'EventFutureAcceptingRegistrations',
+    name: 'Future Event',
     dateStart: nextMonth.toDate(),
     dateEnd: nextMonth.toDate(),
-    registrations: [],
-    registrationCutoffDate: nextWeek.toDate(),
-    registrationPaymentRequiredDate: nextMonth.toDate(),
-    organizerUserId: usersIds[0],
+    dateCutoff: nextWeek.toDate(),
     feeRegistration: 1399,
     feeVenue: 1000,
+    organizerUserId: userIds[0],
     venues: [venueIds[0]],
-    groups: ['554466554466'],
+    registrations: [],
+    groups: [groupIds[0]],
   },
 ];
 
 const groups = [
   {
-    _id: '554466554466',
+    _id: groupIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate.toDate(),
-    registrations: ['012345012345', '987654987654'],
-    eventId: '999988887777',
+    registrations: [registrationIds[0], registrationIds[1]],
+    eventId: eventIds[0],
     name: 'Together Now',
     projectName: 'Full Schema Projector',
     projectDescription: 'Laid out to see',
   },
 ];
-
-// const addresses = [
-//   {
-//     _id: '224466224466',
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     streetAddress: '123 Sesame Street',
-//     extendedAddress: undefined,
-//     country: 'US',
-//     state: 'New York',
-//     county: 'New York',
-//     city: 'Manhattan',
-//     postalCode: '12345',
-//     type: 'venue',
-//     isUserPrimary: false,
-//   },
-// ];
-
-// const phones = [
-//   {
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     type: 'venue',
-//     _id: '111112222233',
-//     number: '+1 234-567-8901',
-//     isUserPrimary: false,
-//   },
-//   {
-//     schemaVersion: schemaVersion,
-//     schemaDate: schemaDate.toDate(),
-//     type: 'cell',
-//     _id: '222223333344',
-//     number: '+1 (234) 567-0001',
-//     isUserPrimary: true,
-//   },
-// ];
 
 const venues = [
   {  // Seed a venue with all available fields
@@ -176,28 +150,28 @@ const venues = [
     addressPostalCode: '12345',
     addressCountry: 'United States',
     phoneNumber: '+1 (234) 567-8910',
-    events: ['000000111111'],
+    events: [eventIds[0], eventIds[1], eventIds[2]],
   },
 ];
 
 const registrations = [
   {
-    _id: '012345012345',
+    _id: registrationIds[0],
     schemaVersion: schemaVersion,
     schemaDate: schemaDate,
-    userId: usersIds[0],
-    eventId: '888877776666',
+    userId: userIds[0],
+    eventId: eventIds[1],
     registrationDate: lastMonth.toDate(),
     registrationType: 'host',
     // hosts don't pay, or more technically pay $0
     paid: true,
   },
   {
-    _id: '987654987654',
+    _id: registrationIds[1],
     schemaVersion,
     schemaDate,
-    userId: '222222333333',
-    eventId: '888877776666',
+    userId: userIds[1],
+    eventId: eventIds[1],
     registrationDate: lastMonth.toDate(),
     registrationType: 'attendee',
     paid: true,
@@ -215,14 +189,6 @@ db.once('open', async () => {
   await Event.deleteMany();
   await Event.insertMany(events);
   console.log('Events seeded.');
-
-  // await Address.deleteMany();
-  // await Address.insertMany(addresses);
-  // console.log('Addresses seeded');
-
-  // await Phone.deleteMany();
-  // await Phone.insertMany(phones);
-  // console.log('Phones seeded');
 
   await Group.deleteMany();
   await Group.insertMany(groups);

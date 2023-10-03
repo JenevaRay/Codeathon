@@ -6,7 +6,11 @@ import { schemaVersion, schemaDate } from './index';
 // Need to establish revenue tracking here.
 
 const eventSchema = new Schema({
-  // implied: _id of type mongoose.ObjectId
+  // IMPLIED: _id of type mongoose.ObjectId
+  // _id: {
+  //   type: Schema.Types.ObjectId,
+  //   auto: true,
+  // },
   schemaVersion: {
     // used internally in case things change
     type: String,
@@ -17,13 +21,12 @@ const eventSchema = new Schema({
     type: Date,
     required: true,
   },
-  // backreference is useful for building lists of users at an event
   name: {
     type: String,
     index: true,
-    required: false,
+    required: true,
+    trim: true,
     unique: true,
-    sparse: true,
   },
   dateStart: {
     // local to the venue's timezone
@@ -37,23 +40,14 @@ const eventSchema = new Schema({
     required: true,
     alias: 'startTime', // version 0.0.4 startTime -> 0.0.5 dateEnd
   },
-  registrations: [
-    {
-      // kept in a separated table due to query atomicity
-      type: Schema.Types.ObjectId,
-      ref: 'Registration',
-    },
-  ],
   dateCutoff: {
     type: Date,
-    required: true,
     alias: 'registrationCutoffDate', // version 0.0.4 registrationCutoffDate -> 0.0.5 dateCutoff
   },
   // NEW version 0.0.5 feeRegistration
   feeRegistration: {
     // MUST be integers (pennies) for USD, due to multiplication rounding errors.  Not all currencies are USD.  MVP says USD for now.
     type: Number,
-    required: true,
     get: (v: number) => {
       return Math.round(v);
     },
@@ -65,13 +59,16 @@ const eventSchema = new Schema({
   feeVenue: {
     // MUST be integers (pennies) for USD, due to multiplcation rounding errors.  Not all currencies are USD.  MVP says USD for now.
     type: Number,
-    required: true,
     get: (v: number) => {
       return Math.round(v);
     },
     set: (v: number) => {
       return Math.round(v);
     },
+  },
+  organizerUserId: {
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
   },
   venues: [
     {
@@ -80,16 +77,13 @@ const eventSchema = new Schema({
       required: true,
     },
   ],
-  registrationPaymentRequiredDate: {
-    type: Date,
-    required: true,
-  },
-  //   organizerUserId: User.schema,
-  organizerUserId: {
-    type: mongoose.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
+  registrations: [
+    {
+      // kept in a separated table due to query atomicity
+      type: Schema.Types.ObjectId,
+      ref: 'Registration',
+    },
+  ],
   // NEW version 0.0.5
   groups: [
     {

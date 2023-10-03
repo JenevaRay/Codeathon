@@ -13,9 +13,6 @@ exports.resolvers = void 0;
 const apollo_server_express_1 = require("apollo-server-express");
 const auth_1 = require("../utils/auth");
 const models_1 = require("../models");
-// import stripe from 'stripe'
-// const Stripe = new stripe('sk_test_4eC39HqLyjWDarjtT1zdp7dc', {})
-// import ObjectId from 'mongoose'
 const resolvers = {
     Query: {
         users: () => __awaiter(void 0, void 0, void 0, function* () {
@@ -54,6 +51,8 @@ const resolvers = {
         }),
     },
     Mutation: {
+        // addEvent: async (_: any, args: any, context: any) => {
+        // }, 
         addUser: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const user = yield models_1.User.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
