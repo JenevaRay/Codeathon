@@ -13,7 +13,7 @@ const Dashboard = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
-  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const [register] = useMutation(ADD_REGISTRATION);
   const strToDayJS = function (unixEpochStr) {
     return dayjs(new Date(Number(unixEpochStr)));
   };  

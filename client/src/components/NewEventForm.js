@@ -7,8 +7,8 @@ import { ADD_EVENT, ADD_VENUE } from '../utils/mutations';
 import Button from './ui/Button';
 
 const NewEventForm = ({ unpaidRegistrationsById }) => {
-  const [registerEvent, event_mutation_info] = useMutation(ADD_EVENT);
-  const [registerVenue, venue_mutation_info] = useMutation(ADD_VENUE);
+  const [registerEvent] = useMutation(ADD_EVENT);
+  const [registerVenue] = useMutation(ADD_VENUE);
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   let venueId
   let totalCost = 0;
