@@ -105,8 +105,23 @@ const typeDefs: DocumentNode = gql`
       name: String!
       dateStart: String!
       dateEnd: String!
-      venueId: String!
+      dateCutoff: String!
+      feeRegistration: Int!
+      feeVenue: Int!
+      venues: [String]!
+      organizerUserId: String!
     ): Event
+    addVenue(
+      name: String!
+      addressStreet: String
+      addressExtended: String
+      addressCity: String
+      addressState: String
+      addressPostalCode: String
+      addressCountry: String
+      phoneNumber: String
+      website: String
+    ): Venue
     addUser(
       emailAddress: String!
       password: String!
