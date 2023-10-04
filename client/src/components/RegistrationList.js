@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import dayjs from 'dayjs';
 
-import Auth from '../utils/Auth'
+import Auth from '../utils/Auth';
 
 import { QUERY_REGISTRATIONS } from '../utils/queries';
 

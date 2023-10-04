@@ -20,7 +20,6 @@ export const ADD_REGISTRATION = gql`
       eventId {
         _id
         feeRegistration
-        registrationPaymentRequiredDate
       }
     }
   }
@@ -34,7 +33,6 @@ export const MY_EVENTS = gql`
       dateStart
       dateEnd
       dateCutoff
-      registrationPaymentRequiredDate
       feeRegistration
       feeVenue
       registrations {

@@ -48,9 +48,16 @@ const resolvers = {
     },
   },
   Mutation: {
-    // addEvent: async (_: any, args: any, context: any) => {
-
-    // },
+    addEvent: async (_: any, args: any) => {
+      try {
+        console.log(args);
+        let event = await Event.create({ ...args, schemaVersion, schemaDate });
+        return event;
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    },
     addUser: async (_: any, args: any) => {
       try {
         const user = await User.create({ ...args, schemaVersion, schemaDate });
@@ -123,6 +130,7 @@ const resolvers = {
         .populate([
           {
             path: 'organizerUserId',
+            model: User,
             // populate: [
             //   {
             //     path: 'phoneNumbers',

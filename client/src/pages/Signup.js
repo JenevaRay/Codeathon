@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 
-import Auth from '../utils/Auth'
+import Auth from '../utils/Auth';
 
 import { ADD_USER } from '../utils/mutations';
 
 import Button from '../components/ui/Button';
 import Bubbles from '../components/ui/Bubbles';
-
 
 const Signup = () => {
   const [formData, setFormData] = useState({

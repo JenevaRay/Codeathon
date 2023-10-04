@@ -1,9 +1,9 @@
-import MyEventList from '../components/MyEventList'
+import DashboardC from '../components/DashboardC';
 
 const Dashboard = () => {
   return (
     <div>
-      <MyEventList />
+      <DashboardC />
     </div>
   );
 };

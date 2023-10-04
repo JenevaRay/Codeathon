@@ -24,8 +24,11 @@ const Event_1 = require("./Event");
 Object.defineProperty(exports, "Event", { enumerable: true, get: function () { return Event_1.Event; } });
 const Group_1 = require("./Group");
 Object.defineProperty(exports, "Group", { enumerable: true, get: function () { return Group_1.Group; } });
+<<<<<<< HEAD
 // import { Address } from './Address';
 // import { Phone } from './Phone';
+=======
+>>>>>>> refs/remotes/origin/main
 const dayjs_1 = __importDefault(require("dayjs"));
 const stripe_1 = require("stripe"); // Import Stripe library
 // Define a schema version and a schema date for future compatibility

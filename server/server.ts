@@ -68,15 +68,20 @@ app.post(
       currency,
       paymentMethodType,
       paymentMethodOptions,
+      amount,
+      description,
     }: {
       currency: string;
       paymentMethodType: string;
       paymentMethodOptions?: object;
+      amount: number;
+      description: string;
     } = req.body;
 
     const params: Stripe.PaymentIntentCreateParams = {
-      amount: 1999,
+      amount,
       currency,
+      description,
       payment_method_types:
         paymentMethodType === 'link' ? ['link', 'card'] : [paymentMethodType],
     };

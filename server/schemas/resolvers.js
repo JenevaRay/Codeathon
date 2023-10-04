@@ -50,8 +50,22 @@ const resolvers = {
         }),
     },
     Mutation: {
+<<<<<<< HEAD
         // addEvent: async (_: any, args: any, context: any) => {
         // },
+=======
+        addEvent: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                console.log(args);
+                let event = yield models_1.Event.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
+                return event;
+            }
+            catch (error) {
+                console.error(error);
+                return error;
+            }
+        }),
+>>>>>>> refs/remotes/origin/main
         addUser: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 const user = yield models_1.User.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
@@ -122,6 +136,10 @@ const resolvers = {
                 .populate([
                 {
                     path: 'organizerUserId',
+<<<<<<< HEAD
+=======
+                    model: models_1.User,
+>>>>>>> refs/remotes/origin/main
                     // populate: [
                     //   {
                     //     path: 'phoneNumbers',

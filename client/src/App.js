@@ -1,19 +1,19 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
-import { setContext } from '@apollo/client/link/context'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-import Layout from './components/Layout'
+import Layout from './components/Layout';
 
-import Home from './pages/Home'
-import Dashboard from './pages/Dashboard'
-import Events from './pages/Events'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Registration from './pages/Registration'
-import Checkout from './pages/Checkout'
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Events from './pages/Events';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Registration from './pages/Registration';
+import Checkout from './pages/Checkout';
 
-import { StoreProvider } from './utils/GlobalState'
-import httpLink from './utils/httpLink'
+import { StoreProvider } from './utils/GlobalState';
+import httpLink from './utils/httpLink';
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('id_token');

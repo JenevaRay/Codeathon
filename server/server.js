@@ -59,10 +59,18 @@ app.get('/config', (_, res) => {
     });
 });
 app.post('/create-payment-intent', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+<<<<<<< HEAD
     const { currency, paymentMethodType, paymentMethodOptions, } = req.body;
     const params = {
         amount: 1999,
         currency,
+=======
+    const { currency, paymentMethodType, paymentMethodOptions, amount, description, } = req.body;
+    const params = {
+        amount,
+        currency,
+        description,
+>>>>>>> refs/remotes/origin/main
         payment_method_types: paymentMethodType === 'link' ? ['link', 'card'] : [paymentMethodType],
     };
     if (paymentMethodType === 'accs_debit') {
