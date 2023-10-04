@@ -15,7 +15,7 @@ const strToDayJS = function (unixEpochStr) {
 
 let unpaidRegistrationsById = {};
 
-const Dashboard= () => {
+const Dashboard = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
@@ -31,6 +31,7 @@ const Dashboard= () => {
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
   const events = query_info.data.events.map((event) => {
+    console.log(event)
     // registrations must be submitted before event.dateCutoff
     const isOrganizer = event.organizerUserId._id === profile.data._id;
     const expiry =
@@ -49,7 +50,7 @@ const Dashboard= () => {
         const button = '';
         switch (registration.role) {
           case 'host':
-            return <Button disabled={true}>HOST</Button>;
+            return <Button key={registration._id} disabled={true}>HOST</Button>;
           case 'attendee':
             if (expiry === 'FUTURE') {
               unpaidRegistrationsById[registration._id] =
@@ -57,6 +58,7 @@ const Dashboard= () => {
             }
             return (
               <Button
+                key={registration.role}
                 onClick={() => {
                   window.location.assign('/checkout');
                 }}>
@@ -99,7 +101,7 @@ const Dashboard= () => {
             width="w-full"
             padding="py-2"
             onClick={(e) => {
-              register(event._id);
+            register(event._id);
             }}>
             New Registration (Attend) for {cost}
           </Button>
