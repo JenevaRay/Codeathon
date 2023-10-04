@@ -49,10 +49,15 @@ First, install all dependencies:
 npm install
 ```
 
-Next, you can run the application:
-
+then create/edit the following files accordingly:
 ```
-npm start
+.env (from .env.EXAMPLE)
+client/src/config/remote.js
+```
+
+Next, you can run the development version of the application:
+```
+npm run develop
 ```
 
 You can view the app locally at http://localhost:3000/

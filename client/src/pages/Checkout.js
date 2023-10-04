@@ -9,7 +9,7 @@ import {
 } from '@stripe/react-stripe-js';
 
 import { QUERY_REGISTRATIONS } from '../utils/queries';
-import { remoteServer } from '../config/remote'
+import { remoteServer, selfServer } from '../config/remote'
 
 import { useStoreContext } from '../utils/GlobalState';
 // import { States } from '../utils/constants';
@@ -117,7 +117,8 @@ const Checkout = () => {
         headers: {
           'Access-Control-Allow-Origin':
             // 'http://192.168.56.102:3001',
-            'https://codeathon-1b48b4588e47.herokuapp.com',
+            selfServer,
+            // 'https://codeathon-1b48b4588e47.herokuapp.com',
           'Access-Control-Allow-Headers': '*',
           'Content-Type': 'application/json',
         },

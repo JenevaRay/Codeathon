@@ -54,12 +54,12 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
       feeRegistration: Number(eventState.feeRegistration),
       feeVenue: Number(eventState.feeVenue),
       organizerUserId: profile.data._id,
-      venues: venueId
+      venues: [venueId]
     };
     try {
       registerEvent({variables: event})
       setNewEventMode('');
-      window.location.reload()
+      window.location.redirect('/checkout')
     } catch (e) {
       console.log(e)
     }
