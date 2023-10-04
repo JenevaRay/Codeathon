@@ -63,7 +63,7 @@ const Dashboard = () => {
             }
             return (
               <Button
-              padding="px-6 py-3"
+              padding="px-6 py-3 my-2"
               bgColor="bg-cyan-600/80"
               width='w-full'
               disabled={true}
