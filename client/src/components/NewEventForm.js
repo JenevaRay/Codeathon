@@ -1,9 +1,23 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+
+import Auth from '../utils/Auth';
+import { ADD_EVENT, ADD_VENUE } from '../utils/mutations';
 
 import Button from './ui/Button';
 
+// this has to be scoped here to be accessed by both NewEventForm and NewVenueForm
+let venueId
+
 const NewEventForm = ({ unpaidRegistrationsById }) => {
+  const [registerEvent, event_mutation_info] = useMutation(ADD_EVENT);
+  const [registerVenue, venue_mutation_info] = useMutation(ADD_VENUE);
+  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   let totalCost = 0;
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
   // const [submitError, setSubmitError] = useState('');
   const [newEventMode, setNewEventMode] = useState('');
   const [eventState, setEventState] = useState({
@@ -31,21 +45,46 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
 
   const handleEventFormSubmit = async (e) => {
     e.preventDefault();
+    console.log(profile.data._id)
     // validate things here...  right now everything in the event is required.  if everything validates, then submit and change the form mode.
     const event = {
       ...eventState,
       // dateStart: Math.floor(new Date(eventState.dateStart + "T" + eventState.timeStart).getTime() / 1000), // this returns Unix Timestamp, used internally in our code.
-      dateStart: eventState.dateStart + 'T' + eventState.timeStart,
-      dateEnd: eventState.dateEnd + 'T' + eventState.timeEnd, // this returns an industry standard date time string.  We can also call Date on this.
+      dateStart: String(Math.floor(new Date(eventState.dateStart + 'T' + eventState.timeStart).getTime())),
+      dateEnd: String(Math.floor(new Date(eventState.dateEnd + 'T' + eventState.timeEnd).getTime())),
+      dateCutoff: String(Math.floor(new Date(eventState.dateCutoff + 'T23:59').getTime())),
+      feeRegistration: Number(eventState.feeRegistration),
+      feeVenue: Number(eventState.feeVenue),
+      organizerUserId: profile.data._id,
+      venues: [venueId]
     };
-    // console.log(event);
-    setNewEventMode('');
+    try {
+      registerEvent({variables: event})
+      setNewEventMode('');
+      window.location.assign('/checkout');
+    } catch (e) {
+      console.log(e)
+    }
   };
   const handleVenueFormSubmit = async (e) => {
     e.preventDefault();
+    const venue = {
+      ...venueState
+    }
+    const newVenue = await registerVenue({variables: venue})
+    try {
+      const { data } = newVenue
+      const { addVenue } = data
+      venueId = addVenue._id
+      console.log(venueId)
+      setNewEventMode('EVENT');
+    } catch (e) {
+      console.log(e)
+    }
     // validate things here...  right now everything in the venue is optional.  if everything validates, then change the form mode.
-    setNewEventMode('EVENT');
+    
   };
+  
   const handleEventChange = (event) => {
     const { name, value } = event.target;
     setEventState({
@@ -64,7 +103,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
   // THEN we display a form for the event info
   totalCost = Object.values(unpaidRegistrationsById).reduce((a, b) => a + b, 0);
   return (
-    <div className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+    <div className="mx-10 mb-16 max-w-lg rounded-xl p-6">
       {newEventMode === '' ? (
         <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
           <Button
@@ -75,12 +114,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
               window.location.assign('/checkout');
             }}>
             Pay All Reservations{' '}
-            {[
-              '$',
-              String(totalCost).slice(0, -2),
-              '.',
-              String(totalCost).slice(2),
-            ]}
+            {USDollar.format(totalCost/100)}
           </Button>
 
           <Button
@@ -97,7 +131,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
         ''
       )}
       {newEventMode === 'VENUE' ? (
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="w-full p-6 max-w-lg rounded-xl bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Address Information
@@ -113,6 +147,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Name
               </label>
               <input
+              required
                 type="text"
                 name="name"
                 value={venueState.name}
@@ -140,7 +175,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="addressExtended"
                 value={venueState.addressExtended}
                 onChange={handleVenueChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mt-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Address"
               />
             </div>
@@ -148,7 +183,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
               <label
                 htmlFor="addressCity"
                 className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                City
               </label>
               <input
                 type="text"
@@ -216,10 +250,10 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
         ''
       )}
       {newEventMode === 'EVENT' ? (
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="w-full p-6 max-w-lg rounded-xl bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Address Information
+              Event Information
             </h1>
           </div>
           <form
@@ -253,7 +287,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="timeStart"
                 value={venueState.timeStart}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Time"
               />
               <input
@@ -262,7 +296,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="dateStart"
                 value={venueState.dateStart}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Date"
               />
               <input
@@ -271,7 +305,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="timeEnd"
                 value={venueState.timeEnd}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Time"
               />
               <input
@@ -296,7 +330,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="dateCutoff"
                 value={venueState.dateCutoff}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Register before"
               />
               <label
@@ -326,7 +360,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="feeRegistration"
                 value={venueState.feeRegistration}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Event Fee, in pennies"
               />
               <input

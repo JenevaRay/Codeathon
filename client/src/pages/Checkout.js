@@ -9,6 +9,7 @@ import {
 } from '@stripe/react-stripe-js';
 
 import { QUERY_REGISTRATIONS } from '../utils/queries';
+import { remoteServer, selfServer } from '../config/remote'
 
 import { useStoreContext } from '../utils/GlobalState';
 // import { States } from '../utils/constants';
@@ -17,12 +18,15 @@ import Auth from '../utils/Auth';
 import Button from '../components/ui/Button';
 import StatusMessages, { useMessages } from '../payment/StatusMessages';
 
-let registrationIds = {};
-
 const Checkout = () => {
   const [checked, setChecked] = useState(false);
   const [state] = useStoreContext(); // dispatch when we need it can be added to this array.
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });  
+  let registrationIds = {};
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   let itemizedTotal = 0;
   let eventNames = [];
@@ -56,7 +60,7 @@ const Checkout = () => {
               registration.eventId.feeRegistration +
                 registration.eventId.feeVenue,
             );
-            const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+            const cost = USDollar.format(costStr/100)
             itemizedTotal +=
               registration.eventId.feeRegistration +
               registration.eventId.feeVenue;
@@ -107,12 +111,14 @@ const Checkout = () => {
 
     const { error: backendError, clientSecret } = await fetch(
       // 'http://192.168.56.102:3001/create-payment-intent',
-      'https://codeathon-server-a60585dbdc98.herokuapp.com/create-payment-intent',
+      remoteServer + '/create-payment-intent',
       {
         method: 'POST',
         headers: {
           'Access-Control-Allow-Origin':
-            'https://codeathon-1b48b4588e47.herokuapp.com',
+            // 'http://192.168.56.102:3001',
+            selfServer,
+            // 'https://codeathon-1b48b4588e47.herokuapp.com',
           'Access-Control-Allow-Headers': '*',
           'Content-Type': 'application/json',
         },
@@ -151,11 +157,6 @@ const Checkout = () => {
 
     addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
   };
-
-  let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
 
   console.log(registrationIds);
 

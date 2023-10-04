@@ -25,10 +25,7 @@ const venueSchema = new Schema({
   },
   name: {
     type: String,
-    index: true,
-    required: true,
     trim: true,
-    unique: true,
   },
   addressStreet: {
     type: String,

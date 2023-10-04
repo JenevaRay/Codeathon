@@ -9,17 +9,20 @@ import { useStoreContext, StoreProvider } from '../utils/GlobalState';
 import NewEventForm from '../components/NewEventForm';
 import Button from '../components/ui/Button';
 
-const strToDayJS = function (unixEpochStr) {
-  return dayjs(new Date(Number(unixEpochStr)));
-};
-
-let unpaidRegistrationsById = {};
-
 const Dashboard = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const strToDayJS = function (unixEpochStr) {
+    return dayjs(new Date(Number(unixEpochStr)));
+  };  
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+  
+  let unpaidRegistrationsById = {};
 
   if (!profile) {
     return 'Not Logged In';
@@ -29,10 +32,13 @@ const Dashboard = () => {
 
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
-
+  console.log(query_info.data.events)
   const events = query_info.data.events.map((event) => {
+    // console.log(event)
     // registrations must be submitted before event.dateCutoff
-    const isOrganizer = event.organizerUserId._id === profile.data._id;
+    // console.log(event.organizerUserId._id)
+    
+    const isOrganizer = (event.organizerUserId._id === profile.data._id)
     const expiry =
       strToDayJS(event.dateStart) > dayjs(Date.now())
         ? 'FUTURE'
@@ -42,14 +48,14 @@ const Dashboard = () => {
         ? 'OVERDUE'
         : 'EXPIRED';
     const costStr = String(event.feeRegistration + event.feeVenue);
-    const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+    const cost = USDollar.format(costStr/100)
     let registrations = '';
     if (expiry === 'FUTURE') {
       registrations = event.registrations.map((registration) => {
         const button = '';
         switch (registration.role) {
           case 'host':
-            return <Button disabled={true}>HOST</Button>;
+            return <Button key={registration._id} disabled={true}>HOST</Button>;
           case 'attendee':
             if (expiry === 'FUTURE') {
               unpaidRegistrationsById[registration._id] =
@@ -57,6 +63,12 @@ const Dashboard = () => {
             }
             return (
               <Button
+              padding="px-6 py-3 my-2"
+              bgColor="bg-cyan-600/80"
+              width='w-full'
+              disabled={true}
+              animations={false}
+                key={registration._id}
                 onClick={() => {
                   window.location.assign('/checkout');
                 }}>
@@ -64,7 +76,8 @@ const Dashboard = () => {
               </Button>
             );
           default:
-            console.log(registration.role);
+            // console.log(registration.role);
+            break
         }
         return button;
       });
@@ -72,7 +85,7 @@ const Dashboard = () => {
     return (
       <div
         key={event._id}
-        className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+        className="mx-10 mb-16 max-w-lg rounded-xl bg-white p-6 shadow-xl">
         <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
           {event.name}
         </h5>
@@ -99,9 +112,10 @@ const Dashboard = () => {
             width="w-full"
             padding="py-2"
             onClick={(e) => {
-              register(event._id);
+              register({variables: {eventId: event._id, userId: profile.data._id}});
+              window.location.assign('/checkout');
             }}>
-            New Registration (Attend) for {cost}
+            Register to Attend for {cost}
           </Button>
         ) : (
           <Button
@@ -112,17 +126,15 @@ const Dashboard = () => {
             bgColor="bg-zinc-900/50"
             disabled={true}
             animations={false}>
-            Event Expired
+            No New Registrations
           </Button>
         )}
-        {/* <p>&nbsp;</p> */}
         {/* Future: the Manage button should allow edits to the Event posting. */}
         {/* Future: the Volunteer button should allow someone to confirm for $0. */}
-        {/* {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button>} */}
         {registrations.length > 0 ? (
           <>
             <br />
-            <h4>Registrations</h4>
+            <h4 className='my-3'>Registrations</h4>
           </>
         ) : (
           ''

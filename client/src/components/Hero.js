@@ -61,8 +61,8 @@ const Hero = () => {
               </span>
             </h1>
             <p className="mb-8 text-2xl font-normal leading-normal text-zinc-400">
-              Codeathon makes it easy to create, join, or register for
-              hackathons. Try it for free today!
+              Codeathon makes it easy to find, host, or register for
+              hackathons. Sign up and try it for free today!
             </p>
             <a href="/signup">
               <Button

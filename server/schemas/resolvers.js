@@ -1,44 +1,23 @@
-'use strict';
-var __awaiter =
-  (this && this.__awaiter) ||
-  function (thisArg, _arguments, P, generator) {
-    function adopt(value) {
-      return value instanceof P
-        ? value
-        : new P(function (resolve) {
-            resolve(value);
-          });
-    }
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
-      function fulfilled(value) {
-        try {
-          step(generator.next(value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function rejected(value) {
-        try {
-          step(generator['throw'](value));
-        } catch (e) {
-          reject(e);
-        }
-      }
-      function step(result) {
-        result.done
-          ? resolve(result.value)
-          : adopt(result.value).then(fulfilled, rejected);
-      }
-      step((generator = generator.apply(thisArg, _arguments || [])).next());
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
-  };
-Object.defineProperty(exports, '__esModule', { value: true });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.unresolvers = exports.resolvers = void 0;
-const apollo_server_express_1 = require('apollo-server-express');
-const auth_1 = require('../utils/auth');
-const models_1 = require('../models');
+const apollo_server_express_1 = require("apollo-server-express");
+const auth_1 = require("../utils/auth");
+const models_1 = require("../models");
 const resolvers = {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin
     Query: {
         users: () => __awaiter(void 0, void 0, void 0, function* () {
             return yield models_1.User.find();
@@ -63,11 +42,21 @@ const resolvers = {
                     path: 'registrations',
                     model: models_1.Registration,
                     populate: [
+<<<<<<< HEAD
                         { path: 'eventId', model: models_1.Event },
                         {
                             path: 'userId',
                             model: models_1.User,
                             // populate: { path: 'phoneNumbers', model: Phone },
+=======
+                        {
+                            path: 'eventId',
+                            model: models_1.Event,
+                        },
+                        {
+                            path: 'userId',
+                            model: models_1.User,
+>>>>>>> origin
                         },
                     ],
                 },
@@ -75,6 +64,7 @@ const resolvers = {
         }),
     },
     Mutation: {
+<<<<<<< HEAD
 <<<<<<< HEAD
         // addEvent: async (_: any, args: any, context: any) => {
         // },
@@ -102,6 +92,57 @@ const resolvers = {
                 return e;
             }
         }),
+=======
+        addEvent: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                let newEvent = yield models_1.Event.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
+                return newEvent;
+            }
+            catch (error) {
+                console.log(error);
+                return error;
+            }
+        }),
+        addUser: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const newUser = yield models_1.User.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
+                const newToken = (0, auth_1.signToken)(newUser);
+                return { token: newToken, user: newUser };
+            }
+            catch (error) {
+                console.log(error);
+                return error;
+            }
+        }),
+        addVenue: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const newVenue = yield models_1.Venue.create(Object.assign(Object.assign({}, args), { schemaVersion: models_1.schemaVersion, schemaDate: models_1.schemaDate }));
+                return newVenue;
+            }
+            catch (error) {
+                console.log(error);
+                return error;
+            }
+        }),
+        payRegistrations: (_, args) => __awaiter(void 0, void 0, void 0, function* () {
+            const registrationIds = args.registrationIds;
+            const userId = args.userId;
+            // const { registrations }: { string } = args
+            for (const registrationId of registrationIds) {
+                console.log(registrationId);
+                const payments = models_1.Registration.findOneAndUpdate({
+                    _id: registrationId,
+                    paid: false,
+                });
+                console.log(payments);
+            }
+            console.log(registrationIds);
+            console.log(userId);
+            const updated = yield models_1.Registration.find();
+            console.log(updated);
+            return updated;
+        }),
+>>>>>>> origin
         addRegistration: (_, args, context) => __awaiter(void 0, void 0, void 0, function* () {
             const eventId = args.eventId;
             const userId = args.userId;
@@ -114,7 +155,11 @@ const resolvers = {
             else if (type === undefined || type === null) {
                 type = 'attendee';
             }
+<<<<<<< HEAD
             console.log(context);
+=======
+            // console.log(context);
+>>>>>>> origin
             if (context.user) {
                 // const regist{ eventId, userId, type, paid })
                 const registration = new models_1.Registration({ eventId, userId, type, paid });
@@ -134,11 +179,19 @@ const resolvers = {
                 const event = yield models_1.Event.findByIdAndUpdate(eventId, {
                     $push: { registrations: registration._id },
                 }, { new: true });
+<<<<<<< HEAD
                 console.log(event);
                 const user = yield models_1.User.findByIdAndUpdate(userId, {
                     $push: { registrations: registration._id },
                 });
                 console.log(user);
+=======
+                // console.log(event);
+                const user = yield models_1.User.findByIdAndUpdate(userId, {
+                    $push: { registrations: registration._id },
+                });
+                // console.log(user);
+>>>>>>> origin
                 if (event && user && registration) {
                     return registration;
                 }
@@ -162,9 +215,13 @@ const resolvers = {
                 {
                     path: 'organizerUserId',
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
                     model: models_1.User,
 >>>>>>> refs/remotes/origin/main
+=======
+                    model: models_1.User,
+>>>>>>> origin
                     // populate: [
                     //   {
                     //     path: 'phoneNumbers',
@@ -207,6 +264,7 @@ const resolvers = {
             return { token, user };
         }),
     },
+<<<<<<< HEAD
 =======
   Query: {
     users: () =>
@@ -416,18 +474,16 @@ const resolvers = {
       }),
   },
 >>>>>>> origin
+=======
+>>>>>>> origin
 };
 exports.resolvers = resolvers;
 const unresolvers = {
-  payRegistrations: (registrationIds) =>
-    __awaiter(void 0, void 0, void 0, function* () {
-      for (const registrationId of registrationIds) {
-        yield models_1.Registration.findOneAndUpdate(
-          { _id: registrationId, paid: false },
-          { paid: true },
-        );
-      }
-      return true;
+    payRegistrations: (registrationIds) => __awaiter(void 0, void 0, void 0, function* () {
+        for (const registrationId of registrationIds) {
+            yield models_1.Registration.findOneAndUpdate({ _id: registrationId, paid: false }, { paid: true });
+        }
+        return true;
     }),
 };
 exports.unresolvers = unresolvers;

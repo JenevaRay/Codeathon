@@ -78,3 +78,18 @@ export const ADD_USER = gql`
     }
   }
 `;
+
+export const ADD_EVENT = gql`
+mutation Mutation($name: String!, $dateStart: String!, $dateEnd: String!, $dateCutoff: String!, $feeRegistration: Int!, $feeVenue: Int!, $venues: [String]!, $organizerUserId: String!) {
+  addEvent(name: $name, dateStart: $dateStart, dateEnd: $dateEnd, dateCutoff: $dateCutoff, feeRegistration: $feeRegistration, feeVenue: $feeVenue, venues: $venues, organizerUserId: $organizerUserId) {
+    _id
+  }
+}
+`
+
+export const ADD_VENUE = gql`
+mutation AddVenue($name: String!, $addressStreet: String, $addressExtended: String, $addressCity: String, $addressState: String, $addressPostalCode: String, $addressCountry: String, $phoneNumber: String, $website: String) {
+  addVenue(name: $name, addressStreet: $addressStreet, addressExtended: $addressExtended, addressCity: $addressCity, addressState: $addressState, addressPostalCode: $addressPostalCode, addressCountry: $addressCountry, phoneNumber: $phoneNumber, website: $website) {
+    _id
+  }
+}`

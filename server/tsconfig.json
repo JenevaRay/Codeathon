@@ -7,7 +7,7 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": false,
         "lib": ["ESNext", "ES7", "ES6"],
-        "module":"CommonJS",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "noEmit": false,
         "noFallthroughCasesInSwitch": true,
@@ -23,12 +23,6 @@
         "target": "ES6",
         "useUnknownInCatchVariables": false,
     },
-    "include": [
-        "./**/*", "package.json"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts"
-    ]
-
+    "include": ["./**/*", "package.json"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
 }

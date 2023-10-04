@@ -1,9 +1,9 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeDefs = void 0;
-const apollo_server_express_1 = require('apollo-server-express');
+const apollo_server_express_1 = require("apollo-server-express");
 // TODO: Event is missing all DATE types (startTime, endTime, registrationCutoffDate, registrationPaymentRequiredDate).  Documentation succests a 'scalar Date' for custom defs, I'm inclined to just pass the Date as-is (string) and parse it user-side, due to built in timezone info.
-const typeDefs = (0, apollo_server_express_1.gql)`
+const typeDefs = (0, apollo_server_express_1.gql) `
   type User {
     _id: ID
     schemaVersion: String
@@ -105,8 +105,23 @@ const typeDefs = (0, apollo_server_express_1.gql)`
       name: String!
       dateStart: String!
       dateEnd: String!
-      venueId: String!
+      dateCutoff: String!
+      feeRegistration: Int!
+      feeVenue: Int!
+      venues: [String]!
+      organizerUserId: String!
     ): Event
+    addVenue(
+      name: String!
+      addressStreet: String
+      addressExtended: String
+      addressCity: String
+      addressState: String
+      addressPostalCode: String
+      addressCountry: String
+      phoneNumber: String
+      website: String
+    ): Venue
     addUser(
       emailAddress: String!
       password: String!
