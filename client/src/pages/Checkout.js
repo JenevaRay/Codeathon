@@ -19,13 +19,11 @@ import StatusMessages, { useMessages } from '../payment/StatusMessages';
 
 const Checkout = () => {
   const [checked, setChecked] = useState(false);
-  const [state, dispatch] = useStoreContext();
+  const [state] = useStoreContext(); // dispatch when we need it can be added to this array.
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
-  // let total = 28; // for example
   let itemizedTotal = 0;
   let eventNames = [];
-  // let itemizedTotal = `$${total.toString()}.00`;
   // original code rendered by itemizedTotal = ['$',String(itemizedTotal).slice(0, -2),'.',String(itemizedTotal).slice(-2),]
   const query_info = useQuery(QUERY_REGISTRATIONS);
 
@@ -149,6 +147,11 @@ const Checkout = () => {
 
     addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
   };
+
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
 
   return (
     <>
@@ -398,7 +401,7 @@ const Checkout = () => {
                       Subtotal
                     </p>
                     <p className="font-semibold text-zinc-900">
-                      {itemizedTotal}
+                    {USDollar.format(itemizedTotal/100)}
                     </p>
                   </div>
                   <div className="flex items-center justify-between">
@@ -412,7 +415,7 @@ const Checkout = () => {
                 </div>
                 <div className="mt-6 flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Total</p>
-                  <p className="font-semibold text-zinc-900">{itemizedTotal}</p>
+                  <p className="font-semibold text-zinc-900">{USDollar.format(itemizedTotal/100)}</p>
                 </div>
               </div>
               <Button
