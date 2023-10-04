@@ -111,7 +111,7 @@ const Dashboard = () => {
               register({variables: {eventId: event._id, userId: profile.data._id}});
               window.location.assign('/checkout');
             }}>
-            New Registration (Attend) for {cost}
+            Register to Attend for {cost}
           </Button>
         ) : (
           <Button
@@ -122,7 +122,7 @@ const Dashboard = () => {
             bgColor="bg-zinc-900/50"
             disabled={true}
             animations={false}>
-            Event Expired
+            No New Registrations
           </Button>
         )}
         {/* Future: the Manage button should allow edits to the Event posting. */}

@@ -459,7 +459,7 @@ const DashboardC = () => {
                 variables: { eventId: event._id, userId: profile.data._id },
               })
             }}>
-            New Registration (Attend) for {cost}
+            Register to Attend for {cost}
           </Button>
         ) : (
           <Button
@@ -470,7 +470,7 @@ const DashboardC = () => {
             bgColor="bg-zinc-900/50"
             disabled={true}
             animations={false}>
-            Event Expired
+            No New Registrations
           </Button>
         )}
         {/* <p>&nbsp;</p> */}

@@ -36,11 +36,13 @@ const resolvers = {
           path: 'registrations',
           model: Registration,
           populate: [
-            { path: 'eventId', model: Event },
+            {
+              path: 'eventId',
+              model: Event,
+            },
             {
               path: 'userId',
               model: User,
-              // populate: { path: 'phoneNumbers', model: Phone },
             },
           ],
         },
@@ -50,21 +52,30 @@ const resolvers = {
   Mutation: {
     addEvent: async (_: any, args: any) => {
       try {
-        console.log(args)
-        let event = await Event.create({ ...args, schemaVersion, schemaDate });
-        return event;
+        let newEvent = await Event.create({ ...args, schemaVersion, schemaDate });
+        return newEvent;
       } catch (error) {
+        console.log(error);
         return error;
       }
     },
     addUser: async (_: any, args: any) => {
       try {
-        const user = await User.create({ ...args, schemaVersion, schemaDate });
-        const token = signToken(user);
-        return { token, user };
-      } catch (e) {
-        console.log(e);
-        return e;
+        const newUser = await User.create({ ...args, schemaVersion, schemaDate });
+        const newToken = signToken(newUser);
+        return { token: newToken, user: newUser };
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
+    },
+    addVenue: async (_: any, args: any) => {
+      try {
+        const newVenue = await Venue.create({...args, schemaVersion, schemaDate});
+        return newVenue;
+      } catch (error) {
+        console.log(error);
+        return error;
       }
     },
     payRegistrations: async (_: any, args: any) => {
@@ -84,14 +95,6 @@ const resolvers = {
       const updated = await Registration.find();
       console.log(updated);
       return updated;
-    },
-    addVenue: async (_: any, args: any) => {
-      try {
-        const venue = Venue.create({...args, schemaVersion, schemaDate})
-        return venue
-      } catch (e) {
-        return e
-      }
     },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;

@@ -94,7 +94,7 @@ const EventList = () => {
                 onClick={(e) => {
                   registerForEvent(event._id);
                 }}>
-                Register {cost}
+                Register to Attend for {cost}
               </Button>
             ) : (
               <Button
@@ -105,7 +105,7 @@ const EventList = () => {
                 bgColor="bg-zinc-900/50"
                 disabled={true}
                 animations={false}>
-                Event Expired
+                No New Registrations
               </Button>
             )}
           </div>
