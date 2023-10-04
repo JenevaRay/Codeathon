@@ -56,7 +56,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
     try {
       registerEvent({variables: event})
       setNewEventMode('');
-      // window.location.reload()
+      window.location.reload()
     } catch (e) {
       console.log(e)
     }
