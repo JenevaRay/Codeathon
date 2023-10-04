@@ -18,6 +18,10 @@ const EventList = () => {
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
   // const { data, loading, error } = mutation_info;
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
 
   const registerForEvent = async (eventId) => {
     // calling this throws an ApolloError, is this cacheing at work?
@@ -60,7 +64,7 @@ const EventList = () => {
         ? 'OVERDUE'
         : 'EXPIRED';
     const costStr = String(event.feeRegistration + event.feeVenue);
-    const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+    const cost = USDollar.format(costStr/100)
     if (['OVERDUE', 'EXPIRED'].includes(expiry)) {
       // omit expired events
       // TODO: (luxury) do this in the SERVER side, so we are transmitting less info, and potentially even QUERYING less info.

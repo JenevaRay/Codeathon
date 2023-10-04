@@ -17,12 +17,15 @@ import Auth from '../utils/Auth';
 import Button from '../components/ui/Button';
 import StatusMessages, { useMessages } from '../payment/StatusMessages';
 
-let registrationIds = {};
-
 const Checkout = () => {
   const [checked, setChecked] = useState(false);
   const [state] = useStoreContext(); // dispatch when we need it can be added to this array.
   const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });  
+  let registrationIds = {};
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   let itemizedTotal = 0;
   let eventNames = [];
@@ -56,7 +59,7 @@ const Checkout = () => {
               registration.eventId.feeRegistration +
                 registration.eventId.feeVenue,
             );
-            const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+            const cost = USDollar.format(costStr/100)
             itemizedTotal +=
               registration.eventId.feeRegistration +
               registration.eventId.feeVenue;
@@ -152,11 +155,6 @@ const Checkout = () => {
 
     addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
   };
-
-  let USDollar = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  });
 
   console.log(registrationIds);
 

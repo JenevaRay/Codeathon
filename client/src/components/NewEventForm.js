@@ -6,13 +6,16 @@ import { ADD_EVENT, ADD_VENUE } from '../utils/mutations';
 
 import Button from './ui/Button';
 
-const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
-let venueId
-
 const NewEventForm = ({ unpaidRegistrationsById }) => {
   const [registerEvent, event_mutation_info] = useMutation(ADD_EVENT);
   const [registerVenue, venue_mutation_info] = useMutation(ADD_VENUE);
+  const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
+  let venueId
   let totalCost = 0;
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
   // const [submitError, setSubmitError] = useState('');
   const [newEventMode, setNewEventMode] = useState('');
   const [eventState, setEventState] = useState({
@@ -109,12 +112,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
               window.location.assign('/checkout');
             }}>
             Pay All Reservations{' '}
-            { totalCost > 0 ? [
-              '$',
-              String(totalCost).slice(0, -2),
-              '.',
-              String(totalCost).slice(2),
-            ] : ''}
+            {USDollar.format(totalCost/100)}
           </Button>
 
           <Button

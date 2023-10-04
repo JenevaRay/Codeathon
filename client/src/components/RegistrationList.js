@@ -7,11 +7,14 @@ import { QUERY_REGISTRATIONS } from '../utils/queries';
 
 import Button from './ui/Button';
 
-const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
-
-function RegistrationList() {
+const RegistrationList = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const { loading, error, data } = useQuery(QUERY_REGISTRATIONS);
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+  const strToDayJS = (unixEpochStr) => dayjs(new Date(Number(unixEpochStr)));
   // const [state, dispatch] = useStoreContext();
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
@@ -52,21 +55,7 @@ function RegistrationList() {
             margin="mt-4"
             width="w-full"
             padding="py-2">
-            PAY{' '}
-            {[
-              '$',
-              String(
-                registration.eventId.feeRegistration +
-                  registration.eventId.feeVenue,
-              ).slice(0, -2),
-              '.',
-              String(
-                registration.eventId.feeRegistration +
-                  registration.eventId.feeVenue,
-              ).slice(2),
-            ]}{' '}
-            as {registration.role === 'attendee' ? 'an ' : ''}
-            {registration.role.toUpperCase()}
+            {`Pay ${USDollar.format((registration.eventId.feeRegistration + registration.eventId.feeVenue)/100)} as ${registration.role.toUpperCase()}`}
           </Button>
         )}
         {/* <p>You are {registration.role} for this event.</p> */}

@@ -9,17 +9,20 @@ import { useStoreContext, StoreProvider } from '../utils/GlobalState';
 import NewEventForm from '../components/NewEventForm';
 import Button from '../components/ui/Button';
 
-const strToDayJS = function (unixEpochStr) {
-  return dayjs(new Date(Number(unixEpochStr)));
-};
-
-let unpaidRegistrationsById = {};
-
 const Dashboard = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
   const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const strToDayJS = function (unixEpochStr) {
+    return dayjs(new Date(Number(unixEpochStr)));
+  };  
+  let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+  
+  let unpaidRegistrationsById = {};
 
   if (!profile) {
     return 'Not Logged In';
@@ -45,7 +48,7 @@ const Dashboard = () => {
         ? 'OVERDUE'
         : 'EXPIRED';
     const costStr = String(event.feeRegistration + event.feeVenue);
-    const cost = ['$', costStr.slice(0, -2), '.', costStr.slice(2)];
+    const cost = USDollar.format(costStr/100)
     let registrations = '';
     if (expiry === 'FUTURE') {
       registrations = event.registrations.map((registration) => {
@@ -60,7 +63,7 @@ const Dashboard = () => {
             }
             return (
               <Button
-              padding="px-6 py-3"
+              padding="px-6 py-3 my-2"
               bgColor="bg-cyan-600/80"
               width='w-full'
               disabled={true}
