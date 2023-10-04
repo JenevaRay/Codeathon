@@ -16,7 +16,6 @@ import Auth from '../utils/Auth';
 
 import Button from '../components/ui/Button';
 import StatusMessages, { useMessages } from '../payment/StatusMessages';
-import { Link } from 'react-router-dom';
 
 const Checkout = () => {
   const [checked, setChecked] = useState(false);
@@ -153,9 +152,9 @@ const Checkout = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-between pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
-        <div className="grid pb-12 sm:px-10 lg:grid-cols-2 lg:px-20 lg:pb-0 xl:px-32">
-          <div className="px-4 pt-20">
+      <div className="flex flex-row items-center justify-around pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
+        <div className="grid pb-12 sm:px-10 md:grid-cols-2 lg:px-20 lg:pb-0 xl:px-32">
+          <div className="px-4 lg:px-12 pt-20">
             <p className="text-xl font-medium">Order Summary</p>
             <p className="text-zinc-400">
               Check your items and select your preferred shipping method
