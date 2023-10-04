@@ -78,6 +78,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
     // validate things here...  right now everything in the venue is optional.  if everything validates, then change the form mode.
     
   };
+  
   const handleEventChange = (event) => {
     const { name, value } = event.target;
     setEventState({
