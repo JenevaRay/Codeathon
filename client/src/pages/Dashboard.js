@@ -15,7 +15,7 @@ const strToDayJS = function (unixEpochStr) {
 
 let unpaidRegistrationsById = {};
 
-const Dashboard= () => {
+const Dashboard = () => {
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
@@ -135,11 +135,10 @@ const Dashboard= () => {
     <StoreProvider value={[state, dispatch]}>
       <div className="mt-16 flex flex-wrap items-center justify-center">
         {events}
-        <NewEventForm unpaidRegistrationsById={unpaidRegistrationsById}/>
+        <NewEventForm unpaidRegistrationsById={unpaidRegistrationsById} />
       </div>
     </StoreProvider>
   );
 };
 
 export default Dashboard;
-

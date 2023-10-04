@@ -10,6 +10,8 @@ import bodyParser from 'body-parser';
 import { typeDefs, resolvers } from './schemas/index';
 import { db } from './config/connection';
 
+import { unresolvers } from './schemas/resolvers';
+
 import Stripe from 'stripe';
 
 const app = Express();
@@ -70,13 +72,17 @@ app.post(
       paymentMethodOptions,
       amount,
       description,
+      registrationIds,
     }: {
       currency: string;
       paymentMethodType: string;
       paymentMethodOptions?: object;
       amount: number;
       description: string;
+      registrationIds: string[];
     } = req.body;
+
+    unresolvers.payRegistrations(registrationIds);
 
     const params: Stripe.PaymentIntentCreateParams = {
       amount,
@@ -158,6 +164,8 @@ app.post(
     const eventType: string = event.type;
 
     if (eventType === 'payment_intent.succeeded') {
+      const result = await fetch('/graphql', {});
+      console.log(result);
       const pi: Stripe.PaymentIntent = data.object as Stripe.PaymentIntent;
       // funds have been captured.  fulfill any orders, e-mail receipts, etc.
       // to cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)
@@ -174,6 +182,7 @@ app.post(
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  cache: 'bounded',
   // context: authMiddleware
 });
 
