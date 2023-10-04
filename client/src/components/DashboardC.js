@@ -459,7 +459,7 @@ const DashboardC = () => {
                 variables: { eventId: event._id, userId: profile.data._id },
               })
             }}>
-            New Registration (Attend) for {cost}
+            Register to Attend for {cost}
           </Button>
         ) : (
           <Button

@@ -94,7 +94,7 @@ const EventList = () => {
                 onClick={(e) => {
                   registerForEvent(event._id);
                 }}>
-                Register {cost}
+                Register to Attend for {cost}
               </Button>
             ) : (
               <Button

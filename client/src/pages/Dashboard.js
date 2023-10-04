@@ -111,7 +111,7 @@ const Dashboard = () => {
               register({variables: {eventId: event._id, userId: profile.data._id}});
               window.location.assign('/checkout');
             }}>
-            New Registration (Attend) for {cost}
+            Register to Attend for {cost}
           </Button>
         ) : (
           <Button
