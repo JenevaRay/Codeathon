@@ -34,6 +34,7 @@ const Dashboard = () => {
     // console.log(event)
     // registrations must be submitted before event.dateCutoff
     // console.log(event.organizerUserId._id)
+    
     const isOrganizer = (event.organizerUserId._id === profile.data._id)
     const expiry =
       strToDayJS(event.dateStart) > dayjs(Date.now())
