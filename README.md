@@ -7,6 +7,7 @@ A full stack application that brings coders together
 
 ### Table of Contents
 
+**[Elevator Pitch](#elevator-pitch)**<br>
 **[User Story](#user-story)**<br>
 **[Acceptance Criteria](#acceptance-criteria)**<br>
 **[Installation Instructions](#installation)**<br>
@@ -14,6 +15,11 @@ A full stack application that brings coders together
 **[License](#license)**<br>
 **[Contributing](#contributing)**<br>
 **[Special Thanks](#thanks)**<br>
+**[Distribution of Tasks](#distribution-of-tasks)**<br>
+
+# Elevator Pitch
+
+Codeathon is a platform to interact with the nation’s developer community through hackathon events. Our mission is to foster creativity, innovation, and collaboration within the developer community. We believe that the future is built on the ideas and solutions of passionate individuals, and we want to provide a platform for aspiring innovators to turn their visions into reality by attending or hosting a Codeathon in a city near you.
 
 # User Story
 
@@ -72,6 +78,21 @@ This project is covered under the [MIT](https://opensource.org/licenses/MIT) lic
 # Contributing
 
 Contributing is welcomed! Please submit a pull request.
+
+# Distribution of Tasks
+
+Jeneva
+Back-End, Front-End, GraphQL, Stripe, Node.js, Typescript
+
+Adam
+Project Organization, Database Design, GraphQL, Back-End, Node.js
+
+Christian
+Front-End, UX/UI, Tailwind CSS, and Stripe
+
+Coby
+Back-End, Service Worker, JWT, Stripe
+
 
 # Thanks
 
