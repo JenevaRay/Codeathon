@@ -74,7 +74,7 @@ const Dashboard = () => {
     return (
       <div
         key={event._id}
-        className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+        className="mx-10 mb-16 max-w-lg rounded-xl bg-white p-6 shadow-xl">
         <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
           {event.name}
         </h5>

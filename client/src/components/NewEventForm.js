@@ -64,7 +64,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
   // THEN we display a form for the event info
   totalCost = Object.values(unpaidRegistrationsById).reduce((a, b) => a + b, 0);
   return (
-    <div className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+    <div className="mx-10 mb-16 max-w-lg rounded-xl p-6">
       {newEventMode === '' ? (
         <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
           <Button
