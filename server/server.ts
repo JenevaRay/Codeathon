@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import cors from 'cors';
+// import cors from 'cors';
 import Express from 'express';
 import { ApolloServer } from 'apollo-server-express';
 import path from 'path';
@@ -20,7 +20,8 @@ const PORT = process.env.PORT || 3001;
 // Stripe payment info inspired by https://github.com/stripe-samples/accept-a-payment
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(cors());
+  // app.use(cors());
+  app.use(Express.static(path.join(__dirname, '../client/build')))
 }
 
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -141,6 +142,8 @@ app.get('/payment/next', async (req, res) => {
 // app.get('/success', async (req, res) => {
 //   // send file for payment success
 // })
+
+app.get('/login')
 
 app.post(
   '/webhook',
