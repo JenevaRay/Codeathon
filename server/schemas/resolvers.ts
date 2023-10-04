@@ -50,11 +50,11 @@ const resolvers = {
   Mutation: {
     addEvent: async (_: any, args: any) => {
       try {
-        console.log(args);
+        // console.log(args);
         let event = await Event.create({ ...args, schemaVersion, schemaDate });
         return event;
       } catch (error) {
-        console.error(error);
+        // console.error(error);
         return error;
       }
     },
@@ -68,10 +68,23 @@ const resolvers = {
         return e;
       }
     },
-    removeRegistration: async (parent: any, args: any, context: any) => {
-      console.log("Remove registration called!")
-      console.log(args)
-      return {completed: true}
+    payRegistrations: async (_: any, args: any) => {
+      const registrationIds = args.registrationIds;
+      const userId = args.userId;
+      // const { registrations }: { string } = args
+      for (const registrationId of registrationIds) {
+        console.log(registrationId);
+        const payments = Registration.findOneAndUpdate({
+          _id: registrationId,
+          paid: false,
+        });
+        console.log(payments);
+      }
+      console.log(registrationIds);
+      console.log(userId);
+      const updated = await Registration.find();
+      console.log(updated);
+      return updated;
     },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;
@@ -84,7 +97,7 @@ const resolvers = {
       } else if (type === undefined || type === null) {
         type = 'attendee';
       }
-      console.log(context);
+      // console.log(context);
       if (context.user) {
         // const regist{ eventId, userId, type, paid })
         const registration = new Registration({ eventId, userId, type, paid });
@@ -108,11 +121,11 @@ const resolvers = {
           },
           { new: true },
         );
-        console.log(event);
+        // console.log(event);
         const user = await User.findByIdAndUpdate(userId, {
           $push: { registrations: registration._id },
         });
-        console.log(user);
+        // console.log(user);
         if (event && user && registration) {
           return registration;
         } else {
@@ -185,4 +198,16 @@ const resolvers = {
   },
 };
 
-export { resolvers };
+const unresolvers = {
+  payRegistrations: async (registrationIds: string[]) => {
+    for (const registrationId of registrationIds) {
+      await Registration.findOneAndUpdate(
+        { _id: registrationId, paid: false },
+        { paid: true },
+      );
+    }
+    return true;
+  },
+};
+
+export { resolvers, unresolvers };

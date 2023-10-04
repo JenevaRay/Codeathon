@@ -96,8 +96,11 @@ const typeDefs: DocumentNode = gql`
       userId: String!
       type: String
     ): Registration
-    removeRegistration(
-      registrationId: String!, userId: String!): Status
+    payRegistrations(
+      registrationIds: [String]!
+      userId: String!
+      type: String
+    ): [Registration]
     addEvent(
       name: String!
       dateStart: String!

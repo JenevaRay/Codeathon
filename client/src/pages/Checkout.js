@@ -17,6 +17,8 @@ import Auth from '../utils/Auth';
 import Button from '../components/ui/Button';
 import StatusMessages, { useMessages } from '../payment/StatusMessages';
 
+let registrationIds = {};
+
 const Checkout = () => {
   const [checked, setChecked] = useState(false);
   const [state] = useStoreContext(); // dispatch when we need it can be added to this array.
@@ -58,6 +60,7 @@ const Checkout = () => {
             itemizedTotal +=
               registration.eventId.feeRegistration +
               registration.eventId.feeVenue;
+            registrationIds[registration._id] = registration.eventId.dateStart;
             return (
               <div
                 key={registration._id}
@@ -115,6 +118,7 @@ const Checkout = () => {
         },
         mode: 'cors',
         body: JSON.stringify({
+          registrationIds: Object.keys(registrationIds),
           paymentMethodType: 'card',
           currency: 'usd',
           amount: itemizedTotal,
@@ -151,13 +155,15 @@ const Checkout = () => {
   let USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-});
+  });
+
+  console.log(registrationIds);
 
   return (
     <>
       <div className="flex flex-row items-center justify-around pb-8 pt-2 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
         <div className="grid pb-12 sm:px-10 md:grid-cols-2 lg:px-20 lg:pb-0 xl:px-32">
-          <div className="px-4 lg:px-12 pt-20">
+          <div className="px-4 pt-20 lg:px-12">
             <p className="text-xl font-medium">Order Summary</p>
             <p className="text-zinc-400">
               Check your items and select your preferred shipping method
@@ -401,7 +407,7 @@ const Checkout = () => {
                       Subtotal
                     </p>
                     <p className="font-semibold text-zinc-900">
-                    {USDollar.format(itemizedTotal/100)}
+                      {USDollar.format(itemizedTotal / 100)}
                     </p>
                   </div>
                   <div className="flex items-center justify-between">
@@ -415,7 +421,9 @@ const Checkout = () => {
                 </div>
                 <div className="mt-6 flex items-center justify-between">
                   <p className="text-sm font-medium text-zinc-900">Total</p>
-                  <p className="font-semibold text-zinc-900">{USDollar.format(itemizedTotal/100)}</p>
+                  <p className="font-semibold text-zinc-900">
+                    {USDollar.format(itemizedTotal / 100)}
+                  </p>
                 </div>
               </div>
               <Button
