@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true,
+        "isolatedModules": false,
+        "lib": ["ESNext", "ES7", "ES6"],
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "noEmit": false,
+        "noFallthroughCasesInSwitch": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noUncheckedIndexedAccess": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "types": ["node"],
+        "target": "ES6",
+        "useUnknownInCatchVariables": false,
+    },
+    "include": ["./**/*", "package.json"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}
