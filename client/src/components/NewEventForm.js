@@ -40,6 +40,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
 
   const handleEventFormSubmit = async (e) => {
     e.preventDefault();
+    console.log(profile.data._id)
     // validate things here...  right now everything in the event is required.  if everything validates, then submit and change the form mode.
     const event = {
       ...eventState,
@@ -108,12 +109,12 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
               window.location.assign('/checkout');
             }}>
             Pay All Reservations{' '}
-            {[
+            { totalCost > 0 ? [
               '$',
               String(totalCost).slice(0, -2),
               '.',
               String(totalCost).slice(2),
-            ]}
+            ] : ''}
           </Button>
 
           <Button

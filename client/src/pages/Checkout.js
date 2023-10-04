@@ -112,6 +112,7 @@ const Checkout = () => {
         method: 'POST',
         headers: {
           'Access-Control-Allow-Origin':
+            // 'http://192.168.56.102:3001',
             'https://codeathon-1b48b4588e47.herokuapp.com',
           'Access-Control-Allow-Headers': '*',
           'Content-Type': 'application/json',
