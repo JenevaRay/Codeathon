@@ -68,6 +68,11 @@ const resolvers = {
         return e;
       }
     },
+    removeRegistration: async (parent: any, args: any, context: any) => {
+      console.log("Remove registration called!")
+      console.log(args)
+      return {completed: true}
+    },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;
       const userId = args.userId;

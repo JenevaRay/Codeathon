@@ -158,6 +158,10 @@ app.post(
     const eventType: string = event.type;
 
     if (eventType === 'payment_intent.succeeded') {
+      const result = await fetch('/graphql', {
+        
+      })
+      console.log(result)
       const pi: Stripe.PaymentIntent = data.object as Stripe.PaymentIntent;
       // funds have been captured.  fulfill any orders, e-mail receipts, etc.
       // to cancel the payment after capture you will need to issue a Refund (https://stripe.com/docs/api/refunds)

@@ -85,6 +85,10 @@ const typeDefs: DocumentNode = gql`
     venues: [Venue]
   }
 
+  type Status {
+    completed: Boolean
+  }
+
   type Mutation {
     login(emailAddress: String!, password: String!): Auth
     addRegistration(
@@ -92,6 +96,8 @@ const typeDefs: DocumentNode = gql`
       userId: String!
       type: String
     ): Registration
+    removeRegistration(
+      registrationId: String!, userId: String!): Status
     addEvent(
       name: String!
       dateStart: String!
