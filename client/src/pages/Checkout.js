@@ -9,6 +9,7 @@ import {
 } from '@stripe/react-stripe-js';
 
 import { QUERY_REGISTRATIONS } from '../utils/queries';
+import { remoteServer } from '../config/remote'
 
 import { useStoreContext } from '../utils/GlobalState';
 // import { States } from '../utils/constants';
@@ -110,7 +111,7 @@ const Checkout = () => {
 
     const { error: backendError, clientSecret } = await fetch(
       // 'http://192.168.56.102:3001/create-payment-intent',
-      'https://codeathon-server-a60585dbdc98.herokuapp.com/create-payment-intent',
+      remoteServer + '/create-payment-intent',
       {
         method: 'POST',
         headers: {
