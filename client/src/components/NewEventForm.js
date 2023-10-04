@@ -51,7 +51,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
       feeRegistration: Number(eventState.feeRegistration),
       feeVenue: Number(eventState.feeVenue),
       organizerUserId: profile.data._id,
-      venues: venueId
+      venues: [venueId]
     };
     try {
       registerEvent({variables: event})

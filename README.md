@@ -49,10 +49,12 @@ First, install all dependencies:
 npm install
 ```
 
-Next, you can run the application:
+then create/edit the following files accordingly:
 
+
+Next, you can run the development version of the application:
 ```
-npm start
+npm run develop
 ```
 
 You can view the app locally at http://localhost:3000/
