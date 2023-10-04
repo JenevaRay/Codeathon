@@ -31,6 +31,7 @@ const Dashboard = () => {
   if (query_info.error) return `Error! ${query_info.error.message}`;
 
   const events = query_info.data.events.map((event) => {
+    console.log(event)
     // registrations must be submitted before event.dateCutoff
     const isOrganizer = event.organizerUserId._id === profile.data._id;
     const expiry =
@@ -49,7 +50,7 @@ const Dashboard = () => {
         const button = '';
         switch (registration.role) {
           case 'host':
-            return <Button disabled={true}>HOST</Button>;
+            return <Button key={registration._id} disabled={true}>HOST</Button>;
           case 'attendee':
             if (expiry === 'FUTURE') {
               unpaidRegistrationsById[registration._id] =
@@ -57,6 +58,12 @@ const Dashboard = () => {
             }
             return (
               <Button
+              padding="px-6 py-3"
+              bgColor="bg-cyan-600/80"
+              width='w-full'
+              disabled={true}
+              animations={false}
+                key={registration.role}
                 onClick={() => {
                   window.location.assign('/checkout');
                 }}>
@@ -72,7 +79,7 @@ const Dashboard = () => {
     return (
       <div
         key={event._id}
-        className="mx-10 mb-16 max-w-lg flex-1 rounded-xl bg-white p-6 shadow-xl">
+        className="mx-10 mb-16 max-w-lg rounded-xl bg-white p-6 shadow-xl">
         <h5 className="mb-4 text-xl font-bold leading-tight text-zinc-900">
           {event.name}
         </h5>
@@ -99,7 +106,7 @@ const Dashboard = () => {
             width="w-full"
             padding="py-2"
             onClick={(e) => {
-              register(event._id);
+            register(event._id);
             }}>
             New Registration (Attend) for {cost}
           </Button>
@@ -122,7 +129,7 @@ const Dashboard = () => {
         {registrations.length > 0 ? (
           <>
             <br />
-            <h4>Registrations</h4>
+            <h4 className='my-3'>Registrations</h4>
           </>
         ) : (
           ''
