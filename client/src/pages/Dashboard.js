@@ -122,7 +122,7 @@ const Dashboard = () => {
             bgColor="bg-zinc-900/50"
             disabled={true}
             animations={false}>
-            Event Expired
+            No New Registrations
           </Button>
         )}
         {/* Future: the Manage button should allow edits to the Event posting. */}

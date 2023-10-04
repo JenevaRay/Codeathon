@@ -470,7 +470,7 @@ const DashboardC = () => {
             bgColor="bg-zinc-900/50"
             disabled={true}
             animations={false}>
-            Event Expired
+            No New Registrations
           </Button>
         )}
         {/* <p>&nbsp;</p> */}
