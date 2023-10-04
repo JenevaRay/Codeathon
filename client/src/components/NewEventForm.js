@@ -97,7 +97,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
         ''
       )}
       {newEventMode === 'VENUE' ? (
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="w-full p-6 max-w-lg rounded-xl bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               Address Information
@@ -113,6 +113,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Name
               </label>
               <input
+              required
                 type="text"
                 name="name"
                 value={venueState.name}
@@ -128,6 +129,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Address
               </label>
               <input
+              required
                 type="text"
                 name="addressStreet"
                 value={venueState.addressStreet}
@@ -136,11 +138,12 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 placeholder="Address"
               />
               <input
+              required
                 type="text"
                 name="addressExtended"
                 value={venueState.addressExtended}
                 onChange={handleVenueChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mt-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Address"
               />
             </div>
@@ -151,6 +154,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 City
               </label>
               <input
+              required
                 type="text"
                 name="addressCity"
                 value={venueState.addressCity}
@@ -166,6 +170,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 State
               </label>
               <input
+              required
                 type="text"
                 name="addressState"
                 value={venueState.addressState}
@@ -181,6 +186,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Country
               </label>
               <input
+              required
                 type="text"
                 name="addressCountry"
                 value={venueState.addressCountry}
@@ -196,6 +202,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Postal Code
               </label>
               <input
+              required
                 type="text"
                 name="addressPostalCode"
                 value={venueState.addressPostalCode}
@@ -216,10 +223,10 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
         ''
       )}
       {newEventMode === 'EVENT' ? (
-        <div className="w-full max-w-lg rounded-lg bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0 xl:p-0">
+        <div className="w-full p-6 max-w-lg rounded-xl bg-white shadow-xl dark:border dark:border-gray-700 dark:bg-gray-800 md:mt-0">
           <div className="space-y-4 p-6 sm:p-8 md:space-y-6">
             <h1 className="text-center text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
-              Address Information
+              Event Information
             </h1>
           </div>
           <form
@@ -253,7 +260,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="timeStart"
                 value={venueState.timeStart}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Time"
               />
               <input
@@ -262,7 +269,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="dateStart"
                 value={venueState.dateStart}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Date"
               />
               <input
@@ -271,7 +278,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="timeEnd"
                 value={venueState.timeEnd}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Starting Time"
               />
               <input
@@ -296,7 +303,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="dateCutoff"
                 value={venueState.dateCutoff}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Register before"
               />
               <label
@@ -326,7 +333,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 name="feeRegistration"
                 value={venueState.feeRegistration}
                 onChange={handleEventChange}
-                className="focus:border-purple m-0 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
+                className="focus:border-purple mb-4 w-full rounded-xl border border-solid border-zinc-300 bg-zinc-50 bg-clip-padding px-4 py-4 text-base font-normal text-zinc-700 transition ease-in-out focus:outline-none dark:border-zinc-500 dark:bg-slate-800 dark:text-zinc-200"
                 placeholder="Event Fee, in pennies"
               />
               <input
