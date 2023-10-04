@@ -56,7 +56,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
     try {
       registerEvent({variables: event})
       setNewEventMode('');
-      window.location.reload()
+      window.location.redirect('/checkout')
     } catch (e) {
       console.log(e)
     }

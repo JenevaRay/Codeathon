@@ -50,7 +50,10 @@ npm install
 ```
 
 then create/edit the following files accordingly:
-
+```
+.env (from .env.EXAMPLE)
+client/src/config/remote.js
+```
 
 Next, you can run the development version of the application:
 ```
