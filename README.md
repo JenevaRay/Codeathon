@@ -51,8 +51,9 @@ npm install
 
 then create/edit the following files accordingly:
 ```
-.env (from .env.EXAMPLE)
-client/src/config/remote.js
+create a .env file using the .envExample
+
+Edit the config file from client/src/config/remote.js so it points to the included server (Example: localhost:3001) or use this link https://codeathon-server-a60585dbdc98.herokuapp.com/
 ```
 
 Next, you can run the development version of the application:
