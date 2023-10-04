@@ -50,11 +50,15 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
       feeRegistration: Number(eventState.feeRegistration),
       feeVenue: Number(eventState.feeVenue),
       organizerUserId: profile.data._id,
-      venues: [venueId]
+      venues: venueId
     };
-    registerEvent({variables: event})
-    // console.log(event);
-    setNewEventMode('');
+    try {
+      registerEvent({variables: event})
+      window.location.reload()
+      setNewEventMode('');
+    } catch (e) {
+      console.log(e)
+    }
   };
   const handleVenueFormSubmit = async (e) => {
     e.preventDefault();
@@ -72,8 +76,9 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
       console.log(e)
     }
     // validate things here...  right now everything in the venue is optional.  if everything validates, then change the form mode.
-    window.location.reload()
+    
   };
+  
   const handleEventChange = (event) => {
     const { name, value } = event.target;
     setEventState({
