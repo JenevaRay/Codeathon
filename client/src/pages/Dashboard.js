@@ -58,6 +58,11 @@ const Dashboard = () => {
             }
             return (
               <Button
+              padding="px-6 py-3"
+              bgColor="bg-cyan-600/80"
+              width='w-full'
+              disabled={true}
+              animations={false}
                 key={registration.role}
                 onClick={() => {
                   window.location.assign('/checkout');
@@ -124,7 +129,7 @@ const Dashboard = () => {
         {registrations.length > 0 ? (
           <>
             <br />
-            <h4>Registrations</h4>
+            <h4 className='my-3'>Registrations</h4>
           </>
         ) : (
           ''
