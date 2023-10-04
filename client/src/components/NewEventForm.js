@@ -6,11 +6,13 @@ import { ADD_EVENT, ADD_VENUE } from '../utils/mutations';
 
 import Button from './ui/Button';
 
+// this has to be scoped here to be accessed by both NewEventForm and NewVenueForm
+let venueId
+
 const NewEventForm = ({ unpaidRegistrationsById }) => {
   const [registerEvent] = useMutation(ADD_EVENT);
   const [registerVenue] = useMutation(ADD_VENUE);
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
-  let venueId
   let totalCost = 0;
   let USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -59,7 +61,7 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
     try {
       registerEvent({variables: event})
       setNewEventMode('');
-      window.location.redirect('/checkout')
+      window.location.assign('/checkout');
     } catch (e) {
       console.log(e)
     }
