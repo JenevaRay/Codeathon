@@ -29,11 +29,12 @@ const Dashboard = () => {
 
   if (query_info.loading) return 'Loading...';
   if (query_info.error) return `Error! ${query_info.error.message}`;
-
+  console.log(query_info.data.events)
   const events = query_info.data.events.map((event) => {
-    console.log(event)
+    // console.log(event)
     // registrations must be submitted before event.dateCutoff
-    const isOrganizer = event.organizerUserId._id === profile.data._id;
+    // console.log(event.organizerUserId._id)
+    const isOrganizer = (event.organizerUserId._id === profile.data._id)
     const expiry =
       strToDayJS(event.dateStart) > dayjs(Date.now())
         ? 'FUTURE'
@@ -63,7 +64,7 @@ const Dashboard = () => {
               width='w-full'
               disabled={true}
               animations={false}
-                key={registration.role}
+                key={registration._id}
                 onClick={() => {
                   window.location.assign('/checkout');
                 }}>
@@ -71,7 +72,8 @@ const Dashboard = () => {
               </Button>
             );
           default:
-            console.log(registration.role);
+            // console.log(registration.role);
+            break
         }
         return button;
       });
@@ -106,7 +108,8 @@ const Dashboard = () => {
             width="w-full"
             padding="py-2"
             onClick={(e) => {
-            register(event._id);
+              register({variables: {eventId: event._id, userId: profile.data._id}});
+              window.location.assign('/checkout');
             }}>
             New Registration (Attend) for {cost}
           </Button>
@@ -122,10 +125,8 @@ const Dashboard = () => {
             Event Expired
           </Button>
         )}
-        {/* <p>&nbsp;</p> */}
         {/* Future: the Manage button should allow edits to the Event posting. */}
         {/* Future: the Volunteer button should allow someone to confirm for $0. */}
-        {/* {isOrganizer ? <Button>Manage</Button> : <Button>Volunteer</Button>} */}
         {registrations.length > 0 ? (
           <>
             <br />

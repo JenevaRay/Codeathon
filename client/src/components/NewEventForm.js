@@ -1,8 +1,17 @@
 import { useState } from 'react';
+import { useMutation } from '@apollo/client';
+
+import Auth from '../utils/Auth';
+import { ADD_EVENT, ADD_VENUE } from '../utils/mutations';
 
 import Button from './ui/Button';
 
+const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
+let venueId
+
 const NewEventForm = ({ unpaidRegistrationsById }) => {
+  const [registerEvent, event_mutation_info] = useMutation(ADD_EVENT);
+  const [registerVenue, venue_mutation_info] = useMutation(ADD_VENUE);
   let totalCost = 0;
   // const [submitError, setSubmitError] = useState('');
   const [newEventMode, setNewEventMode] = useState('');
@@ -35,16 +44,35 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
     const event = {
       ...eventState,
       // dateStart: Math.floor(new Date(eventState.dateStart + "T" + eventState.timeStart).getTime() / 1000), // this returns Unix Timestamp, used internally in our code.
-      dateStart: eventState.dateStart + 'T' + eventState.timeStart,
-      dateEnd: eventState.dateEnd + 'T' + eventState.timeEnd, // this returns an industry standard date time string.  We can also call Date on this.
+      dateStart: String(Math.floor(new Date(eventState.dateStart + 'T' + eventState.timeStart).getTime())),
+      dateEnd: String(Math.floor(new Date(eventState.dateEnd + 'T' + eventState.timeEnd).getTime())),
+      dateCutoff: String(Math.floor(new Date(eventState.dateCutoff + 'T23:59').getTime())),
+      feeRegistration: Number(eventState.feeRegistration),
+      feeVenue: Number(eventState.feeVenue),
+      organizerUserId: profile.data._id,
+      venues: [venueId]
     };
+    registerEvent({variables: event})
     // console.log(event);
     setNewEventMode('');
   };
   const handleVenueFormSubmit = async (e) => {
     e.preventDefault();
+    const venue = {
+      ...venueState
+    }
+    const newVenue = await registerVenue({variables: venue})
+    try {
+      const { data } = newVenue
+      const { addVenue } = data
+      venueId = addVenue._id
+      console.log(venueId)
+      setNewEventMode('EVENT');
+    } catch (e) {
+      console.log(e)
+    }
     // validate things here...  right now everything in the venue is optional.  if everything validates, then change the form mode.
-    setNewEventMode('EVENT');
+    window.location.reload()
   };
   const handleEventChange = (event) => {
     const { name, value } = event.target;
@@ -129,7 +157,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Address
               </label>
               <input
-              required
                 type="text"
                 name="addressStreet"
                 value={venueState.addressStreet}
@@ -138,7 +165,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 placeholder="Address"
               />
               <input
-              required
                 type="text"
                 name="addressExtended"
                 value={venueState.addressExtended}
@@ -151,10 +177,8 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
               <label
                 htmlFor="addressCity"
                 className="mb-2 block text-sm font-medium text-gray-900 dark:text-white">
-                City
               </label>
               <input
-              required
                 type="text"
                 name="addressCity"
                 value={venueState.addressCity}
@@ -170,7 +194,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 State
               </label>
               <input
-              required
                 type="text"
                 name="addressState"
                 value={venueState.addressState}
@@ -186,7 +209,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Country
               </label>
               <input
-              required
                 type="text"
                 name="addressCountry"
                 value={venueState.addressCountry}
@@ -202,7 +224,6 @@ const NewEventForm = ({ unpaidRegistrationsById }) => {
                 Postal Code
               </label>
               <input
-              required
                 type="text"
                 name="addressPostalCode"
                 value={venueState.addressPostalCode}

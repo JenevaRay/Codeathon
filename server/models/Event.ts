@@ -41,12 +41,14 @@ const eventSchema = new Schema({
     alias: 'startTime', // version 0.0.4 startTime -> 0.0.5 dateEnd
   },
   dateCutoff: {
+    required: true,
     type: Date,
     alias: 'registrationCutoffDate', // version 0.0.4 registrationCutoffDate -> 0.0.5 dateCutoff
   },
   // NEW version 0.0.5 feeRegistration
   feeRegistration: {
     // MUST be integers (pennies) for USD, due to multiplication rounding errors.  Not all currencies are USD.  MVP says USD for now.
+    required: true,
     type: Number,
     get: (v: number) => {
       return Math.round(v);
@@ -58,6 +60,7 @@ const eventSchema = new Schema({
   // NEW version 0.0.5 feeVenue
   feeVenue: {
     // MUST be integers (pennies) for USD, due to multiplcation rounding errors.  Not all currencies are USD.  MVP says USD for now.
+    required: true,
     type: Number,
     get: (v: number) => {
       return Math.round(v);
@@ -67,6 +70,7 @@ const eventSchema = new Schema({
     },
   },
   organizerUserId: {
+    required: true,
     type: mongoose.Types.ObjectId,
     ref: 'User',
   },

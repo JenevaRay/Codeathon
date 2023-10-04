@@ -50,11 +50,10 @@ const resolvers = {
   Mutation: {
     addEvent: async (_: any, args: any) => {
       try {
-        // console.log(args);
+        console.log(args)
         let event = await Event.create({ ...args, schemaVersion, schemaDate });
         return event;
       } catch (error) {
-        // console.error(error);
         return error;
       }
     },
@@ -85,6 +84,14 @@ const resolvers = {
       const updated = await Registration.find();
       console.log(updated);
       return updated;
+    },
+    addVenue: async (_: any, args: any) => {
+      try {
+        const venue = Venue.create({...args, schemaVersion, schemaDate})
+        return venue
+      } catch (e) {
+        return e
+      }
     },
     addRegistration: async (_: any, args: any, context: any) => {
       const eventId = args.eventId;

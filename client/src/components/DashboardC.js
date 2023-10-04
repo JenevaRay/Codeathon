@@ -452,8 +452,12 @@ const DashboardC = () => {
             margin="mt-4"
             width="w-full"
             padding="py-2"
+            
             onClick={(e) => {
-              register(event._id);
+              console.log("clicked")
+              register({
+                variables: { eventId: event._id, userId: profile.data._id },
+              })
             }}>
             New Registration (Attend) for {cost}
           </Button>

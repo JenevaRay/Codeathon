@@ -40,6 +40,7 @@ function RegistrationList() {
         {registration.paid ? (
           <Button
             value={registration._id}
+            bgColor="bg-cyan-600/80"
             margin="mt-4"
             width="w-full"
             padding="py-2">
