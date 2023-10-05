@@ -100,6 +100,7 @@ Back-End, Service Worker, JWT, Stripe
 
 A special thanks to:
 [Stripe](https://github.com/stripe-samples/accept-a-payment) for a full-stack private Stripe solution.
+
 [Creative Tim](https://www.creative-tim.com/) for supplying some components
 
 
