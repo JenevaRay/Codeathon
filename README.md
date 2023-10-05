@@ -68,6 +68,7 @@ npm run develop
 ```
 
 You can view the app locally at http://localhost:3000/
+The server-side component is *independent* (from the server/ directory) and is available locally at http://localhost:3001/
 
 Or view the app [live](https://codeathon-1b48b4588e47.herokuapp.com/)
 
@@ -97,7 +98,7 @@ Back-End, Service Worker, JWT, Stripe
 # Thanks
 
 A special thanks to:
-
+[Stripe](https://github.com/stripe-samples/accept-a-payment) for a full-stack private Stripe solution.
 [Creative Tim](https://www.creative-tim.com/) for supplying some components
 
 
