@@ -68,6 +68,7 @@ npm run develop
 ```
 
 You can view the app locally at http://localhost:3000/
+
 The server-side component is *independent* (from the server/ directory) and is available locally at http://localhost:3001/
 
 Or view the app [live](https://codeathon-1b48b4588e47.herokuapp.com/)
