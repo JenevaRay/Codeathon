@@ -16,7 +16,7 @@ import Button from './ui/Button';
 const EventList = () => {
   const query_info = useQuery(QUERY_EVENTS);
   const [state, dispatch] = useStoreContext();
-  const [register, mutation_info] = useMutation(ADD_REGISTRATION);
+  const [register] = useMutation(ADD_REGISTRATION);
   // const { data, loading, error } = mutation_info;
   let USDollar = new Intl.NumberFormat('en-US', {
     style: 'currency',

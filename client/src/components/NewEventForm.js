@@ -10,8 +10,8 @@ import Button from './ui/Button';
 let venueId
 
 const NewEventForm = ({ unpaidRegistrationsById }) => {
-  const [registerEvent, event_mutation_info] = useMutation(ADD_EVENT);
-  const [registerVenue, venue_mutation_info] = useMutation(ADD_VENUE);
+  const [registerEvent] = useMutation(ADD_EVENT);
+  const [registerVenue] = useMutation(ADD_VENUE);
   const profile = Auth.loggedIn() ? Auth.getProfile() : undefined;
   let totalCost = 0;
   let USDollar = new Intl.NumberFormat('en-US', {
